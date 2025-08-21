@@ -1,0 +1,44 @@
+import express from "express";
+import cors from "cors";
+import bodyParser from "body-parser";
+import dotenv from 'dotenv';
+import cookieParser from "cookie-parser";
+
+import rolesRoutes from "./src/routes/rolesRoutes.js";
+
+dotenv.config();
+
+/**
+ * Archivo principal de configuración y arranque del servidor.
+ * 
+ * Aquí se inicializa la aplicación de Express, se configuran los 
+ * middlewares globales, se definen las rutas y se levanta el servidor 
+ * en el puerto especificado en las variables de entorno o por defecto en 3000.
+ */
+
+// Crear la instancia principal de Express
+const app = express();
+
+// Middleware para habilitar CORS (permite peticiones desde otros dominios)
+app.use(cors()); 
+
+// Middleware para procesar datos en formato JSON
+app.use(bodyParser.json()); 
+// Alternativa moderna: app.use(express.json());
+
+// Middleware para procesar datos en formato URL-encoded (formularios)
+app.use(express.urlencoded({ extended: true }));
+
+// Middleware para manejar cookies en las solicitudes/respuestas
+app.use(cookieParser());
+
+// Rutas principales de la aplicación
+app.use("/roles", rolesRoutes); // Gestión de roles
+
+// Puerto donde se ejecutará el servidor (por defecto 3000)
+const port = process.env.PORT || 3000;
+
+// Inicializa el servidor y lo deja escuchando en el puerto definido
+app.listen(port, () => {
+  console.log(`✅ Servidor corriendo en http://localhost:${port}`);
+});
