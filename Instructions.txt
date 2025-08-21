@@ -1,0 +1,4 @@
+Al clonar el repositorio debe ingresar los siguientes comando en la terminal antes de ejecutar "npm run dev":
+
+npm i dotenv
+

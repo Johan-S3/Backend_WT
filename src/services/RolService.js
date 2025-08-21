@@ -119,7 +119,9 @@ class RolService {
       // Se buscar un rol por el nombre ingresado
       const rolNameExiste = await rolInstance.getByName(nombre.trim());
       // Validamos si existe el rol con ese nombre
-      if (rolNameExiste.length != 0) {
+      console.log(rolExistente);
+      
+      if (rolNameExiste.length != 0 && nombre.trim() != rolExistente.nombre_rol) {
         return {
           error: true,
           code: 400,
