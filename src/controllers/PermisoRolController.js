@@ -1,14 +1,14 @@
 import { ResponseProvider } from "../providers/ResponseProvider.js";
-import PermisoService from "../services/PermisoService.js";
+import PermisoRolService from "../services/PermisoRolService.js";
 
-class PermisoController {
+class PermisoRolController {
 
-  // Obtener todos los permisos
-  static getAllPermisos = async (req, res) => {
+  // Obtener todos los permisos_roles
+  static getAllPermisosRoles = async (req, res) => {
     try {
-      // Llamamos al servicio para obtener los permisos
-      const response = await PermisoService.getPermisos();
-      // Validamos si no hay permisos
+      // Llamamos al servicio para obtener los permisos_roles
+      const response = await PermisoRolService.getPermisosRoles();
+      // Validamos si no hay permisos_roles
       if (response.error) {
         // Llamamos el provider para centralizar los mensajes de respuesta
         return ResponseProvider.error(
@@ -17,7 +17,7 @@ class PermisoController {
           response.code
         );
       } else {
-        // Llamamos el provider para centralizar los mensajes de respuesta        
+        // Llamamos el provider para centralizar los mensajes de respuesta
         return ResponseProvider.success(
           res,
           response.data,
@@ -31,12 +31,12 @@ class PermisoController {
     }
   };
 
-  // Obtener un permiso por su ID
-  static getPermisoById = async (req, res) => {
+  // Obtener un permiso_rol por su ID
+  static getPermisoRolById = async (req, res) => {
     const { id } = req.params;
     try {
-      // Llamamos al servicio para obtener el permiso por su ID
-      const response = await PermisoService.getPermisoById(id);
+      // Llamamos al servicio para obtener el permiso_rol por su ID
+      const response = await PermisoRolService.getPermisoRolById(id);
       if (response.error) {
         // Llamamos el provider para centralizar los mensajes de respuesta
         return ResponseProvider.error(
@@ -59,11 +59,11 @@ class PermisoController {
     }
   };
 
-  // Crear un nuevo permiso
-  static createPermiso = async (req, res) => {
-    const { nombre_permiso, descripcion_permiso } = req.body;
+  // Crear un nuevo permiso_rol
+  static createPermisoRol = async (req, res) => {
+    const { id_rol, id_permiso } = req.body;
     try {
-      const response = await PermisoService.createPermiso(nombre_permiso, descripcion_permiso);
+      const response = await PermisoRolService.createPermisoRol(id_rol, id_permiso);
       if (response.error) {
         // Llamamos el provider para centralizar los mensajes de respuesta
         return ResponseProvider.error(
@@ -87,14 +87,14 @@ class PermisoController {
   };
 
   // Actualizar un permiso
-  static updatePermiso = async (req, res) => {
+  static updatePermisoRol = async (req, res) => {
     const { id } = req.params;
     // Los campos a actualizar se pasan en el cuerpo de la solicitud
     const campos = req.body;
     try {
-      // Crear una instancia de la clase permiso
-      const permiso = await PermisoService.updatepermiso(id, campos);
-      // Validamos si no se pudo actualizar el permiso
+      // Crear una instancia de la clase permisoPermiso
+      const permiso = await PermisoRolService.updatepermisoRol(id, campos);
+      // Validamos si no se pudo actualizar el permiso_rol
       if (permiso.error) {
         ResponseProvider.error(
           res,
@@ -116,11 +116,11 @@ class PermisoController {
   };
 
   // Eliminar un permiso
-  static deletePermiso = async (req, res) => {
+  static deletePermisoRol = async (req, res) => {
     const { id } = req.params;
     try {
-      // Llamamos al servicio para eliminar el permiso
-      const response = await PermisoService.deletePermiso(id);
+      // Llamamos al servicio para eliminar el permiso_Rol
+      const response = await PermisoRolService.deletePermisoRol(id);
       if (response.error) {
         // Llamamos el provider para centralizar los mensajes de respuesta
         ResponseProvider.error(
@@ -144,4 +144,4 @@ class PermisoController {
   };
 
 }
-export default PermisoController;
+export default PermisoRolController;

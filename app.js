@@ -6,6 +6,8 @@ import cookieParser from "cookie-parser";
 
 import rolesRoutes from "./src/routes/rolesRoutes.js";
 import permisosRoutes from "./src/routes/permisosRoutes.js";
+import permisosRolesRoutes from "./src/routes/permisosRolesRoutes.js";
+
 
 dotenv.config();
 
@@ -21,10 +23,10 @@ dotenv.config();
 const app = express();
 
 // Middleware para habilitar CORS (permite peticiones desde otros dominios)
-app.use(cors()); 
+app.use(cors());
 
 // Middleware para procesar datos en formato JSON
-app.use(bodyParser.json()); 
+app.use(bodyParser.json());
 // Alternativa moderna: app.use(express.json());
 
 // Middleware para procesar datos en formato URL-encoded (formularios)
@@ -36,6 +38,7 @@ app.use(cookieParser());
 // Rutas principales de la aplicación
 app.use("/roles", rolesRoutes); // Gestión de roles
 app.use("/permisos", permisosRoutes); // Gestión de permisos
+app.use("/permisosRoles", permisosRolesRoutes); // Gestión de permisos_roles
 
 // Puerto donde se ejecutará el servidor (por defecto 3000)
 const port = process.env.PORT || 3000;

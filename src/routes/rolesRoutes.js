@@ -19,6 +19,13 @@ const router = express.Router();
 router.get('/', RolController.getAllRoles);
 
 /**
+ * @route GET /roles/:id
+ * @description Obtiene el rol por el id ingresado.
+ * @param {number} id - Identificador del rol a consultar.
+ */
+router.get('/:id', RolController.getRolById);
+
+/**
  * @route POST /roles
  * @description Crea un nuevo rol en el sistema.
  * @middleware camposRol - Valida los campos requeridos antes de ejecutar la acción.

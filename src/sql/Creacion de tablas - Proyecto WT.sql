@@ -6,7 +6,8 @@ nombre_rol varchar(35) UNIQUE not null);
 
 create table permisos(
 id_permiso int auto_increment primary key,
-nombre_permiso varchar(35) UNIQUE not null);
+nombre_permiso varchar(35) UNIQUE not null,
+descripcion_permiso varchar (50) not null);
 
 create table permisos_roles(
 id_permiso_rol int auto_increment primary key,
@@ -96,6 +97,3 @@ foreign key(id_lavado) references lavados(id_lavado));
 
 
 show tables;
-
-
-

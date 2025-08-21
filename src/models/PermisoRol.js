@@ -29,11 +29,26 @@ class PermisoRol {
     }
   }
 
+  // Método para obtener una permiso_rol por su el id del rol
+  async getByRolId(id) {
+    try {
+      const [rows] = await connection.query("SELECT * FROM permisos_roles WHERE id_rol = ?", [id]);
+      if (rows.length === 0) {
+        // Retorna un array vacío si no se encuentra el permiso_rol
+        return [];
+      }
+      // Retorna los registros donde se encuentra ese id del rol
+      return rows;
+    } catch (error) {
+      throw new Error("Error al obtener los permisos_roles");
+    }
+  }
+
   // Metodo para crear un permiso_rol pasandole los campos requeridos
   async create(idRol, idPermiso) {
     try {
       const [result] = await connection.query("INSERT INTO permisos_roles (id_rol, id_permiso) VALUES (?, ?)", [idRol, idPermiso]);
-      return { id_permiso_rol: result.id_rol, idRol, idPermiso};
+      return { id_permiso_rol: result.id_rol, idRol, idPermiso };
     } catch (error) {
       throw new Error("Error al crear el permiso_rol" + error);
     }
@@ -82,4 +97,4 @@ class PermisoRol {
 
 }
 
-export default Rol;
+export default PermisoRol;
