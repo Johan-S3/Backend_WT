@@ -1,9 +1,9 @@
+import PermisoRol from "../models/PermisoRol.js";
 import Rol from "../models/Rol.js";
 
-class RolService { 
+class RolService {
 
-  static async getRoles()
-  { 
+  static async getRoles() {
     try {
       const rolInstance = new Rol();
       const roles = await rolInstance.getAll();
@@ -14,7 +14,7 @@ class RolService {
           code: 404,
           message: "No hay roles registrados",
         };
-      }      
+      }
       // Retornamos las categorías obtenidas
       return {
         error: false,
@@ -22,7 +22,7 @@ class RolService {
         message: "Roles obtenidas correctamente",
         data: roles,
       };
-    } catch (error) {      
+    } catch (error) {
       return {
         error: true,
         code: 500,
@@ -83,7 +83,7 @@ class RolService {
           code: 400,
           message: "Error al crear el rol",
         };
-      }   
+      }
       // Retornamos el nuevo rol creado
       return {
         error: false,
@@ -101,7 +101,7 @@ class RolService {
     }
   }
 
-  static async updateRol(id, nombre) { 
+  static async updateRol(id, nombre) {
     try {
       const rolInstance = new Rol();
 
@@ -120,7 +120,7 @@ class RolService {
       const rolNameExiste = await rolInstance.getByName(nombre.trim());
       // Validamos si existe el rol con ese nombre
       console.log(rolExistente);
-      
+
       if (rolNameExiste.length != 0 && nombre.trim() != rolExistente.nombre_rol) {
         return {
           error: true,
@@ -130,7 +130,7 @@ class RolService {
       }
 
       // Se intenta actualizar el rol
-      const rol = await rolInstance.update(id, nombre); 
+      const rol = await rolInstance.update(id, nombre);
       // Validamos si no se pudo actualizar el rol
       if (rol === null) {
         return {
@@ -152,10 +152,10 @@ class RolService {
         code: 500,
         message: "Error interno al actualizar el rol",
       };
-    } 
+    }
   }
 
-  static async deleteRol(id) { 
+  static async deleteRol(id) {
     try {
       const rolInstance = new Rol();
       // Consultamos el rol por id
@@ -168,19 +168,22 @@ class RolService {
           message: "Rol no encontrado",
         };
       }
-      // // Consultamos los productos asociados a la categoría
-      // const productos = await rolInstance.productos(id);
-      // // Validamos si la categoría tiene productos asociados
-      // if (productos.length > 0) {
-      //   return {
-      //     error: true,
-      //     code: 400,
-      //     message: "No se puede eliminar la categoría, tiene productos asociados",
-      //   };
-      // }
+
+      // Instancio la clase del modelo que se necesita.
+      const permisoRolInstance = new PermisoRol();
+      // Consultamos los roles asociados al permiso en la tabla relacional
+      const rolHasPermisos = await permisoRolInstance.getByRolId(id);
+      // Validamos si el rol tiene permisos asignados
+      if (rolHasPermisos.length > 0) {
+        return {
+          error: true,
+          code: 400,
+          message: "No se puede eliminar el rol debido a que tiene permisos asignados.",
+        };
+      }
 
       // Procedemos a eliminar el rol
-      const resultado = await rolInstance.delete(id); 
+      const resultado = await rolInstance.delete(id);
       // Validamos si no se pudo eliminar el rol
       if (resultado.error) {
         return {
@@ -188,7 +191,7 @@ class RolService {
           code: 400,
           message: resultado.mensaje,
         };
-      }      
+      }
       // Retornamos la respuesta de eliminación
       return {
         error: false,
@@ -198,7 +201,7 @@ class RolService {
       };
     } catch (error) {
       console.log(error);
-      
+
       return {
         error: true,
         code: 500,

@@ -30,7 +30,7 @@ router.post('/', camposPermiso, PermisoController.createPermiso);
  * @description Actualiza la información de un permiso existente por su ID.
  * @param {number} id - Identificador del permiso a actualizar.
  */
-router.put('/:id', PermisoController.updatePermiso);
+router.put('/:id', camposPermiso, PermisoController.updatePermiso);
 
 /**
  * @route DELETE /permisos/:id

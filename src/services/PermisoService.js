@@ -1,9 +1,9 @@
 import Permiso from "../models/Permiso.js";
+import PermisoRol from "../models/PermisoRol.js";
 
-class PermisoService { 
+class PermisoService {
 
-  static async getPermisos()
-  { 
+  static async getPermisos() {
     try {
       const permisoInstance = new Permiso();
       const permisos = await permisoInstance.getAll();
@@ -14,7 +14,7 @@ class PermisoService {
           code: 404,
           message: "No hay permisos registrados",
         };
-      }      
+      }
       // Retornamos las categorías obtenidas
       return {
         error: false,
@@ -22,7 +22,7 @@ class PermisoService {
         message: "Permisos obtenidas correctamente",
         data: permisos,
       };
-    } catch (error) {      
+    } catch (error) {
       return {
         error: true,
         code: 500,
@@ -83,7 +83,7 @@ class PermisoService {
           code: 400,
           message: "Error al crear el permiso",
         };
-      }   
+      }
       // Retornamos el nuevo permiso creado
       return {
         error: false,
@@ -94,7 +94,7 @@ class PermisoService {
 
     } catch (error) {
       console.log(error);
-      
+
       return {
         error: true,
         code: 500,
@@ -103,12 +103,12 @@ class PermisoService {
     }
   }
 
-  static async updatepermiso(id, campos) { 
+  static async updatepermiso(id, campos) {
     try {
       const permisoInstance = new Permiso();
 
-      const {nombre_permiso, descripcion_permiso} = campos
-      
+      const { nombre_permiso, descripcion_permiso } = campos
+
 
       // Consultamos el permiso por id
       const permisoExistente = await permisoInstance.getById(id);
@@ -133,7 +133,7 @@ class PermisoService {
       }
 
       // Se intenta actualizar el permiso
-      const permiso = await permisoInstance.update(id, campos); 
+      const permiso = await permisoInstance.update(id, campos);
       // Validamos si no se pudo actualizar el permiso
       if (permiso === null) {
         return {
@@ -155,10 +155,10 @@ class PermisoService {
         code: 500,
         message: "Error interno al actualizar el permiso",
       };
-    } 
+    }
   }
 
-  static async deletePermiso(id) { 
+  static async deletePermiso(id) {
     try {
       const permisoInstance = new Permiso();
       // Consultamos el permiso por id
@@ -171,19 +171,21 @@ class PermisoService {
           message: "Permiso no encontrado",
         };
       }
-      // // Consultamos los productos asociados a la categoría
-      // const productos = await permisoInstance.productos(id);
-      // // Validamos si la categoría tiene productos asociados
-      // if (productos.length > 0) {
-      //   return {
-      //     error: true,
-      //     code: 400,
-      //     message: "No se puede eliminar la categoría, tiene productos asociados",
-      //   };
-      // }
+      // Instancio la clase del modelo que se necesita.
+      const permisoRolInstance = new PermisoRol();
+      // Consultamos los permisos asociados al rol en la tabla relacional
+      const permisosBeRoles = await permisoRolInstance.getByPermisoId(id);
+      // Validamos si el permiso pertenece a un rol
+      if (permisosBeRoles.length > 0) {
+        return {
+          error: true,
+          code: 400,
+          message: "No se puede eliminar el permiso debido a que está asociados a uno o más roles.",
+        };
+      }
 
       // Procedemos a eliminar el permiso
-      const resultado = await permisoInstance.delete(id); 
+      const resultado = await permisoInstance.delete(id);
       // Validamos si no se pudo eliminar el permiso
       if (resultado.error) {
         return {
@@ -191,7 +193,7 @@ class PermisoService {
           code: 400,
           message: resultado.mensaje,
         };
-      }      
+      }
       // Retornamos la respuesta de eliminación
       return {
         error: false,
@@ -201,7 +203,7 @@ class PermisoService {
       };
     } catch (error) {
       console.log(error);
-      
+
       return {
         error: true,
         code: 500,

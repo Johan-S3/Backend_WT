@@ -57,13 +57,17 @@ foreign key(id_usuario) references usuarios(id_usuario));
 create table tipos_lavados(
 id_tipo_lavado int auto_increment primary key,
 nombre varchar(25) not null,
-descripcion text);
+descripcion text,
+id_tipo_vehiculo int not null,
+foreign key(id_tipo_vehiculo) references tipos_vehiculos(id_tipo_vehiculo));
 
 create table items_lavados(
 id_item_lavado int auto_increment primary key,
 nombre varchar(25) not null,
 descripcion text,
-valor bigint not null);
+valor bigint not null,
+id_tipo_vehiculo int not null,
+foreign key(id_tipo_vehiculo) references tipos_vehiculos(id_tipo_vehiculo));
 
 create table items_tipos_lavados(
 id_item_tipo_lavado int auto_increment primary key,
@@ -90,10 +94,17 @@ foreign key(id_estado) references estados(id_estado));
 create table facturas(
 id_factura int primary key auto_increment,
 fecha timestamp DEFAULT CURRENT_TIMESTAMP,
-id_lavado int,
-subtotal bigint not null,
-total bigint,
 foreign key(id_lavado) references lavados(id_lavado));
+
+create table detalle_factura(
+id_detalle int auto_increment primary key,
+id_factura int not null,
+id_item_lavado int not null,
+nombre_item_snapshot varchar(25),
+cacntidad int not null,
+precio_unitario bigint not null,
+foreign key(id_factura) references facturas(id_factura),
+foreign key(id_item_lavado) references items_lavados(id_item_lavado));
 
 
 show tables;

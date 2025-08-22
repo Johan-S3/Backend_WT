@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import rolesRoutes from "./src/routes/rolesRoutes.js";
 import permisosRoutes from "./src/routes/permisosRoutes.js";
 import permisosRolesRoutes from "./src/routes/permisosRolesRoutes.js";
+import usuariosRoutes from "./src/routes/usuariosRoutes.js";
 
 
 dotenv.config();
@@ -39,6 +40,7 @@ app.use(cookieParser());
 app.use("/roles", rolesRoutes); // Gestión de roles
 app.use("/permisos", permisosRoutes); // Gestión de permisos
 app.use("/permisosRoles", permisosRolesRoutes); // Gestión de permisos_roles
+app.use("/usuarios", usuariosRoutes); // Gestión de usuarios
 
 // Puerto donde se ejecutará el servidor (por defecto 3000)
 const port = process.env.PORT || 3000;

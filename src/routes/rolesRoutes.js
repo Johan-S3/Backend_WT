@@ -37,7 +37,7 @@ router.post('/', camposRol, RolController.createRol);
  * @description Actualiza la información de un rol existente por su ID.
  * @param {number} id - Identificador del rol a actualizar.
  */
-router.put('/:id', RolController.updateRol);
+router.put('/:id', camposRol, RolController.updateRol);
 
 /**
  * @route DELETE /roles/:id

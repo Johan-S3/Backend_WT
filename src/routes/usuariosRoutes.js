@@ -1,0 +1,50 @@
+import express from "express";
+import { camposUsuario } from "../middlewares/usuarios/camposUsuario.js";
+import UsuarioController from "../controllers/UsuarioController.js";
+
+const router = express.Router();
+
+/**
+ * Rutas para la gestión de Usuarios.
+ * 
+ * Este enrutador define los endpoints principales para manejar los usuarios
+ * dentro del sistema (CRUD). Cada ruta delega la lógica a un controlador
+ * específico y puede incluir middlewares para validaciones.
+ */
+
+/**
+ * @route GET /usuarios
+ * @description Obtiene el listado completo de usuarios.
+ */
+router.get('/', UsuarioController.getAllUsuarios);
+
+/**
+ * @route GET /usuarios/:id
+ * @description Obtiene el usuario por el id ingresado.
+ * @param {number} id - Identificador del usuario a consultar.
+ */
+router.get('/:id', UsuarioController.getUsuarioById);
+
+/**
+ * @route POST /usuarios
+ * @description Crea un nuevo usuario en el sistema.
+ * @middleware camposUsuario - Valida los campos requeridos antes de ejecutar la acción.
+ */
+router.post('/', camposUsuario, UsuarioController.createUsuario);
+
+/**
+ * @route PUT /usuarios/:id
+ * @description Actualiza la información de un usuario existente por su ID.
+ * @param {number} id - Identificador del usuario a actualizar.
+ */
+router.put('/:id', UsuarioController.updateUsuario);
+
+/**
+ * @route DELETE /usuarios/:id
+ * @description Elimina un usuario por su ID.
+ * @param {number} id - Identificador del usuario a eliminar.
+ */
+router.delete('/:id', UsuarioController.deleteUsuario);
+
+// Exporta el router para ser utilizado en el archivo principal de rutas
+export default router;
