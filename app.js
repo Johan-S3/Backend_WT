@@ -9,6 +9,8 @@ import permisosRoutes from "./src/routes/permisosRoutes.js";
 import permisosRolesRoutes from "./src/routes/permisosRolesRoutes.js";
 import usuariosRoutes from "./src/routes/usuariosRoutes.js";
 import tiposVehiculosRoutes from "./src/routes/tiposVehiculosRoutes.js";
+import serviciosVehiculosRoutes from "./src/routes/serviciosVehiculosRoutes.js";
+import vehiculosRoutes from "./src/routes/vehiculosRoutes.js";
 
 
 dotenv.config();
@@ -42,7 +44,9 @@ app.use("/roles", rolesRoutes); // Gestión de roles
 app.use("/permisos", permisosRoutes); // Gestión de permisos
 app.use("/permisosRoles", permisosRolesRoutes); // Gestión de permisos_roles
 app.use("/usuarios", usuariosRoutes); // Gestión de usuarios
-app.use("/tiposVehiculos", tiposVehiculosRoutes); // Gestión de usuarios
+app.use("/tiposVehiculos", tiposVehiculosRoutes); // Gestión de tipos de vehiculos
+app.use("/serviciosVehiculos", serviciosVehiculosRoutes); // Gestión de servicios de vehiculos
+app.use("/vehiculos", vehiculosRoutes); // Gestión de vehiculos
 
 // Puerto donde se ejecutará el servidor (por defecto 3000)
 const port = process.env.PORT || 3000;

@@ -17,7 +17,7 @@ class Permiso {
   // Método para obtener una permiso por su id
   async getById(id) {
     try {
-      const [rows] = await connection.query("SELECT * FROM permisos WHERE id_permiso = ?", [id]);
+      const [rows] = await connection.query("SELECT * FROM permisos WHERE id = ?", [id]);
       if (rows.length === 0) {
         // Retorna un array vacío si no se encuentra el permiso
         return [];
@@ -48,7 +48,7 @@ class Permiso {
   async create(nombre, descripcion) {
     try {
       const [result] = await connection.query("INSERT INTO permisos (nombre_permiso, descripcion_permiso) VALUES (?, ?)", [nombre, descripcion]);
-      return { id: result.id_rol, nombre, descripcion};
+      return { id: result.id_rol, nombre, descripcion };
     } catch (error) {
       throw new Error("Error al crear el permiso" + error);
     }
@@ -70,7 +70,7 @@ class Permiso {
       query = query.slice(0, -2);
 
       // Añadimos la condición WHERE para seleccionar el producto por su ID
-      query += " WHERE id_permiso = ?";
+      query += " WHERE id = ?";
       params.push(id);
       const [result] = await connection.query(query, params);
       return result.affectedRows > 0 ? { id, ...campos } : null;
@@ -81,7 +81,7 @@ class Permiso {
 
   // Método para eliminar un permiso pasando el id del permiso a eliminar
   async delete(permisoId) {
-    const [result] = await connection.query("DELETE FROM permisos WHERE id_permiso = ?", [permisoId]);
+    const [result] = await connection.query("DELETE FROM permisos WHERE id = ?", [permisoId]);
 
     if (result.affectedRows === 0) {
       return {

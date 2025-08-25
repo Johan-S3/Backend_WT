@@ -17,7 +17,7 @@ class Usuario {
   // Método para obtener un usuario por su id
   async getById(id) {
     try {
-      const [rows] = await connection.query("SELECT * FROM usuarios WHERE id_usuario = ?", [id]);
+      const [rows] = await connection.query("SELECT * FROM usuarios WHERE id = ?", [id]);
       if (rows.length === 0) {
         // Retorna un array vacío si no se encuentra el usuario
         return [];
@@ -64,7 +64,7 @@ class Usuario {
     try {
       const [result] = await connection.query("INSERT INTO usuarios (cedula, nombre, telefono, correo, contrasena, id_rol) VALUES (?, ?, ?, ?, ?, ?)",
         [cedula, nombre, telefono, correo, contrasena, idRol]);
-      return { id: result.id_usuario, cedula, nombre, telefono, correo, contrasena, idRol };
+      return { id: result.id, cedula, nombre, telefono, correo, contrasena, idRol };
     } catch (error) {
       throw new Error("Error al crear el usuario");
     }
@@ -74,7 +74,7 @@ class Usuario {
   async update(id, cedula, nombre, telefono, correo, idRol) {
     try {
       const [result] = await connection.query(`UPDATE usuarios SET cedula = ?, nombre = ?, telefono = ?, correo = ?, id_rol = ? 
-        WHERE id_usuario = ?`, [cedula, nombre, telefono, correo, idRol, id]);
+        WHERE id = ?`, [cedula, nombre, telefono, correo, idRol, id]);
       if (result.affectedRows === 0) {
         throw new Error("usuario no encontrado");
       }
@@ -82,7 +82,7 @@ class Usuario {
 
     } catch (error) {
       console.log(error.message);
-      throw new Error("Error al actualizar el usuario" );
+      throw new Error("Error al actualizar el usuario");
     }
   }
 
@@ -90,7 +90,7 @@ class Usuario {
   async updatePassword(id, contrasena) {
     try {
       const [result] = await connection.query(`UPDATE usuarios SET contrasena = ? 
-        WHERE id_usuario = ?`, [contrasena, id]);
+        WHERE id = ?`, [contrasena, id]);
       if (result.affectedRows === 0) {
         throw new Error("usuario no encontrado");
       }
@@ -105,7 +105,7 @@ class Usuario {
   // Método para eliminar un usuario pasando el id del usuario a eliminar
   async delete(usuarioId) {
     // Procedemos con la eliminación si no está relacionada
-    const [result] = await connection.query("DELETE FROM usuarios WHERE id_usuario = ?", [usuarioId]);
+    const [result] = await connection.query("DELETE FROM usuarios WHERE id = ?", [usuarioId]);
 
     if (result.affectedRows === 0) {
       return {

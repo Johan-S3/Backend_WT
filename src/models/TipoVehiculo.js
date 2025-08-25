@@ -17,7 +17,7 @@ class TipoVehiculo {
   // Método para obtener un tipo de vehiculo por su id
   async getById(id) {
     try {
-      const [rows] = await connection.query("SELECT * FROM tipos_vehiculos WHERE id_tipo_vehiculo = ?", [id]);
+      const [rows] = await connection.query("SELECT * FROM tipos_vehiculos WHERE id = ?", [id]);
       if (rows.length === 0) {
         // Retorna un array vacío si no se encuentra el tipo de vehiculo
         return [];
@@ -48,7 +48,7 @@ class TipoVehiculo {
   async create(nombre) {
     try {
       const [result] = await connection.query("INSERT INTO tipos_vehiculos (nombre_tipo) VALUES (?)", [nombre]);
-      return { id: result.id_rol, nombre};
+      return { id: result.id_rol, nombre };
     } catch (error) {
       throw new Error("Error al crear el tipo de vehiculo");
     }
@@ -70,7 +70,7 @@ class TipoVehiculo {
       query = query.slice(0, -2);
 
       // Añadimos la condición WHERE para seleccionar el producto por su ID
-      query += " WHERE id_tipo_vehiculo = ?";
+      query += " WHERE id = ?";
       params.push(id);
       const [result] = await connection.query(query, params);
       return result.affectedRows > 0 ? { id, ...campos } : null;
@@ -81,7 +81,7 @@ class TipoVehiculo {
 
   // Método para eliminar un tipo de vehiculo pasando el id a eliminar
   async delete(tipoVehiculoId) {
-    const [result] = await connection.query("DELETE FROM tipos_vehiculos WHERE id_tipo_vehiculo = ?", [tipoVehiculoId]);
+    const [result] = await connection.query("DELETE FROM tipos_vehiculos WHERE id = ?", [tipoVehiculoId]);
 
     if (result.affectedRows === 0) {
       return {

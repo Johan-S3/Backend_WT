@@ -121,7 +121,7 @@ class RolService {
       // Validamos si existe el rol con ese nombre
       console.log(rolExistente);
 
-      if (rolNameExiste.length != 0 && nombre.trim() != rolExistente.nombre_rol) {
+      if (rolNameExiste.length != 0 && nombre.trim().toLowerCase() != rolExistente.nombre_rol.toLowerCase()) {
         return {
           error: true,
           code: 400,
