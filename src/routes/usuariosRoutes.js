@@ -1,5 +1,6 @@
 import express from "express";
 import { camposUsuario } from "../middlewares/usuarios/camposUsuario.js";
+import { parcialesUsuario } from "../middlewares/usuarios/parcialesUsuario.js";
 import UsuarioController from "../controllers/UsuarioController.js";
 
 const router = express.Router();
@@ -36,8 +37,17 @@ router.post('/', camposUsuario, UsuarioController.createUsuario);
  * @route PUT /usuarios/:id
  * @description Actualiza la información de un usuario existente por su ID.
  * @param {number} id - Identificador del usuario a actualizar.
+ * @middleware camposUsuario - Valida los campos requeridos antes de ejecutar la acción.
  */
-router.put('/:id', UsuarioController.updateUsuario);
+router.put('/:id', camposUsuario, UsuarioController.updateUsuario);
+
+/**
+ * @route PATCH /usuarios/:id
+ * @description Actualiza la información de un usuario existente por su ID.
+ * @param {number} id - Identificador del usuario a actualizar.
+ * @middleware parcialesUsuario - Valida los campos requeridos antes de ejecutar la acción.
+ */
+router.patch('/:id', parcialesUsuario, UsuarioController.updatePasswordUsuario);
 
 /**
  * @route DELETE /usuarios/:id

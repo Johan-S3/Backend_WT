@@ -66,14 +66,14 @@ class Usuario {
         [cedula, nombre, telefono, correo, contrasena, idRol]);
       return { id: result.id_usuario, cedula, nombre, telefono, correo, contrasena, idRol };
     } catch (error) {
-      throw new Error("Error al crear el usuario" + error);
+      throw new Error("Error al crear el usuario");
     }
   }
 
   // Metodo para actualizar un usuario pasandole el id del usuario y el campo "nombre" que se va a actualizar.
   async update(id, cedula, nombre, telefono, correo, idRol) {
     try {
-      const [result] = await connection.query(`UPDATE usuario SET cedula = ?, nombre = ?, telefono = ?, correo = ?, id_rol = ? 
+      const [result] = await connection.query(`UPDATE usuarios SET cedula = ?, nombre = ?, telefono = ?, correo = ?, id_rol = ? 
         WHERE id_usuario = ?`, [cedula, nombre, telefono, correo, idRol, id]);
       if (result.affectedRows === 0) {
         throw new Error("usuario no encontrado");
@@ -82,14 +82,30 @@ class Usuario {
 
     } catch (error) {
       console.log(error.message);
-      throw new Error("Error al actualizar el usuario" + error);
+      throw new Error("Error al actualizar el usuario" );
+    }
+  }
+
+  // Metodo para actualizar la contraseña de un usuario pasandole el id del usuario.
+  async updatePassword(id, contrasena) {
+    try {
+      const [result] = await connection.query(`UPDATE usuarios SET contrasena = ? 
+        WHERE id_usuario = ?`, [contrasena, id]);
+      if (result.affectedRows === 0) {
+        throw new Error("usuario no encontrado");
+      }
+      return { id, contrasena };
+
+    } catch (error) {
+      console.log(error.message);
+      throw new Error("Error al actualizar la contraseña del usuario");
     }
   }
 
   // Método para eliminar un usuario pasando el id del usuario a eliminar
   async delete(usuarioId) {
     // Procedemos con la eliminación si no está relacionada
-    const [result] = await connection.query("DELETE FROM usuario WHERE id_usuario = ?", [usuarioId]);
+    const [result] = await connection.query("DELETE FROM usuarios WHERE id_usuario = ?", [usuarioId]);
 
     if (result.affectedRows === 0) {
       return {

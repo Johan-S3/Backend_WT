@@ -1,14 +1,14 @@
 import { ResponseProvider } from "../providers/ResponseProvider.js";
-import UsuarioService from "../services/UsuarioService.js";
+import TipoVehiculoService from "../services/TipoVehiculoService.js";
 
-class UsuarioController {
+class TipoVehiculoController {
 
-  // Obtener todos los usuarios
-  static getAllUsuarios = async (req, res) => {
+  // Obtener todos los tipos de vehiculos
+  static getAllTiposVehiculos = async (req, res) => {
     try {
-      // Llamamos al servicio para obtener los usuarios
-      const response = await UsuarioService.getUsuarios();
-      // Validamos si no hay usuarios
+      // Llamamos al servicio para obtener los tipos de vehiculo
+      const response = await TipoVehiculoService.getTiposVehiculos();
+      // Validamos si no hay tipos de vehiculos
       if (response.error) {
         // Llamamos el provider para centralizar los mensajes de respuesta
         return ResponseProvider.error(
@@ -31,12 +31,12 @@ class UsuarioController {
     }
   };
 
-  // Obtener un usuario por su ID
-  static getUsuarioById = async (req, res) => {
+  // Obtener un tipo de vehiculo por su ID
+  static getTipoVehById = async (req, res) => {
     const { id } = req.params;
     try {
-      // Llamamos al servicio para obtener el usuario por su ID
-      const response = await UsuarioService.getUsuarioById(id);
+      // Llamamos al servicio para obtener el tipo de vehiculo por su ID
+      const response = await TipoVehiculoService.getTipoVehiculoById(id);
       if (response.error) {
         // Llamamos el provider para centralizar los mensajes de respuesta
         return ResponseProvider.error(
@@ -59,11 +59,11 @@ class UsuarioController {
     }
   };
 
-  // Crear un nuevo usuario
-  static createUsuario = async (req, res) => {
-    const { cedula, nombre, telefono, correo, id_rol } = req.body;
+  // Crear un nuevo tipo de vehiculo
+  static createTipoVeh = async (req, res) => {
+    const { nombre_tipo } = req.body;
     try {
-      const response = await UsuarioService.createUsuario(cedula, nombre, telefono, correo, id_rol);
+      const response = await TipoVehiculoService.createTipoVehiculo(nombre_tipo);
       if (response.error) {
         // Llamamos el provider para centralizar los mensajes de respuesta
         return ResponseProvider.error(
@@ -86,28 +86,28 @@ class UsuarioController {
     }
   };
 
-  // Actualizar un usuario
-  static updateUsuario = async (req, res) => {
+  // Actualizar un tipo de vehiculo
+  static updateTipoVeh = async (req, res) => {
     const { id } = req.params;
     // Los campos a actualizar se pasan en el cuerpo de la solicitud
-    const { cedula, nombre, telefono, correo, id_rol } = req.body;
+    const { nombre_tipo } = req.body;
     try {
-      // Crear una instancia de la clase usuario
-      const usuario = await UsuarioService.updateUsuario(id, cedula, nombre, telefono, correo, id_rol);
+      // Crear una instancia de la clase TipoVehiculo
+      const tipoVehiculo = await TipoVehiculoService.updateTipoVehiculo(id, req.body);
       // Validamos si no se pudo actualizar la categoría
-      if (usuario.error) {
+      if (tipoVehiculo.error) {
         ResponseProvider.error(
           res,
-          usuario.message,
-          usuario.code
+          tipoVehiculo.message,
+          tipoVehiculo.code
         );
       }
       // Retornamos la respuesta cuando se actualiza correctamente
       ResponseProvider.success(
         res,
-        usuario.data,
-        usuario.message,
-        usuario.code
+        tipoVehiculo.data,
+        tipoVehiculo.message,
+        tipoVehiculo.code
       );
     } catch (error) {
       // Llamamos el provider para centralizar los mensajes de respuesta
@@ -115,41 +115,12 @@ class UsuarioController {
     }
   };
 
-  // Actualizar la contraseña de un usuario
-  static updatePasswordUsuario = async (req, res) => {
-    const { id } = req.params;
-    // Los campos a actualizar se pasan en el cuerpo de la solicitud
-    const { contrasena } = req.body;
-    try {
-      // Crear una instancia de la clase usuario
-      const usuario = await UsuarioService.updatePasswordUsuario(id, contrasena);
-      // Validamos si no se pudo actualizar la contraseña
-      if (usuario.error) {
-        ResponseProvider.error(
-          res,
-          usuario.message,
-          usuario.code
-        );
-      }
-      // Retornamos la respuesta cuando se actualiza correctamente
-      ResponseProvider.success(
-        res,
-        usuario.data,
-        usuario.message,
-        usuario.code
-      );
-    } catch (error) {
-      // Llamamos el provider para centralizar los mensajes de respuesta
-      ResponseProvider.error(res, "Error interno en el servidor" + error, 500);
-    }
-  };
-
-  // Eliminar un usuario
-  static deleteUsuario = async (req, res) => {
+  // Eliminar un tipo de vehiculo
+  static deleteTipoVehiculo = async (req, res) => {
     const { id } = req.params;
     try {
       // Llamamos al servicio para eliminar la categoría
-      const response = await UsuarioService.deleteUsuario(id);
+      const response = await TipoVehiculoService.deleteTipoVehiculo(id);
       if (response.error) {
         // Llamamos el provider para centralizar los mensajes de respuesta
         ResponseProvider.error(
@@ -173,4 +144,4 @@ class UsuarioController {
   };
 
 }
-export default UsuarioController;
+export default TipoVehiculoController;

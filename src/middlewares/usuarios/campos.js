@@ -17,6 +17,6 @@ export const campos = [
   { name: "nombre", alias: "Nombre", required: true, minLength: 3, maxLength: 40 },
   { name: "telefono", alias: "Telefono", required: true, minLength: 10, maxLength: 10 },
   { name: "correo", alias: "Correo", required: true, minLength: 6, maxLength: 50 },
-  { name: "contrasena", alias: "Contraseña", required: true, minLength: 8, maxLength: 50 },
   { name: "id_rol", alias: "ID rol", required: true, minLength: 1, maxLength: 10 },
+  { name: "contrasena", alias: "Contraseña", required: false, minLength: 8, maxLength: 20 }
 ];

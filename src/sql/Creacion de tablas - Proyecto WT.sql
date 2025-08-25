@@ -22,7 +22,7 @@ cedula bigint not null unique,
 nombre varchar(40) not null,
 telefono varchar(10) not null,
 correo varchar(50) not null unique,
-contrasena varchar(50) not null,
+contrasena varchar(250) not null,
 id_rol int not null,
 activo boolean default true,
 foreign key (id_rol) references roles(id_rol));

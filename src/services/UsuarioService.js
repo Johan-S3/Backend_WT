@@ -1,4 +1,6 @@
+import Rol from "../models/Rol.js";
 import Usuario from "../models/Usuario.js";
+import bcrypt from "bcrypt";
 
 class UsuarioService {
 
@@ -61,6 +63,8 @@ class UsuarioService {
     try {
       // Se instancia la clase usuario para poder acceder a sus metodos.
       const usuarioInstance = new Usuario();
+      // Se instancia la clase rol para poder acceder a sus metodos.
+      const rolInstance = new Rol();
 
       // Se busca un usuario por la cedula ingresada
       const usuarioCedulaExiste = await usuarioInstance.getByCedula(cedula);
@@ -81,6 +85,17 @@ class UsuarioService {
           error: true,
           code: 400,
           message: "El correo ingresado ya está registrado",
+        };
+      }
+
+      // Se busca un rol por el id dle rol ingresado
+      const rolExiste = await rolInstance.getById(idRol);
+      // Validamos si existe el rol con ese ID
+      if (rolExiste.length === 0) {
+        return {
+          error: true,
+          code: 400,
+          message: "El ID de rol ingresado no existe",
         };
       }
 
@@ -110,7 +125,7 @@ class UsuarioService {
       return {
         error: true,
         code: 500,
-        message: "Error interno al crear el usuario",
+        message: "Error interno al crear el usuario" + error, 
       };
     }
   }
@@ -118,6 +133,8 @@ class UsuarioService {
   static async updateUsuario(id, cedula, nombre, telefono, correo, idRol) {
     try {
       const usuarioInstance = new Usuario();
+      // Se instancia la clase rol para poder acceder a sus metodos.
+      const rolInstance = new Rol();
 
       // Consultamos el usuario por id
       const usuarioExistente = await usuarioInstance.getById(id);
@@ -132,6 +149,7 @@ class UsuarioService {
 
       // Se busca un usuario por la cedula ingresada
       const usuarioCedulaExiste = await usuarioInstance.getByCedula(cedula);
+      
       // Validamos si existe el usuario con esa cedula
       if (usuarioCedulaExiste.length != 0 && cedula != usuarioExistente.cedula) {
         return {
@@ -149,6 +167,17 @@ class UsuarioService {
           error: true,
           code: 400,
           message: "El correo ingresado pertenece a otro usuario",
+        };
+      }
+
+      // Se busca un rol por el id dle rol ingresado
+      const rolExiste = await rolInstance.getById(idRol);
+      // Validamos si existe el rol con ese ID
+      if (rolExiste.length === 0) {
+        return {
+          error: true,
+          code: 400,
+          message: "El ID de rol ingresado no existe",
         };
       }
 
@@ -173,7 +202,48 @@ class UsuarioService {
       return {
         error: true,
         code: 500,
-        message: "Error interno al actualizar el usuario",
+        message: "Error interno al actualizar el usuario" + error,
+      };
+    }
+  }
+
+  static async updatePasswordUsuario(id, contrasena) {
+    try {
+      const usuarioInstance = new Usuario();
+
+      // Consultamos el usuario por id
+      const usuarioExistente = await usuarioInstance.getById(id);
+      // Validamos si no existe el usuario
+      if (usuarioExistente.length === 0) {
+        return {
+          error: true,
+          code: 404,
+          message: "usuario no encontrado",
+        };
+      }
+
+      // Se intenta actualizar la contrasena del usuario
+      const usuario = await usuarioInstance.updatePassword(id, contrasena);
+      // Validamos si no se pudo actualizar la contraseña
+      if (usuario === null) {
+        return {
+          error: true,
+          code: 400,
+          message: "Error al actualizar la contraseña",
+        };
+      }
+      // Retornamos el usuario actualizada
+      return {
+        error: false,
+        code: 200,
+        message: "Contraseña actualizada correctamente",
+        data: usuario,
+      };
+    } catch (error) {
+      return {
+        error: true,
+        code: 500,
+        message: "Error interno al actualizar la contraseña" + error,
       };
     }
   }
@@ -188,7 +258,7 @@ class UsuarioService {
         return {
           error: true,
           code: 404,
-          message: "usuario no encontrado",
+          message: "Usuario no encontrado",
         };
       }
 

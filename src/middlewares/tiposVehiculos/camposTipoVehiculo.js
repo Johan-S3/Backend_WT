@@ -2,23 +2,23 @@ import { ResponseProvider } from "../../providers/ResponseProvider.js";
 import { campos } from "./campos.js";
 
 /**
- * Middleware de validación para los campos de Usuarios.
+ * Middleware de validación para los campos de tipos de vehiculos.
  * 
  * Este middleware recorre las reglas definidas en `campos.js` y valida:
  * - Que los campos obligatorios no estén vacíos.
- * - Que se cumpla la longitud exacta, mínima y máxima de caracteres.
+ * - Que se cumpla la longitud mínima y máxima de caracteres.
  * 
  * En caso de que se detecten errores, se detiene la ejecución y se 
  * responde con un error estandarizado a través de `ResponseProvider.error`.
  * 
  * Si no hay errores, se permite continuar al siguiente middleware o controlador.
  *
- * @function camposUsuario
+ * @function camposTipoVehiculo
  * @param {Object} req - Objeto de solicitud de Express (contiene los datos enviados por el cliente).
  * @param {Object} res - Objeto de respuesta de Express.
  * @param {Function} next - Función para pasar al siguiente middleware o controlador.
  */
-export function camposUsuario(req, res, next) {
+export function camposTipoVehiculo(req, res, next) {
   // Arreglo para almacenar los errores de validación
   const errors = [];
 

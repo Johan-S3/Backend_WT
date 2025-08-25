@@ -1,26 +1,27 @@
 import { ResponseProvider } from "../../providers/ResponseProvider.js";
 import { campos } from "./campos.js";
 
-/**
- * Middleware de validación para los campos de Usuarios.
- * 
- * Este middleware recorre las reglas definidas en `campos.js` y valida:
- * - Que los campos obligatorios no estén vacíos.
- * - Que se cumpla la longitud exacta, mínima y máxima de caracteres.
- * 
- * En caso de que se detecten errores, se detiene la ejecución y se 
- * responde con un error estandarizado a través de `ResponseProvider.error`.
- * 
- * Si no hay errores, se permite continuar al siguiente middleware o controlador.
- *
- * @function camposUsuario
- * @param {Object} req - Objeto de solicitud de Express (contiene los datos enviados por el cliente).
- * @param {Object} res - Objeto de respuesta de Express.
- * @param {Function} next - Función para pasar al siguiente middleware o controlador.
- */
-export function camposUsuario(req, res, next) {
-  // Arreglo para almacenar los errores de validación
+export function parcialesUsuario(req, res, next) {
   const errors = [];
+  // Capturamos los campos del body de la petición
+  const bodyKeys = Object.keys(req.body);
+  // Validar que el body no esté vacío
+  const camposPermitidos = campos.map((c) => c.name);
+  
+  // Validar que al menos un campo permitido esté presente
+  const camposPresentes = bodyKeys.filter((key) =>
+    camposPermitidos.includes(key)
+  );
+
+  
+  // Si no hay campos presentes, devolver un error
+  if (camposPresentes.length === 0) {
+    return ResponseProvider.error(
+      res,
+      "Debe enviar al menos un campo válido para actualizar",
+      400
+    );
+  }
 
   // Recorremos las reglas de validación definidas en campos.js
   for (const campo of campos) {
