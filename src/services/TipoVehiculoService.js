@@ -1,4 +1,5 @@
 import TipoVehiculo from "../models/TipoVehiculo.js ";
+import Vehiculo from "../models/Vehiculo.js";
 
 class TipoVehiculoService {
 
@@ -171,18 +172,18 @@ class TipoVehiculoService {
         };
       }
 
-      // // Instancio la clase del modelo que se necesita.
-      // const permisoRolInstance = new PermisoRol();
-      // // Consultamos los permisos asociados al rol en la tabla relacional
-      // const permisosBeRoles = await permisoRolInstance.getByPermisoId(id);
-      // // Validamos si el permiso pertenece a un rol
-      // if (permisosBeRoles.length > 0) {
-      //     return {
-      //         error: true,
-      //         code: 400,
-      //         message: "No se puede eliminar el permiso debido a que está asociados a uno o más roles.",
-      //     };
-      // }
+      // Instancio la clase del modelo que se necesita.
+      const vehiculoInstance = new Vehiculo();
+      // Consultamos los vehiculos asociados al tipo de vehiculo que se quiere eliminar
+      const vehiculoWithTipo = await vehiculoInstance.getByIdTipoVeh(id);
+      // Validamos si el permiso pertenece a un rol
+      if (vehiculoWithTipo.length > 0) {
+          return {
+              error: true,
+              code: 400,
+              message: "No se puede eliminar el tipo de vehiculo debido a que está asociado a uno o más vehiculos",
+          };
+      }
 
       // Procedemos a eliminar el tipo de vehiculo
       const resultado = await tipoVehInstance.delete(id);

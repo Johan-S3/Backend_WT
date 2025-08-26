@@ -11,6 +11,8 @@ import usuariosRoutes from "./src/routes/usuariosRoutes.js";
 import tiposVehiculosRoutes from "./src/routes/tiposVehiculosRoutes.js";
 import serviciosVehiculosRoutes from "./src/routes/serviciosVehiculosRoutes.js";
 import vehiculosRoutes from "./src/routes/vehiculosRoutes.js";
+import vehiculosUsuariosRoutes from "./src/routes/vehiculosUsuariosRoutes.js";
+import tiposLavadosRoutes from "./src/routes/tiposLavadosRoutes.js";
 
 
 dotenv.config();
@@ -47,6 +49,8 @@ app.use("/usuarios", usuariosRoutes); // Gestión de usuarios
 app.use("/tiposVehiculos", tiposVehiculosRoutes); // Gestión de tipos de vehiculos
 app.use("/serviciosVehiculos", serviciosVehiculosRoutes); // Gestión de servicios de vehiculos
 app.use("/vehiculos", vehiculosRoutes); // Gestión de vehiculos
+app.use("/vehiculosUsuarios", vehiculosUsuariosRoutes); // Gestión de vehiculos_usuarios
+app.use("/tiposLavados", tiposLavadosRoutes); // Gestión de tipos de lavados
 
 // Puerto donde se ejecutará el servidor (por defecto 3000)
 const port = process.env.PORT || 3000;

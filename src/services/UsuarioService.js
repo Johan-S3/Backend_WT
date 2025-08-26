@@ -1,6 +1,7 @@
 import Rol from "../models/Rol.js";
 import Usuario from "../models/Usuario.js";
 import bcrypt from "bcrypt";
+import VehiculoUsuario from "../models/VehiculoUsuario.js";
 
 class UsuarioService {
 
@@ -262,18 +263,18 @@ class UsuarioService {
         };
       }
 
-      // // Instancio la clase del modelo que se necesita.
-      // const permisousuarioInstance = new PermisoUsuario();
-      // // Consultamos los usuarios asociados al permiso en la tabla relacional
-      // const usuarioHasPermisos = await permisousuarioInstance.getByusuarioId(id);
-      // // Validamos si el usuario tiene permisos asignados
-      // if (usuarioHasPermisos.length > 0) {
-      //   return {
-      //     error: true,
-      //     code: 400,
-      //     message: "No se puede eliminar el usuario debido a que tiene permisos asignados.",
-      //   };
-      // }
+      // Instancio la clase del modelo que se necesita.
+      const vehiculoUsuarioInstance = new VehiculoUsuario();
+      // Consultamos un registro en la tabla relacional por el ID del usuario
+      const UsuarioWithVehiculo = await vehiculoUsuarioInstance.getByIdUsuario(id);
+      // Validamos si existe un registro de usuario en la tabla relacional con el Id de usuario ingresado
+      if (UsuarioWithVehiculo.length > 0) {
+        return {
+          error: true,
+          code: 400,
+          message: "No se puede eliminar el usuario porque está asociado a uno o mas vehiculos",
+        };
+      }
 
       // Procedemos a eliminar el usuario
       const resultado = await usuarioInstance.delete(id);

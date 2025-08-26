@@ -24,7 +24,7 @@ class CRUD {
         [id]
       );
       //Retornamos la respuesta al servicio
-      return rows[0];
+      return rows;
     } catch (error) {
       // Lanza un error personalizado si la operación falla
       throw new Error(`Error al obtener ${message}`);

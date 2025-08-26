@@ -57,7 +57,7 @@ foreign key(id_usuario) references usuarios(id));
 create table tipos_lavados(
 id int auto_increment primary key,
 nombre varchar(25) not null,
-descripcion text,
+descripcion text not null,
 id_tipo_vehiculo int not null,
 foreign key(id_tipo_vehiculo) references tipos_vehiculos(id));
 

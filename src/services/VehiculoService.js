@@ -2,6 +2,7 @@ import CRUD from "../models/CRUD.js";
 import ServicioVehiculo from "../models/ServicioVehiculo.js";
 import TipoVehiculo from "../models/TipoVehiculo.js";
 import Vehiculo from "../models/Vehiculo.js";
+import VehiculoUsuario from "../models/VehiculoUsuario.js";
 
 class VehiculoService {
 
@@ -226,18 +227,18 @@ class VehiculoService {
         };
       }
 
-      // // Instancio la clase del modelo que se necesita.
-      // const permisoRolInstance = new PermisoRol();
-      // // Consultamos los permisos asociados al rol en la tabla relacional
-      // const permisosBeRoles = await permisoRolInstance.getByPermisoId(id);
-      // // Validamos si el permiso pertenece a un rol
-      // if (permisosBeRoles.length > 0) {
-      //     return {
-      //         error: true,
-      //         code: 400,
-      //         message: "No se puede eliminar el permiso debido a que está asociados a uno o más roles.",
-      //     };
-      // }
+      // Instancio la clase del modelo que se necesita.
+      const vehiculoUsuarioInstance = new VehiculoUsuario();
+      // Consultamos un registro en la tabla relacional por el ID del vehiculo
+      const vehiculoWithUsuario = await vehiculoUsuarioInstance.getByIdVehiculo(id);
+      // Validamos si existe un registro de vehiculo en la tabla relacional con el Id de vehiculo ingresado
+      if (vehiculoWithUsuario.length > 0) {
+        return {
+          error: true,
+          code: 400,
+          message: "No se puede eliminar el vehiculo porque está asociado a un usuario",
+        };
+      }
 
       // Procedemos a eliminar el Vehiculo
       const resultado = await CRUDInstance.delete("vehiculos", id, "el vehiculo");

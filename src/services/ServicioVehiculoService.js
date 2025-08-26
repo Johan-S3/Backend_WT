@@ -1,4 +1,5 @@
 import ServicioVehiculo from "../models/ServicioVehiculo.js";
+import Vehiculo from "../models/Vehiculo.js";
 
 class ServicioVehiculoService {
 
@@ -170,18 +171,19 @@ class ServicioVehiculoService {
         };
       }
 
-      // // Instancio la clase del modelo que se necesita.
-      // const permisoRolInstance = new PermisoRol();
-      // // Consultamos los permisos asociados al rol en la tabla relacional
-      // const permisosBeRoles = await permisoRolInstance.getByPermisoId(id);
-      // // Validamos si el permiso pertenece a un rol
-      // if (permisosBeRoles.length > 0) {
-      //     return {
-      //         error: true,
-      //         code: 400,
-      //         message: "No se puede eliminar el permiso debido a que está asociados a uno o más roles.",
-      //     };
-      // }
+      // Instancio la clase del modelo que se necesita.
+      const vehiculoInstance = new Vehiculo();
+      // Consultamos los vehiculos con el id del servicio a eliminar
+      const vehiculoWithServicio = await vehiculoInstance.getByIdServicioVeh(id);
+
+      // Validamos si el servicio está relacionado con algun vehiculo
+      if (vehiculoWithServicio.length > 0) {
+        return {
+          error: true,
+          code: 400,
+          message: "No se puede eliminar el servicio debido a que está asociados a uno o más vehiculos.",
+        };
+      }
 
       // Procedemos a eliminar el Servicio de vehiculo
       const resultado = await servicioVehInstance.delete(id);
@@ -205,7 +207,7 @@ class ServicioVehiculoService {
       return {
         error: true,
         code: 500,
-        message: "Error interno al eliminar el Servicio de vehiculo",
+        message: "Error interno al eliminar el Servicio de vehiculo" + error,
       };
     }
   }
