@@ -1,4 +1,5 @@
 import CRUD from "../models/CRUD.js";
+import DetalleFactura from "../models/DetalleFactura.js";
 import ItemTipoLavado from "../models/ItemTipoLavado.js";
 
 class ItemLavadoService {
@@ -184,6 +185,19 @@ class ItemLavadoService {
           error: true,
           code: 400,
           message: "No se puede eliminar el item de lavado porque esta asociado a un tipo de lavado",
+        };
+      }
+
+      // Instancio la clase que necesito para realizar otras consultas
+      const detalleFacturaInstance = new DetalleFactura();
+      // Se busca si existe el item de lavado relacionado em la tabla detalles_factura
+      const itemLavadoWithDetalle = await detalleFacturaInstance.getByIdItemLavado(id);
+      // Validamos si existe el item de lavado en la tabla relacional 
+      if (itemLavadoWithDetalle.length > 0) {
+        return {
+          error: true,
+          code: 400,
+          message: "No se puede eliminar el item de lavado porque esta asociado a una factura",
         };
       }
 

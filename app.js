@@ -18,6 +18,7 @@ import itemsTiposLavadosRoutes from "./src/routes/itemsTiposLavadosRoutes.js";
 import estadosRoutes from "./src/routes/estadosRoutes.js";
 import lavadosRoutes from "./src/routes/lavadosRoutes.js";
 import facturasRoutes from "./src/routes/facturasRoutes.js";
+import detalleFacturaRoutes from "./src/routes/detalleFacturaRoutes.js";
 
 
 dotenv.config();
@@ -61,6 +62,7 @@ app.use("/itemsTiposLavados", itemsTiposLavadosRoutes); // Gestión de la tabla 
 app.use("/estados", estadosRoutes); // Gestión de estados
 app.use("/lavados", lavadosRoutes); // Gestión de lavados
 app.use("/facturas", facturasRoutes); // Gestión de facturas
+app.use("/detalleFactura", detalleFacturaRoutes); // Gestión de detalleFactura
 
 // Puerto donde se ejecutará el servidor (por defecto 3000)
 const port = process.env.PORT || 3000;

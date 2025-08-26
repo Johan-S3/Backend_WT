@@ -1,4 +1,5 @@
 import CRUD from "../models/CRUD.js";
+import DetalleFactura from "../models/DetalleFactura.js";
 import Factura from "../models/Factura.js";
 import Lavado from "../models/Lavado.js";
 
@@ -163,18 +164,18 @@ class FacturaService {
         };
       }
 
-      // // Instancio la clase del modelo que se necesita.
-      // const lavadoInstance = new Lavado();
-      // // Consultamos un lavado por la ID dla factura
-      // const facturaWithLavado = await lavadoInstance.getByIdfactura(id);
-      // // Validamos si existe un lavado con la Id de factura ingresado
-      // if (facturaWithLavado.length > 0) {
-      //   return {
-      //     error: true,
-      //     code: 400,
-      //     message: "No se puede eliminar la factura porque está asociado a un lavado",
-      //   };
-      // }
+      // Instancio la clase del modelo que se necesita.
+      const detalleFacturaInstance = new DetalleFactura();
+      // Consultamos un detalle de factura por la ID dla factura
+      const facturaWithDetalles = await detalleFacturaInstance.getByIdFactura(id);
+      // Validamos si existe un detalle de factura con la Id de factura ingresada
+      if (facturaWithDetalles.length > 0) {
+        return {
+          error: true,
+          code: 400,
+          message: "No se puede eliminar la factura porque está asociado a un item de lavado",
+        };
+      }
 
       // Procedemos a eliminar la factura
       const resultado = await CRUDInstance.delete("facturas", id, "la factura");
