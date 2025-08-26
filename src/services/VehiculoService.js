@@ -1,4 +1,5 @@
 import CRUD from "../models/CRUD.js";
+import Lavado from "../models/Lavado.js";
 import ServicioVehiculo from "../models/ServicioVehiculo.js";
 import TipoVehiculo from "../models/TipoVehiculo.js";
 import Vehiculo from "../models/Vehiculo.js";
@@ -237,6 +238,19 @@ class VehiculoService {
           error: true,
           code: 400,
           message: "No se puede eliminar el vehiculo porque está asociado a un usuario",
+        };
+      }
+
+      // Instancio la clase del modelo que se necesita.
+      const lavadoInstance = new Lavado();
+      // Consultamos un lavado por el ID del vehiculo
+      const vehiculoWithLavado = await lavadoInstance.getByIdVehiculo(id);
+      // Validamos si existe un lavado con el Id de vehiculo ingresado
+      if (vehiculoWithLavado.length > 0) {
+        return {
+          error: true,
+          code: 400,
+          message: "No se puede eliminar el vehiculo porque está asociado a un lavado",
         };
       }
 

@@ -13,6 +13,11 @@ import serviciosVehiculosRoutes from "./src/routes/serviciosVehiculosRoutes.js";
 import vehiculosRoutes from "./src/routes/vehiculosRoutes.js";
 import vehiculosUsuariosRoutes from "./src/routes/vehiculosUsuariosRoutes.js";
 import tiposLavadosRoutes from "./src/routes/tiposLavadosRoutes.js";
+import itemsLavadosRoutes from "./src/routes/itemsLavadosRoutes.js";
+import itemsTiposLavadosRoutes from "./src/routes/itemsTiposLavadosRoutes.js";
+import estadosRoutes from "./src/routes/estadosRoutes.js";
+import lavadosRoutes from "./src/routes/lavadosRoutes.js";
+import facturasRoutes from "./src/routes/facturasRoutes.js";
 
 
 dotenv.config();
@@ -51,6 +56,11 @@ app.use("/serviciosVehiculos", serviciosVehiculosRoutes); // Gestión de servici
 app.use("/vehiculos", vehiculosRoutes); // Gestión de vehiculos
 app.use("/vehiculosUsuarios", vehiculosUsuariosRoutes); // Gestión de vehiculos_usuarios
 app.use("/tiposLavados", tiposLavadosRoutes); // Gestión de tipos de lavados
+app.use("/itemsLavados", itemsLavadosRoutes); // Gestión de items de lavados
+app.use("/itemsTiposLavados", itemsTiposLavadosRoutes); // Gestión de la tabla relacional entre los tipos y items de lavados
+app.use("/estados", estadosRoutes); // Gestión de estados
+app.use("/lavados", lavadosRoutes); // Gestión de lavados
+app.use("/facturas", facturasRoutes); // Gestión de facturas
 
 // Puerto donde se ejecutará el servidor (por defecto 3000)
 const port = process.env.PORT || 3000;

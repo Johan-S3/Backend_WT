@@ -175,7 +175,6 @@ class ServicioVehiculoService {
       const vehiculoInstance = new Vehiculo();
       // Consultamos los vehiculos con el id del servicio a eliminar
       const vehiculoWithServicio = await vehiculoInstance.getByIdServicioVeh(id);
-
       // Validamos si el servicio está relacionado con algun vehiculo
       if (vehiculoWithServicio.length > 0) {
         return {

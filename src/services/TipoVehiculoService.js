@@ -1,3 +1,5 @@
+import ItemLavado from "../models/ItemLavado.js";
+import TipoLavado from "../models/TipoLavado.js";
 import TipoVehiculo from "../models/TipoVehiculo.js ";
 import Vehiculo from "../models/Vehiculo.js";
 
@@ -172,17 +174,41 @@ class TipoVehiculoService {
         };
       }
 
+      const tipoLavadoInstance = new TipoLavado();
+      // Consultamos el tipo de vehiculo por id en la tabla tipos_lavados
+      const tipoVehWithTipoLav = await tipoLavadoInstance.getByIdTipoVehiculo(id);
+      // Validamos si existe una relacion entre tipo de lavado y tipo de vehiculo
+      if (tipoVehWithTipoLav.length > 0) {
+        return {
+          error: true,
+          code: 404,
+          message: "No se puede eliminar el tipo de vehículo porque está asignado a uno o más tipos de lavados",
+        };
+      }
+
+      const itemLavadoInstance = new ItemLavado();
+      // Consultamos el tipo de vehiculo por id en la tabla items_lavados
+      const tipoVehWithItemLav = await itemLavadoInstance.getByIdTipoVehiculo(id);
+      // Validamos si existe una relacion entre tipo de lavado y item de lavado
+      if (tipoVehWithItemLav.length > 0) {
+        return {
+          error: true,
+          code: 404,
+          message: "No se puede eliminar el tipo de vehículo porque está asignado a uno o más items de lavado",
+        };
+      }
+
       // Instancio la clase del modelo que se necesita.
       const vehiculoInstance = new Vehiculo();
       // Consultamos los vehiculos asociados al tipo de vehiculo que se quiere eliminar
       const vehiculoWithTipo = await vehiculoInstance.getByIdTipoVeh(id);
       // Validamos si el permiso pertenece a un rol
       if (vehiculoWithTipo.length > 0) {
-          return {
-              error: true,
-              code: 400,
-              message: "No se puede eliminar el tipo de vehiculo debido a que está asociado a uno o más vehiculos",
-          };
+        return {
+          error: true,
+          code: 400,
+          message: "No se puede eliminar el tipo de vehiculo debido a que está asociado a uno o más vehiculos",
+        };
       }
 
       // Procedemos a eliminar el tipo de vehiculo

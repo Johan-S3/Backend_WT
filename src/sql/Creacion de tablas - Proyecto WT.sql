@@ -64,7 +64,7 @@ foreign key(id_tipo_vehiculo) references tipos_vehiculos(id));
 create table items_lavados(
 id int auto_increment primary key,
 nombre varchar(25) not null,
-descripcion text,
+descripcion text not null,
 valor bigint not null,
 id_tipo_vehiculo int not null,
 foreign key(id_tipo_vehiculo) references tipos_vehiculos(id));

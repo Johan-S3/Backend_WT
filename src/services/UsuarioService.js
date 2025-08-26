@@ -2,6 +2,7 @@ import Rol from "../models/Rol.js";
 import Usuario from "../models/Usuario.js";
 import bcrypt from "bcrypt";
 import VehiculoUsuario from "../models/VehiculoUsuario.js";
+import Lavado from "../models/Lavado.js";
 
 class UsuarioService {
 
@@ -126,7 +127,7 @@ class UsuarioService {
       return {
         error: true,
         code: 500,
-        message: "Error interno al crear el usuario" + error, 
+        message: "Error interno al crear el usuario" + error,
       };
     }
   }
@@ -150,7 +151,7 @@ class UsuarioService {
 
       // Se busca un usuario por la cedula ingresada
       const usuarioCedulaExiste = await usuarioInstance.getByCedula(cedula);
-      
+
       // Validamos si existe el usuario con esa cedula
       if (usuarioCedulaExiste.length != 0 && cedula != usuarioExistente.cedula) {
         return {
@@ -273,6 +274,19 @@ class UsuarioService {
           error: true,
           code: 400,
           message: "No se puede eliminar el usuario porque está asociado a uno o mas vehiculos",
+        };
+      }
+
+      // Instancio la clase del modelo que se necesita.
+      const lavadoInstance = new Lavado();
+      // Consultamos un lavado por el ID del usuario
+      const usuarioWithLavado = await lavadoInstance.getByIdUsuario(id);
+      // Validamos si existe un lavado con el Id de usuario ingresado
+      if (usuarioWithLavado.length > 0) {
+        return {
+          error: true,
+          code: 400,
+          message: "No se puede eliminar el usuario porque está asociado a un lavado",
         };
       }
 
