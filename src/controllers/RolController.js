@@ -61,9 +61,9 @@ class RolController {
 
   // Crear un nuevo rol
   static createRol = async (req, res) => {
-    const { nombre_rol } = req.body;
+    const campos = req.body;
     try {
-      const response = await RolService.createRol(nombre_rol);
+      const response = await RolService.createRol(campos);
       if (response.error) {
         // Llamamos el provider para centralizar los mensajes de respuesta
         return ResponseProvider.error(
@@ -90,10 +90,10 @@ class RolController {
   static updateRol = async (req, res) => {
     const { id } = req.params;
     // Los campos a actualizar se pasan en el cuerpo de la solicitud
-    const {nombre_rol} = req.body;
+    const campos = req.body; 
     try {
       // Crear una instancia de la clase Rol
-      const rol = await RolService.updateRol(id, nombre_rol);
+      const rol = await RolService.updateRol(id, campos);
       // Validamos si no se pudo actualizar la categoría
       if (rol.error) {
         ResponseProvider.error(
@@ -132,7 +132,7 @@ class RolController {
         // Llamamos el provider para centralizar los mensajes de respuesta
         ResponseProvider.success(
           res,
-          response.data,
+          null,
           response.message,
           response.code
         );

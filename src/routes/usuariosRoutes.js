@@ -1,7 +1,7 @@
 import express from "express";
-import { camposUsuario } from "../middlewares/usuarios/camposUsuario.js";
-import { parcialesUsuario } from "../middlewares/usuarios/parcialesUsuario.js";
+import { validarContrasena, validarUsuario, validarUsuarioParcial } from "../middlewares/entidades/usuarios/validadorUsuario.js";
 import UsuarioController from "../controllers/UsuarioController.js";
+
 
 const router = express.Router();
 
@@ -29,25 +29,25 @@ router.get('/:id', UsuarioController.getUsuarioById);
 /**
  * @route POST /usuarios
  * @description Crea un nuevo usuario en el sistema.
- * @middleware camposUsuario - Valida los campos requeridos antes de ejecutar la acción.
+ * @middleware validarUsuario - Valida los campos requeridos antes de ejecutar la acción.
  */
-router.post('/', camposUsuario, UsuarioController.createUsuario);
+router.post('/', validarUsuario, UsuarioController.createUsuario);
 
 /**
  * @route PUT /usuarios/:id
  * @description Actualiza la información de un usuario existente por su ID.
  * @param {number} id - Identificador del usuario a actualizar.
- * @middleware camposUsuario - Valida los campos requeridos antes de ejecutar la acción.
+ * @middleware validarUsuario - Valida los campos requeridos antes de ejecutar la acción.
  */
-router.put('/:id', camposUsuario, UsuarioController.updateUsuario);
+router.put('/:id', validarUsuario, UsuarioController.updateUsuario);
 
 /**
  * @route PATCH /usuarios/:id
  * @description Actualiza la información de un usuario existente por su ID.
  * @param {number} id - Identificador del usuario a actualizar.
- * @middleware parcialesUsuario - Valida los campos requeridos antes de ejecutar la acción.
+ * @middleware validarContrasena - Valida los campos requeridos antes de ejecutar la acción.
  */
-router.patch('/:id', parcialesUsuario, UsuarioController.updatePasswordUsuario);
+router.patch('/contrasena/:id', validarContrasena, UsuarioController.updatePasswordUsuario);
 
 /**
  * @route DELETE /usuarios/:id

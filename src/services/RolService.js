@@ -1,3 +1,4 @@
+import CRUD from "../models/CRUD.js";
 import PermisoRol from "../models/PermisoRol.js";
 import Rol from "../models/Rol.js";
 
@@ -5,8 +6,8 @@ class RolService {
 
   static async getRoles() {
     try {
-      const rolInstance = new Rol();
-      const roles = await rolInstance.getAll();
+      const CRUDInstance = new CRUD();
+      const roles = await CRUDInstance.getAll("roles", "los roles");
       // Validamos si no hay roles
       if (roles.length === 0) {
         return {
@@ -33,8 +34,8 @@ class RolService {
 
   static async getRolById(id) {
     try {
-      const rolInstance = new Rol();
-      const rol = await rolInstance.getById(id);
+      const CRUDInstance = new CRUD();
+      const rol = await CRUDInstance.getByID("roles", id, "el rol");
       // Validamos si no hay roles
       if (rol.length === 0) {
         return {
@@ -58,13 +59,17 @@ class RolService {
     }
   }
 
-  static async createRol(nombre) {
+  static async createRol(campos) {
     try {
       // Se instancia la clase rol para poder acceder a sus metodos.
       const rolInstance = new Rol();
 
+      const CRUDInstance = new CRUD();
+
+      const { nombre_rol } = campos;
+
       // Se buscar un rol por el nombre ingresado
-      const rolNameExiste = await rolInstance.getByName(nombre.trim());
+      const rolNameExiste = await rolInstance.getByName(nombre_rol.trim());
       // Validamos si existe el rol con ese nombre
       if (rolNameExiste.length != 0) {
         return {
@@ -75,7 +80,7 @@ class RolService {
       }
 
       // Se intenta crear el rol
-      const rol = await rolInstance.create(nombre.trim());
+      const rol = await CRUDInstance.create("roles", campos, "el rol");
       // Validamos si no se pudo crear el rol
       if (rol === null) {
         return {
@@ -101,12 +106,13 @@ class RolService {
     }
   }
 
-  static async updateRol(id, nombre) {
+  static async updateRol(id, campos) {
     try {
       const rolInstance = new Rol();
+      const CRUDInstance = new CRUD();
 
       // Consultamos el rol por id
-      const rolExistente = await rolInstance.getById(id);
+      const rolExistente = await CRUDInstance.getByID("roles", id, "el rol");      
       // Validamos si no existe el rol
       if (rolExistente.length === 0) {
         return {
@@ -116,12 +122,13 @@ class RolService {
         };
       }
 
-      // Se buscar un rol por el nombre ingresado
-      const rolNameExiste = await rolInstance.getByName(nombre.trim());
-      // Validamos si existe el rol con ese nombre
-      console.log(rolExistente);
+      const { nombre_rol } = campos;
 
-      if (rolNameExiste.length != 0 && nombre.trim().toLowerCase() != rolExistente.nombre_rol.toLowerCase()) {
+      // Se buscar un rol por el nombre ingresado
+      const rolNameExiste = await rolInstance.getByName(nombre_rol.trim());
+      
+      // Validamos si existe el rol con ese nombre
+      if (rolNameExiste.length != 0 && nombre_rol.trim().toLowerCase() != rolExistente[0].nombre_rol.toLowerCase()) {
         return {
           error: true,
           code: 400,
@@ -130,7 +137,7 @@ class RolService {
       }
 
       // Se intenta actualizar el rol
-      const rol = await rolInstance.update(id, nombre);
+      const rol = await CRUDInstance.update("roles", id, campos, "el rol");
       // Validamos si no se pudo actualizar el rol
       if (rol === null) {
         return {
@@ -157,9 +164,9 @@ class RolService {
 
   static async deleteRol(id) {
     try {
-      const rolInstance = new Rol();
+      const CRUDInstance = new CRUD();
       // Consultamos el rol por id
-      const rolExistente = await rolInstance.getById(id);
+      const rolExistente = await CRUDInstance.getByID("roles", id, "el rol");
       // Validamos si no existe el rol
       if (rolExistente.length === 0) {
         return {
@@ -183,21 +190,20 @@ class RolService {
       }
 
       // Procedemos a eliminar el rol
-      const resultado = await rolInstance.delete(id);
+      const resultado = await CRUDInstance.delete("roles", id, "el rol");
       // Validamos si no se pudo eliminar el rol
-      if (resultado.error) {
+      if (!resultado) {
         return {
           error: true,
           code: 400,
-          message: resultado.mensaje,
+          message: "El rol no se pudo eliminar",
         };
       }
       // Retornamos la respuesta de eliminación
       return {
         error: false,
         code: 200,
-        message: "Rol eliminado correctamente",
-        data: rolExistente,
+        message: "Rol eliminado correctamente"
       };
     } catch (error) {
       console.log(error);

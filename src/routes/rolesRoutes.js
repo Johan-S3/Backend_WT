@@ -1,6 +1,6 @@
 import express from "express";
 import RolController from "../controllers/rolController.js";
-import { camposRol } from "../middlewares/roles/camposRol.js";
+import { validarRol, validarRolParcial } from "../middlewares/entidades/roles/validadorRol.js";
 
 const router = express.Router();
 
@@ -28,16 +28,16 @@ router.get('/:id', RolController.getRolById);
 /**
  * @route POST /roles
  * @description Crea un nuevo rol en el sistema.
- * @middleware camposRol - Valida los campos requeridos antes de ejecutar la acción.
+ * @middleware validarRol - Valida los campos requeridos antes de ejecutar la acción.
  */
-router.post('/', camposRol, RolController.createRol);
+router.post('/', validarRol, RolController.createRol);
 
 /**
  * @route PUT /roles/:id
  * @description Actualiza la información de un rol existente por su ID.
  * @param {number} id - Identificador del rol a actualizar.
  */
-router.put('/:id', camposRol, RolController.updateRol);
+router.put('/:id', validarRol, RolController.updateRol);
 
 /**
  * @route DELETE /roles/:id

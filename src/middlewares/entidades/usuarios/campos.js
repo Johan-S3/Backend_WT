@@ -18,5 +18,14 @@ export const campos = [
   { name: "telefono", alias: "Telefono", required: true, minLength: 10, maxLength: 10 },
   { name: "correo", alias: "Correo", required: true, minLength: 6, maxLength: 50 },
   { name: "id_rol", alias: "ID rol", required: true, minLength: 1, maxLength: 10 },
-  { name: "contrasena", alias: "Contraseña", required: false, minLength: 8, maxLength: 20 }
+];
+
+export const camposLogin = [
+  { name: "cedula", alias: "Cedula", required: true, minLength: 6, maxLength: 10 },
+  { name: "contrasena", alias: "Contraseña", required: true, minLength: 8, maxLength: 20 }
+];
+
+export const camposContrasena = [
+  { name: "contrasena_actual", alias: "Contraseña actual", required: true, minLength: 8, maxLength: 20 },
+  { name: "contrasena_nueva", alias: "Contraseña nueva", required: true, minLength: 8, maxLength: 20 }
 ];

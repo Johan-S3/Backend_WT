@@ -61,9 +61,9 @@ class UsuarioController {
 
   // Crear un nuevo usuario
   static createUsuario = async (req, res) => {
-    const { cedula, nombre, telefono, correo, id_rol } = req.body;
+    const campos = req.body;
     try {
-      const response = await UsuarioService.createUsuario(cedula, nombre, telefono, correo, id_rol);
+      const response = await UsuarioService.createUsuario(campos);
       if (response.error) {
         // Llamamos el provider para centralizar los mensajes de respuesta
         return ResponseProvider.error(
@@ -90,10 +90,10 @@ class UsuarioController {
   static updateUsuario = async (req, res) => {
     const { id } = req.params;
     // Los campos a actualizar se pasan en el cuerpo de la solicitud
-    const { cedula, nombre, telefono, correo, id_rol } = req.body;
+    const campos = req.body;
     try {
       // Crear una instancia de la clase usuario
-      const usuario = await UsuarioService.updateUsuario(id, cedula, nombre, telefono, correo, id_rol);
+      const usuario = await UsuarioService.updateUsuario(id, campos);
       // Validamos si no se pudo actualizar la categoría
       if (usuario.error) {
         ResponseProvider.error(
@@ -119,10 +119,10 @@ class UsuarioController {
   static updatePasswordUsuario = async (req, res) => {
     const { id } = req.params;
     // Los campos a actualizar se pasan en el cuerpo de la solicitud
-    const { contrasena } = req.body;
+    const campos = req.body;
     try {
       // Crear una instancia de la clase usuario
-      const usuario = await UsuarioService.updatePasswordUsuario(id, contrasena);
+      const usuario = await UsuarioService.updatePasswordUsuario(id, campos);
       // Validamos si no se pudo actualizar la contraseña
       if (usuario.error) {
         ResponseProvider.error(
@@ -161,7 +161,7 @@ class UsuarioController {
         // Llamamos el provider para centralizar los mensajes de respuesta
         ResponseProvider.success(
           res,
-          response.data,
+          null,
           response.message,
           response.code
         );

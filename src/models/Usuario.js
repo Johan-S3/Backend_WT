@@ -1,34 +1,6 @@
 import connection from "../utils/db.js";
 
 class Usuario {
-  /**
-   * Método para obtener los registros de la base de datos
-   * @returns {Array} Listado de los usuarios en un arreglo
-   */
-  async getAll() {
-    try {
-      const [rows] = await connection.query("SELECT * FROM usuarios");
-      return rows;
-    } catch (error) {
-      throw new Error("Error al obtener los usuarios");
-    }
-  }
-
-  // Método para obtener un usuario por su id
-  async getById(id) {
-    try {
-      const [rows] = await connection.query("SELECT * FROM usuarios WHERE id = ?", [id]);
-      if (rows.length === 0) {
-        // Retorna un array vacío si no se encuentra el usuario
-        return [];
-      }
-      // Retorna el usuario encontrado
-      return rows[0];
-    } catch (error) {
-      throw new Error("Error al obtener el usuario");
-    }
-  }
-
   // Método para obtener una usuario por su cedula
   async getByCedula(cedula) {
     try {
@@ -56,49 +28,6 @@ class Usuario {
       return rows[0];
     } catch (error) {
       throw new Error("Error al obtener el usuario");
-    }
-  }
-
-  // Metodo para crear un usuario pasandole los campos
-  async create(cedula, nombre, telefono, correo, contrasena, idRol) {
-    try {
-      const [result] = await connection.query("INSERT INTO usuarios (cedula, nombre, telefono, correo, contrasena, id_rol) VALUES (?, ?, ?, ?, ?, ?)",
-        [cedula, nombre, telefono, correo, contrasena, idRol]);
-      return { id: result.id, cedula, nombre, telefono, correo, contrasena, idRol };
-    } catch (error) {
-      throw new Error("Error al crear el usuario");
-    }
-  }
-
-  // Metodo para actualizar un usuario pasandole el id del usuario y el campo "nombre" que se va a actualizar.
-  async update(id, cedula, nombre, telefono, correo, idRol) {
-    try {
-      const [result] = await connection.query(`UPDATE usuarios SET cedula = ?, nombre = ?, telefono = ?, correo = ?, id_rol = ? 
-        WHERE id = ?`, [cedula, nombre, telefono, correo, idRol, id]);
-      if (result.affectedRows === 0) {
-        throw new Error("usuario no encontrado");
-      }
-      return { id, cedula, nombre, telefono, correo, idRol };
-
-    } catch (error) {
-      console.log(error.message);
-      throw new Error("Error al actualizar el usuario");
-    }
-  }
-
-  // Metodo para actualizar la contraseña de un usuario pasandole el id del usuario.
-  async updatePassword(id, contrasena) {
-    try {
-      const [result] = await connection.query(`UPDATE usuarios SET contrasena = ? 
-        WHERE id = ?`, [contrasena, id]);
-      if (result.affectedRows === 0) {
-        throw new Error("usuario no encontrado");
-      }
-      return { id, contrasena };
-
-    } catch (error) {
-      console.log(error.message);
-      throw new Error("Error al actualizar la contraseña del usuario");
     }
   }
 
