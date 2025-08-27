@@ -1,6 +1,6 @@
 import express from "express";
 import PermisoController from "../controllers/PermisoController.js";
-import { camposPermiso } from "../middlewares/permisos/camposPermiso.js";
+import { validarPermisoParcial, validarPernmiso } from "../middlewares/entidades/permisos/validadorPermiso.js";
 
 const router = express.Router();
 
@@ -21,16 +21,16 @@ router.get('/', PermisoController.getAllPermisos);
 /**
  * @route POST /permisos
  * @description Crea un nuevo permiso en el sistema.
- * @middleware camposPermiso - Valida los campos requeridos antes de ejecutar la acción.
+ * @middleware validarPernmiso - Valida los campos requeridos antes de ejecutar la acción.
  */
-router.post('/', camposPermiso, PermisoController.createPermiso);
+router.post('/', validarPernmiso, PermisoController.createPermiso);
 
 /**
  * @route PUT /permisos/:id
  * @description Actualiza la información de un permiso existente por su ID.
  * @param {number} id - Identificador del permiso a actualizar.
  */
-router.put('/:id', camposPermiso, PermisoController.updatePermiso);
+router.put('/:id', validarPernmiso, PermisoController.updatePermiso);
 
 /**
  * @route DELETE /permisos/:id

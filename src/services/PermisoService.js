@@ -1,3 +1,4 @@
+import CRUD from "../models/CRUD.js";
 import Permiso from "../models/Permiso.js";
 import PermisoRol from "../models/PermisoRol.js";
 
@@ -5,8 +6,8 @@ class PermisoService {
 
   static async getPermisos() {
     try {
-      const permisoInstance = new Permiso();
-      const permisos = await permisoInstance.getAll();
+      const CRUDInstance = new CRUD();
+      const permisos = await CRUDInstance.getAll("permisos", "los permisos");
       // Validamos si no hay permisos
       if (permisos.length === 0) {
         return {
@@ -33,8 +34,8 @@ class PermisoService {
 
   static async getPermisoById(id) {
     try {
-      const permisoInstance = new Permiso();
-      const permiso = await permisoInstance.getById(id);
+      const CRUDInstance = new CRUD();
+      const permiso = await CRUDInstance.getById("permisos", id, "el permiso");
       // Validamos si no hay permisos
       if (permiso.length === 0) {
         return {
@@ -58,13 +59,18 @@ class PermisoService {
     }
   }
 
-  static async createPermiso(nombre, descripcion) {
+  static async createPermiso(campos) {
     try {
       // Se instancia la clase permiso para poder acceder a sus metodos.
       const permisoInstance = new Permiso();
 
+      const CRUDInstance = new CRUD();
+
+      // Destructuro el objeto campos para obtener los datos necesarios para su validación.
+      const { nombre_permiso } = campos;
+
       // Se buscar un permiso por el nombre ingresado
-      const permisoNameExiste = await permisoInstance.getByName(nombre.trim());
+      const permisoNameExiste = await permisoInstance.getByName(nombre_permiso.trim());
       // Validamos si existe el permiso con ese nombre
       if (permisoNameExiste.length != 0) {
         return {
@@ -75,7 +81,7 @@ class PermisoService {
       }
 
       // Se intenta crear el permiso
-      const permiso = await permisoInstance.create(nombre.trim(), descripcion.trim());
+      const permiso = await CRUDInstance.create("permisos", campos, "el permiso");
       // Validamos si no se pudo crear el permiso
       if (permiso === null) {
         return {
@@ -103,15 +109,16 @@ class PermisoService {
     }
   }
 
-  static async updatepermiso(id, campos) {
+  static async updatePermiso(id, campos) {
     try {
       const permisoInstance = new Permiso();
+      const CRUDInstance = new CRUD();
 
-      const { nombre_permiso, descripcion_permiso } = campos
-
+      // Destructuro el objeto campos para obtener los datos necesarios para su validación.
+      const { nombre_permiso } = campos
 
       // Consultamos el permiso por id
-      const permisoExistente = await permisoInstance.getById(id);
+      const permisoExistente = await CRUDInstance.getByID("permisos", id, "el permiso");
       // Validamos si no existe el permiso
       if (permisoExistente.length === 0) {
         return {
@@ -124,7 +131,7 @@ class PermisoService {
       // Se buscar un permiso por el nombre ingresado
       const permisoNameExiste = await permisoInstance.getByName(nombre_permiso.trim());
       // Validamos si existe el permiso con ese nombre diferente a este
-      if (permisoNameExiste.length != 0 && nombre_permiso.trim() != permisoExistente.nombre_permiso) {
+      if (permisoNameExiste.length != 0 && nombre_permiso.trim() != permisoExistente[0].nombre_permiso) {
         return {
           error: true,
           code: 400,
@@ -133,7 +140,7 @@ class PermisoService {
       }
 
       // Se intenta actualizar el permiso
-      const permiso = await permisoInstance.update(id, campos);
+      const permiso = await CRUDInstance.update("permisos", id, campos, "el permiso");
       // Validamos si no se pudo actualizar el permiso
       if (permiso === null) {
         return {
@@ -160,9 +167,10 @@ class PermisoService {
 
   static async deletePermiso(id) {
     try {
-      const permisoInstance = new Permiso();
+      const CRUDInstance = new CRUD();
+
       // Consultamos el permiso por id
-      const permisoExistente = await permisoInstance.getById(id);
+      const permisoExistente = await CRUDInstance.getByID("permisos", id, "el permiso");
       // Validamos si no existe el permiso
       if (permisoExistente.length === 0) {
         return {
@@ -185,7 +193,7 @@ class PermisoService {
       }
 
       // Procedemos a eliminar el permiso
-      const resultado = await permisoInstance.delete(id);
+      const resultado = await CRUDInstance.delete("permisos", id, "el permiso");
       // Validamos si no se pudo eliminar el permiso
       if (resultado.error) {
         return {
@@ -198,8 +206,7 @@ class PermisoService {
       return {
         error: false,
         code: 200,
-        message: "Permiso eliminado correctamente",
-        data: permisoExistente,
+        message: "Permiso eliminado correctamente"
       };
     } catch (error) {
       console.log(error);

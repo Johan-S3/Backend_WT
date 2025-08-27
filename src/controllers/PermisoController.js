@@ -61,9 +61,9 @@ class PermisoController {
 
   // Crear un nuevo permiso
   static createPermiso = async (req, res) => {
-    const { nombre_permiso, descripcion_permiso } = req.body;
+    const campos = req.body;
     try {
-      const response = await PermisoService.createPermiso(nombre_permiso, descripcion_permiso);
+      const response = await PermisoService.createPermiso(campos);
       if (response.error) {
         // Llamamos el provider para centralizar los mensajes de respuesta
         return ResponseProvider.error(
@@ -93,7 +93,7 @@ class PermisoController {
     const campos = req.body;
     try {
       // Crear una instancia de la clase permiso
-      const permiso = await PermisoService.updatepermiso(id, campos);
+      const permiso = await PermisoService.updatePermiso(id, campos);
       // Validamos si no se pudo actualizar el permiso
       if (permiso.error) {
         ResponseProvider.error(
@@ -132,7 +132,7 @@ class PermisoController {
         // Llamamos el provider para centralizar los mensajes de respuesta
         ResponseProvider.success(
           res,
-          response.data,
+          null,
           response.message,
           response.code
         );
