@@ -1,6 +1,6 @@
 import express from "express";
-import { validarDetalleFactura } from "../middlewares/detalles_facturas/validarDetalleFactura.js";
 import DetalleFacturaController from "../controllers/DetalleFacturaController.js";
+import { validarDetalleFactura, validarDetalleFacturaParcial } from "../middlewares/entidades/detalles_facturas/validadorDetalleFactura.js";
 
 const router = express.Router();
 

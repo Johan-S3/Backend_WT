@@ -1,6 +1,6 @@
 import express from "express";
-import { validarItemTipoLavado } from "../middlewares/items_tipos_lavados/validarItemTipoLavado.js";
 import ItemTipoLavadoController from "../controllers/ItemTipoLavadoController.js";
+import { validarItemTipoLavado, validarItemTipoLavadoParcial } from "../middlewares/entidades/items_tipos_lavados/validadorItemTipoLavado.js";
 
 const router = express.Router();
 

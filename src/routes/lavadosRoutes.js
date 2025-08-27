@@ -1,6 +1,6 @@
 import express from "express";
-import { validarLavado } from "../middlewares/lavados/validarLavado.js";
 import LavadoController from "../controllers/LavadoController.js";
+import { validarLavado, validarLavadoParcial } from "../middlewares/entidades/lavados/validadorLavado.js";
 
 const router = express.Router();
 

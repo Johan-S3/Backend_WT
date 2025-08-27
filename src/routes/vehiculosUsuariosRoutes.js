@@ -1,6 +1,6 @@
 import express from "express";
-import { validarVehiculoUsuario } from "../middlewares/vehiculos_usuarios/validarVehiculoUsuario.js";
 import VehiculoUsuarioController from "../controllers/VehiculoUsuarioController.js";
+import { validarVehiculoUsuario, validarVehiculoUsuarioParcial } from "../middlewares/entidades/vehiculos_usuarios/validadorVehiculoUsuario.js";
 
 const router = express.Router();
 

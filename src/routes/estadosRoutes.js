@@ -1,6 +1,6 @@
 import express from "express";
-import { validarEstado } from "../middlewares/estados/validarEstado.js";
 import EstadoController from "../controllers/EstadoController.js";
+import { validarEstado, validarEstadoParcial } from "../middlewares/entidades/estados/validadorEstado.js";
 
 const router = express.Router();
 
