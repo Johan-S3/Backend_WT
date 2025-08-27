@@ -61,9 +61,9 @@ class TipoVehiculoController {
 
   // Crear un nuevo tipo de vehiculo
   static createTipoVeh = async (req, res) => {
-    const { nombre_tipo } = req.body;
+    const campos = req.body;
     try {
-      const response = await TipoVehiculoService.createTipoVehiculo(nombre_tipo);
+      const response = await TipoVehiculoService.createTipoVehiculo(campos);
       if (response.error) {
         // Llamamos el provider para centralizar los mensajes de respuesta
         return ResponseProvider.error(
@@ -90,10 +90,10 @@ class TipoVehiculoController {
   static updateTipoVeh = async (req, res) => {
     const { id } = req.params;
     // Los campos a actualizar se pasan en el cuerpo de la solicitud
-    const { nombre_tipo } = req.body;
+    const campos = req.body;
     try {
       // Crear una instancia de la clase TipoVehiculo
-      const tipoVehiculo = await TipoVehiculoService.updateTipoVehiculo(id, req.body);
+      const tipoVehiculo = await TipoVehiculoService.updateTipoVehiculo(id, campos);
       // Validamos si no se pudo actualizar la categoría
       if (tipoVehiculo.error) {
         ResponseProvider.error(
@@ -132,7 +132,7 @@ class TipoVehiculoController {
         // Llamamos el provider para centralizar los mensajes de respuesta
         ResponseProvider.success(
           res,
-          response.data,
+          null,
           response.message,
           response.code
         );

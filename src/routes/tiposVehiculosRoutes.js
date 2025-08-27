@@ -1,6 +1,6 @@
 import express from "express";
-import { camposTipoVehiculo } from "../middlewares/tiposVehiculos/camposTipoVehiculo.js";
 import TipoVehiculoController from "../controllers/TipoVehiculoController.js";
+import { validarTipoVehiculo, validarTipoVehiculoParcial } from "../middlewares/entidades/tiposVehiculos/validadorTipoVehiculo.js";
 
 const router = express.Router();
 
@@ -28,17 +28,17 @@ router.get('/:id', TipoVehiculoController.getTipoVehById);
 /**
  * @route POST /tiposVehiculos
  * @description Crea un nuevo tipo de vehiculo en el sistema.
- * @middleware camposTipoVehiculo - Valida los campos requeridos antes de ejecutar la acción.
+ * @middleware validarTipoVehiculo - Valida los campos requeridos antes de ejecutar la acción.
  */
-router.post('/', camposTipoVehiculo, TipoVehiculoController.createTipoVeh);
+router.post('/', validarTipoVehiculo, TipoVehiculoController.createTipoVeh);
 
 /**
  * @route PUT /tiposVehiculos/:id
  * @description Actualiza la información de un tipo de vehiculo existente por su ID.
  * @param {number} id - Identificador del tipo de vehiculo a actualizar.
- * @middleware camposTipoVehiculo - Valida los campos requeridos antes de ejecutar la acción.
+ * @middleware validarTipoVehiculo - Valida los campos requeridos antes de ejecutar la acción.
  */
-router.put('/:id', camposTipoVehiculo, TipoVehiculoController.updateTipoVeh);
+router.put('/:id', validarTipoVehiculo, TipoVehiculoController.updateTipoVeh);
 
 /**
  * @route DELETE /tiposVehiculos/:id

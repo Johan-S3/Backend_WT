@@ -1,14 +1,15 @@
+import CRUD from "../models/CRUD.js";
 import ItemLavado from "../models/ItemLavado.js";
 import TipoLavado from "../models/TipoLavado.js";
-import TipoVehiculo from "../models/TipoVehiculo.js ";
+import TipoVehiculo from "../models/TipoVehiculo.js";
 import Vehiculo from "../models/Vehiculo.js";
 
 class TipoVehiculoService {
 
   static async getTiposVehiculos() {
     try {
-      const tipoVehInstance = new TipoVehiculo();
-      const tiposVehiculos = await tipoVehInstance.getAll();
+      const CRUDInstance = new CRUD();
+      const tiposVehiculos = await CRUDInstance.getAll("tipos_vehiculos", "los tipos de vehiculos");
       // Validamos si no hay tipos de vehiculos
       if (tiposVehiculos.length === 0) {
         return {
@@ -35,8 +36,8 @@ class TipoVehiculoService {
 
   static async getTipoVehiculoById(id) {
     try {
-      const tipoVehInstance = new TipoVehiculo();
-      const tipoVehiculo = await tipoVehInstance.getById(id);
+      const CRUDInstance = new CRUD();
+      const tipoVehiculo = await CRUDInstance.getByID("tipos_vehiculos", id, "el tipo de vehiculo");
       // Validamos si no hay tipos de vehiculos
       if (tipoVehiculo.length === 0) {
         return {
@@ -60,15 +61,20 @@ class TipoVehiculoService {
     }
   }
 
-  static async createTipoVehiculo(nombre) {
+  static async createTipoVehiculo(campos) {
     try {
       // Se instancia la clase tipoVehiculo para poder acceder a sus metodos.
       const tipoVehInstance = new TipoVehiculo();
+      const CRUDInstance = new CRUD();
+
+      // Destructuro el objeto campos para obtener los datos necesarios para su validación.
+      const { nombre_tipo } = campos;
 
       // Se buscar un permiso por el nombre ingresado
-      const tipoVehNameExiste = await tipoVehInstance.getByName(nombre.trim());
+      const tipoVehNameExiste = await tipoVehInstance.getByName(nombre_tipo.trim());
+      
       // Validamos si existe el tipo de vehiculo con ese nombre
-      if (tipoVehNameExiste.length != 0 && nombre.trim() != tipoVehExistente.nombre_tipo) {
+      if (tipoVehNameExiste.length != 0) {
         return {
           error: true,
           code: 400,
@@ -77,7 +83,7 @@ class TipoVehiculoService {
       }
 
       // Se intenta crear el tipo de vehiculo
-      const tipoVehiculo = await tipoVehInstance.create(nombre.trim());
+      const tipoVehiculo = await CRUDInstance.create("tipos_vehiculos", campos, "el tipo de vehiculo");
       // Validamos si no se pudo crear el tipo de vehiculo
       if (tipoVehiculo === null) {
         return {
@@ -86,7 +92,7 @@ class TipoVehiculoService {
           message: "Error al crear el tipo de vehiculo",
         };
       }
-      // Retornamos el nuevo permiso creado
+      // Retornamos el nuevo tipo de vehiculo creado
       return {
         error: false,
         code: 201,
@@ -100,20 +106,21 @@ class TipoVehiculoService {
       return {
         error: true,
         code: 500,
-        message: "Error interno al crear el permiso",
+        message: "Error interno al crear el tipo de vehiculo" + error,
       };
     }
   }
 
   static async updateTipoVehiculo(id, campos) {
     try {
+      const CRUDInstance = new CRUD();
       const tipoVehInstance = new TipoVehiculo();
 
       const { nombre_tipo } = campos
 
 
       // Consultamos el tipo de vehiculo por id
-      const tipoVehExistente = await tipoVehInstance.getById(id);
+      const tipoVehExistente = await CRUDInstance.getByID("tipos_vehiculos", id, "el tipo de vehiculo");
       // Validamos si no existe el tipo de vehiculo
       if (tipoVehExistente.length === 0) {
         return {
@@ -124,9 +131,10 @@ class TipoVehiculoService {
       }
 
       // Se buscar un permiso por el nombre ingresado
-      const tipoVehNameExiste = await tipoVehInstance.getByName(nombre_tipo.trim());
+      const tipoVehNameExiste = await tipoVehInstance.getByName(nombre_tipo.trim());      
+      
       // Validamos si existe el tipo de vehiculo con ese nombre
-      if (tipoVehNameExiste.length != 0) {
+      if (tipoVehNameExiste.length != 0 && nombre_tipo.trim() != tipoVehExistente[0].nombre_tipo) {
         return {
           error: true,
           code: 400,
@@ -135,7 +143,7 @@ class TipoVehiculoService {
       }
 
       // Se intenta actualizar el tipo de vehiculo
-      const tipoVehiculo = await tipoVehInstance.update(id, campos);
+      const tipoVehiculo = await CRUDInstance.update("tipos_vehiculos", id, campos, "el tipo de vehiculo");
       // Validamos si no se pudo actualizar el tipo de vehiculo
       if (tipoVehiculo === null) {
         return {
@@ -162,9 +170,10 @@ class TipoVehiculoService {
 
   static async deleteTipoVehiculo(id) {
     try {
-      const tipoVehInstance = new TipoVehiculo();
+      const CRUDInstance = new CRUD();
+
       // Consultamos el tipo de vehiculo por id
-      const tipoVehExistente = await tipoVehInstance.getById(id);
+      const tipoVehExistente = await CRUDInstance.getByID("tipos_vehiculos", id, "el tipo de vehiculo");
       // Validamos si no existe el tipo de vehiculo
       if (tipoVehExistente.length === 0) {
         return {
@@ -212,7 +221,7 @@ class TipoVehiculoService {
       }
 
       // Procedemos a eliminar el tipo de vehiculo
-      const resultado = await tipoVehInstance.delete(id);
+      const resultado = await CRUDInstance.delete("tipos_vehiculos", id, "el tipo de vehiculo");
       // Validamos si no se pudo eliminar el tipo de vehiculo
       if (resultado.error) {
         return {
@@ -225,8 +234,7 @@ class TipoVehiculoService {
       return {
         error: false,
         code: 200,
-        message: "Tipo de vehiculo eliminado correctamente",
-        data: tipoVehExistente,
+        message: "Tipo de vehiculo eliminado correctamente"
       };
     } catch (error) {
       console.log(error);
