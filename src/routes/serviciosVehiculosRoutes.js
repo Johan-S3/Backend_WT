@@ -1,6 +1,6 @@
 import express from "express";
-import { camposServicioVehiculo } from "../middlewares/serviciosVehiculos/camposServicioVehiculo.js";
 import servicioVehiculoController from "../controllers/ServicioVehiculoController.js";
+import { validarServicioVehiculo, validarServicioVehiculoParcial } from "../middlewares/entidades/serviciosVehiculos/validadorServicioVehiculo.js";
 
 const router = express.Router();
 
@@ -28,17 +28,17 @@ router.get('/:id', servicioVehiculoController.getServicioVehById);
 /**
  * @route POST /serviciosVehiculos
  * @description Crea un nuevo servicio de vehiculo en el sistema.
- * @middleware camposServicioVehiculo - Valida los campos requeridos antes de ejecutar la acción.
+ * @middleware validarServicioVehiculo - Valida los campos requeridos antes de ejecutar la acción.
  */
-router.post('/', camposServicioVehiculo, servicioVehiculoController.createServicioVeh);
+router.post('/', validarServicioVehiculo, servicioVehiculoController.createServicioVeh);
 
 /**
  * @route PUT /serviciosVehiculos/:id
  * @description Actualiza la información de un servicio de vehiculo existente por su ID.
  * @param {number} id - Identificador del servicio de vehiculo a actualizar.
- * @middleware camposServicioVehiculo - Valida los campos requeridos antes de ejecutar la acción.
+ * @middleware validarServicioVehiculo - Valida los campos requeridos antes de ejecutar la acción.
  */
-router.put('/:id', camposServicioVehiculo, servicioVehiculoController.updateServicioVeh);
+router.put('/:id', validarServicioVehiculo, servicioVehiculoController.updateServicioVeh);
 
 /**
  * @route DELETE /serviciosVehiculos/:id

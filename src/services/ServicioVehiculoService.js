@@ -1,3 +1,4 @@
+import CRUD from "../models/CRUD.js";
 import ServicioVehiculo from "../models/ServicioVehiculo.js";
 import Vehiculo from "../models/Vehiculo.js";
 
@@ -5,8 +6,8 @@ class ServicioVehiculoService {
 
   static async getServiciosVehiculos() {
     try {
-      const servicioVehInstance = new ServicioVehiculo();
-      const serviciosVehiculos = await servicioVehInstance.getAll();
+      const CRUDInstance = new CRUD();
+      const serviciosVehiculos = await CRUDInstance.getAll("servicios_vehiculos", "el servicio del vehiculo");
       // Validamos si no hay servicios de vehiculos
       if (serviciosVehiculos.length === 0) {
         return {
@@ -33,8 +34,8 @@ class ServicioVehiculoService {
 
   static async getServicioVehiculoById(id) {
     try {
-      const servicioVehInstance = new ServicioVehiculo();
-      const servicioVehiculo = await servicioVehInstance.getById(id);
+      const CRUDInstance = new CRUD();
+      const servicioVehiculo = await CRUDInstance.getByID("servicios_vehiculos", id, "el servicio de vehiculo");
       // Validamos si no hay servicios de vehiculos
       if (servicioVehiculo.length === 0) {
         return {
@@ -58,13 +59,16 @@ class ServicioVehiculoService {
     }
   }
 
-  static async createServicioVehiculo(nombre, porcentajeDesc) {
+  static async createServicioVehiculo(campos) {
     try {
+      const CRUDInstance = new CRUD();
       // Se instancia la clase servicioVehiculo para poder acceder a sus metodos.
       const servicioVehInstance = new ServicioVehiculo();
 
+      const { nombre_servicio, porcentaje_descuento} = campos;
+
       // Se buscar un servicio de vehiculo por el nombre ingresado
-      const ServicioVehNameExiste = await servicioVehInstance.getByName(nombre.trim());
+      const ServicioVehNameExiste = await servicioVehInstance.getByName(nombre_servicio.trim());
       // Validamos si existe el Servicio de vehiculo con ese nombre
       if (ServicioVehNameExiste.length != 0) {
         return {
@@ -75,7 +79,7 @@ class ServicioVehiculoService {
       }
 
       // Se intenta crear el Servicio de vehiculo
-      const servicioVehiculo = await servicioVehInstance.create(nombre.trim(), porcentajeDesc);
+      const servicioVehiculo = await CRUDInstance.create("servicios_vehiculos", campos, "el servicio del vehiculo");
       // Validamos si no se pudo crear el Servicio de vehiculo
       if (servicioVehiculo === null) {
         return {
@@ -104,13 +108,14 @@ class ServicioVehiculoService {
 
   static async updateServicioVehiculo(id, campos) {
     try {
+      const CRUDInstance = new CRUD();
       const servicioVehInstance = new ServicioVehiculo();
 
-      const { nombre_servicio, porcentaje_descuento } = campos
+      const { nombre_servicio } = campos
 
 
       // Consultamos el Servicio de vehiculo por id
-      const ServicioVehExistente = await servicioVehInstance.getById(id);
+      const ServicioVehExistente = await CRUDInstance.getByID("servicios_vehiculos", id, "el servicio del vehiculo");
       // Validamos si no existe el Servicio de vehiculo
       if (ServicioVehExistente.length === 0) {
         return {
@@ -123,7 +128,7 @@ class ServicioVehiculoService {
       // Se buscar un permiso por el nombre ingresado
       const ServicioVehNameExiste = await servicioVehInstance.getByName(nombre_servicio.trim());
       // Validamos si existe el Servicio de vehiculo con ese nombre
-      if (ServicioVehNameExiste.length != 0 && nombre_servicio.trim() != ServicioVehExistente.nombre_servicio) {
+      if (ServicioVehNameExiste.length != 0 && nombre_servicio.trim() != ServicioVehExistente[0].nombre_servicio) {
         return {
           error: true,
           code: 400,
@@ -132,7 +137,7 @@ class ServicioVehiculoService {
       }
 
       // Se intenta actualizar el Servicio de vehiculo
-      const servicioVehiculo = await servicioVehInstance.update(id, campos);
+      const servicioVehiculo = await CRUDInstance.update("servicios_vehiculos", id, campos, "el servicio del vehiculo");
       // Validamos si no se pudo actualizar el Servicio de vehiculo
       if (servicioVehiculo === null) {
         return {
@@ -159,9 +164,9 @@ class ServicioVehiculoService {
 
   static async deleteServicioVehiculo(id) {
     try {
-      const servicioVehInstance = new ServicioVehiculo();
+      const CRUDInstance = new CRUD();
       // Consultamos el Servicio de vehiculo por id
-      const ServicioVehExistente = await servicioVehInstance.getById(id);
+      const ServicioVehExistente = await CRUDInstance.getByID("servicios_vehiculos", id, "el servicio del vehiculo");
       // Validamos si no existe el Servicio de vehiculo
       if (ServicioVehExistente.length === 0) {
         return {
@@ -185,7 +190,7 @@ class ServicioVehiculoService {
       }
 
       // Procedemos a eliminar el Servicio de vehiculo
-      const resultado = await servicioVehInstance.delete(id);
+      const resultado = await CRUDInstance.delete("servicios_vehiculos", id, "el servicio del vehiculo");
       // Validamos si no se pudo eliminar el servicio de vehiculo
       if (resultado.error) {
         return {
