@@ -61,9 +61,9 @@ class PermisoRolController {
 
   // Crear un nuevo permiso_rol
   static createPermisoRol = async (req, res) => {
-    const { id_rol, id_permiso } = req.body;
+    const campos = req.body;
     try {
-      const response = await PermisoRolService.createPermisoRol(id_rol, id_permiso);
+      const response = await PermisoRolService.createPermisoRol(campos);
       if (response.error) {
         // Llamamos el provider para centralizar los mensajes de respuesta
         return ResponseProvider.error(
@@ -93,7 +93,7 @@ class PermisoRolController {
     const campos = req.body;
     try {
       // Crear una instancia de la clase permisoPermiso
-      const permiso = await PermisoRolService.updatepermisoRol(id, campos);
+      const permiso = await PermisoRolService.updatePermisoRol(id, campos);
       // Validamos si no se pudo actualizar el permiso_rol
       if (permiso.error) {
         ResponseProvider.error(
@@ -132,7 +132,7 @@ class PermisoRolController {
         // Llamamos el provider para centralizar los mensajes de respuesta
         ResponseProvider.success(
           res,
-          response.data,
+          null,
           response.message,
           response.code
         );

@@ -1,6 +1,7 @@
 import express from "express";
 import PermisoRolController from "../controllers/PermisoRolController.js";
-import { camposPermisoRol } from "../middlewares/permisos_roles/camposPermisoRol.js";
+import { validarPermisoRolParcial, validarPernmisoRol } from "../middlewares/entidades/permisos_roles/validadorPermisoRol.js";
+
 
 
 const router = express.Router();
@@ -22,16 +23,16 @@ router.get('/', PermisoRolController.getAllPermisosRoles);
 /**
  * @route POST /permisosRoles
  * @description Crea un nuevo permiso_rol en el sistema.
- * @middleware camposPermisoRol - Valida los campos requeridos antes de ejecutar la acción.
+ * @middleware validarPernmisoRol - Valida los campos requeridos antes de ejecutar la acción.
  */
-router.post('/', camposPermisoRol, PermisoRolController.createPermisoRol);
+router.post('/', validarPernmisoRol, PermisoRolController.createPermisoRol);
 
 /**
  * @route PUT /permisosRoles/:id
  * @description Actualiza la información de un permiso_rol existente por su ID.
  * @param {number} id - Identificador del permiso a actualizar.
  */
-router.put('/:id', camposPermisoRol, PermisoRolController.updatePermisoRol);
+router.put('/:id', validarPernmisoRol, PermisoRolController.updatePermisoRol);
 
 /**
  * @route DELETE /permisosRoles/:id

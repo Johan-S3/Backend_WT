@@ -1,3 +1,4 @@
+import CRUD from "../models/CRUD.js";
 import Permiso from "../models/Permiso.js";
 import PermisoRol from "../models/PermisoRol.js";
 import Rol from "../models/Rol.js";
@@ -6,8 +7,8 @@ class PermisoRolService {
 
   static async getPermisosRoles() {
     try {
-      const permisoRolInstance = new PermisoRol();
-      const permisosRoles = await permisoRolInstance.getAll();
+      const CRUDInstance = new CRUD();
+      const permisosRoles = await CRUDInstance.getAll("permisos_roles", "los permisos asociados a roles");
       // Validamos si no hay permisosRoles
       if (permisosRoles.length === 0) {
         return {
@@ -34,8 +35,8 @@ class PermisoRolService {
 
   static async getPermisoRolById(id) {
     try {
-      const permisoRolInstance = new PermisoRol();
-      const permisoRol = await permisoRolInstance.getById(id);
+      const CRUDInstance = new CRUD();
+      const permisoRol = await CRUDInstance.getByID("permisos_roles", id, "los permisos asociado a un rol");
       // Validamos si no hay permisosRoles
       if (permisoRol.length === 0) {
         return {
@@ -59,15 +60,15 @@ class PermisoRolService {
     }
   }
 
-  static async createPermisoRol(idRol, idPermiso) {
+  static async createPermisoRol(campos) {
     try {
-      // Se instancia la clase permisoRol para poder acceder a sus metodos.
+      const CRUDInstance = new CRUD();
       const permisoRolInstance = new PermisoRol();
-      const rolInstance = new Rol();
-      const permisoInstance = new Permiso();
+
+      const { id_rol, id_permiso} = campos;
 
       // Se consulta si existe un rol con el id ingresado
-      const rolExiste = await rolInstance.getById(idRol);
+      const rolExiste = await CRUDInstance.getByID("roles", id_rol, "el rol");
       // Se valida se no existe el rol
       if (rolExiste.length === 0) {
         return {
@@ -78,7 +79,7 @@ class PermisoRolService {
       }
 
       // Se consulta si existe un permiso con el id ingresado
-      const permisoExiste = await permisoInstance.getById(idPermiso);
+      const permisoExiste = await CRUDInstance.getByID("permisos", id_permiso, "el permiso");
       // Se valida se no existe el permiso
       if (permisoExiste.length === 0) {
         return {
@@ -88,8 +89,8 @@ class PermisoRolService {
         };
       }
 
-      const permisosPorRolExistente = await permisoRolInstance.getByRolId(idRol);
-      const asignacionExistente = permisosPorRolExistente.filter(registro => registro.id_permiso == idPermiso);
+      const permisosPorRolExistente = await permisoRolInstance.getByRolId(id_rol);
+      const asignacionExistente = permisosPorRolExistente.filter(registro => registro.id_permiso == id_permiso);
       if (asignacionExistente.length != 0) {
         return {
           error: true,
@@ -99,7 +100,7 @@ class PermisoRolService {
       }
 
       // Se intenta crear el permisoRol
-      const permisoRol = await permisoRolInstance.create(idRol, idPermiso);
+      const permisoRol = await CRUDInstance.create("permisos_roles", campos, "la relacion entre el permiso y el rol");
       // Validamos si no se pudo crear el permisoRol
       if (permisoRol === null) {
         return {
@@ -127,17 +128,16 @@ class PermisoRolService {
     }
   }
 
-  static async updatepermisoRol(id, campos) {
+  static async updatePermisoRol(id, campos) {
     try {
       // Se instancia las clases de los modelos necesarios.
       const permisoRolInstance = new PermisoRol();
-      const rolInstance = new Rol();
-      const permisoInstance = new Permiso();
+      const CRUDInstance = new CRUD();
 
       const { id_rol, id_permiso } = campos
 
       // Consultamos el permisoRol por id
-      const permisoRolExistente = await permisoRolInstance.getById(id);
+      const permisoRolExistente = await CRUDInstance.getByID("permisos_roles", id, "la relación entre el permiso y el rol");
       // Validamos si no existe el permisoRol
       if (permisoRolExistente.length === 0) {
         return {
@@ -148,7 +148,7 @@ class PermisoRolService {
       }
 
       // Se consulta si existe un rol con el id ingresado
-      const rolExiste = await rolInstance.getById(id_rol);
+      const rolExiste = await CRUDInstance.getByID("roles", id_rol, "el rol");
       // Se valida se no existe el rol
       if (rolExiste.length === 0) {
         return {
@@ -159,7 +159,7 @@ class PermisoRolService {
       }
 
       // Se consulta si existe un permiso con el id ingresado
-      const permisoExiste = await permisoInstance.getById(id_permiso);
+      const permisoExiste = await CRUDInstance.getByID("permisos", id_permiso, "el permiso");
       // Se valida se no existe el permiso
       if (permisoExiste.length === 0) {
         return {
@@ -180,7 +180,7 @@ class PermisoRolService {
       }
 
       // Se intenta actualizar el permisoRol
-      const permisoRol = await permisoRolInstance.update(id, campos);
+      const permisoRol = await CRUDInstance.update("permisos_roles", id, campos, "la relación entre el permiso y el rol");
       // Validamos si no se pudo actualizar el permiso
       if (permisoRol === null) {
         return {
@@ -207,20 +207,20 @@ class PermisoRolService {
 
   static async deletePermisoRol(id) {
     try {
-      const permisoRolInstance = new PermisoRol();
+      const CRUDInstance = new CRUD();
       // Consultamos el permiso por id
-      const permisoExistente = await permisoRolInstance.getById(id);
+      const permisoExistente = await CRUDInstance.getByID("permisos_roles", id, "la relación entre el permiso y el rol");
       // Validamos si no existe el permiso
       if (permisoExistente.length === 0) {
         return {
           error: true,
           code: 404,
-          message: "Permiso rol no encontrado",
+          message: "El registro relacional entre el permiso y el rol no fue encontrado",
         };
       }
 
       // Procedemos a eliminar el permiso
-      const resultado = await permisoRolInstance.delete(id);
+      const resultado = await CRUDInstance.delete("permisos_roles", id, "la relación entre el permiso y el rol");
       // Validamos si no se pudo eliminar el permiso
       if (resultado.error) {
         return {
@@ -233,8 +233,7 @@ class PermisoRolService {
       return {
         error: false,
         code: 200,
-        message: "Asignacion de permiso a rol eliminado correctamente",
-        data: permisoExistente,
+        message: "Asignacion de permiso a rol eliminado correctamente"
       };
     } catch (error) {
       console.log(error);
