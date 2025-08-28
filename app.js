@@ -37,7 +37,10 @@ dotenv.config();
 const app = express();
 
 // Middleware para habilitar CORS (permite peticiones desde otros dominios)
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true
+}));
 
 // Middleware para procesar datos en formato JSON
 app.use(bodyParser.json());

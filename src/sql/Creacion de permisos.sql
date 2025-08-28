@@ -104,3 +104,9 @@ insert into permisos (nombre_permiso, descripcion_permiso) values
 ('detalle_factura.create', 'Crear un detalle de factura'),
 ('detalle_factura.update', 'Editar un detalle de factura'),
 ('detalle_factura.delete', 'Eliminar un detalle de factura');
+
+
+select * from usuarios;
+
+insert into usuarios(cedula, nombre, telefono, correo, contrasena, id_rol) values
+(1102357038, "Johan Polo", 3227775843, "johan.s310806@gmail.com", "Contrasena1234", 1);
