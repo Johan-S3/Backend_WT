@@ -19,7 +19,9 @@ import estadosRoutes from "./src/routes/estadosRoutes.js";
 import lavadosRoutes from "./src/routes/lavadosRoutes.js";
 import facturasRoutes from "./src/routes/facturasRoutes.js";
 import detalleFacturaRoutes from "./src/routes/detalleFacturaRoutes.js";
+import authRoutes from "./src/routes/authRoutes.js";
 
+import { verifyToken } from "./src/middlewares/auth/verifyToken.js";
 
 dotenv.config();
 
@@ -46,6 +48,11 @@ app.use(express.urlencoded({ extended: true }));
 
 // Middleware para manejar cookies en las solicitudes/respuestas
 app.use(cookieParser());
+
+app.use("/auth", authRoutes);
+
+// Protege todo lo que venga después:
+app.use(verifyToken);
 
 // Rutas principales de la aplicación
 app.use("/roles", rolesRoutes); // Gestión de roles

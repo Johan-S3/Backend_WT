@@ -4,13 +4,17 @@ class Usuario {
   // Método para obtener una usuario por su cedula
   async getByCedula(cedula) {
     try {
-      const [rows] = await connection.query("SELECT * FROM usuarios WHERE cedula = ?", [cedula]);
+      const [rows] = await connection.query(
+        `SELECT U.id, U.cedula, U.nombre, U.telefono, U.correo, R.nombre_rol 
+        FROM usuarios u 
+        INNER JOIN roles R on R.id = U.id_rol
+        WHERE cedula = ?`, [cedula]);
       if (rows.length === 0) {
         // Retorna un array vacío si no se encuentra el usuario
         return [];
       }
       // Retorna el usuario encontrado
-      return rows[0];
+      return rows;
     } catch (error) {
       throw new Error("Error al obtener el usuario");
     }
@@ -31,21 +35,25 @@ class Usuario {
     }
   }
 
-  // Método para eliminar un usuario pasando el id del usuario a eliminar
-  async delete(usuarioId) {
-    // Procedemos con la eliminación si no está relacionada
-    const [result] = await connection.query("DELETE FROM usuarios WHERE id = ?", [usuarioId]);
-
-    if (result.affectedRows === 0) {
-      return {
-        error: true,
-        mensaje: "No se pudo eliminar el usuario, ocurrio un error inesperado.",
-      };
+  // Método para obtener un usuario con sus permisos
+  async getPermisosByIdUsuario(idUsuario) {
+    try {
+      const [rows] = await connection.query(
+        `select p.nombre_permiso
+        from usuarios u
+        join roles r on u.id_rol = r.id
+        join permisos_roles pr on r.id = pr.id_rol
+        join permisos p on pr.id_permiso = p.id
+        where u.id = ?;`, [idUsuario]);
+      if (rows.length === 0) {
+        // Retorna un array vacío si no se encuentra el usuario
+        return [];
+      }
+      // Retorna un arreglo con los nombres de los permisos
+      return rows.map(row => row.nombre_permiso); //Uso map para crear un arreglo transformado
+    } catch (error) {
+      throw new Error("Error al obtener los permisos del usuario");
     }
-    return {
-      error: false,
-      mensaje: "Usuario eliminado exitosamente.",
-    };
   }
 
 }
