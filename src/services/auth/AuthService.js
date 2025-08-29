@@ -22,6 +22,9 @@ class AuthService {
       // Obtengo el objeto con los datos del usuario al consultar por cedulas
       const dataUser = usuario[0];
 
+      // console.log(dataUser);
+
+
       // Instancio la clase crud para poder acceder a sus metodos.
       const CRUDInstance = new CRUD();
 
@@ -75,7 +78,7 @@ class AuthService {
         error: false,
         code: 200,
         message: "Autenticación exitosa",
-        data: { ...dataUser, accessToken, refreshToken, permisos }
+        data: { dataUser, accessToken, refreshToken, permisos }
       };
     } catch (e) {
       return {

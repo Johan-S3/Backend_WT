@@ -32,11 +32,6 @@ export const login = async (req, res) => {
     secure: false,
     sameSite: "lax"
   });
-  res.cookie("usuario", JSON.stringify(dataUser), {
-    httpOnly: false,
-    secure: false,
-    sameSite: "lax"
-  });
 
   return ResponseProvider.success(
     res,
@@ -47,16 +42,16 @@ export const login = async (req, res) => {
 };
 
 export const refreshToken = async (req, res) => {
-  const refreshToken = req.cookies.refreshToken;
+  const refreshTokenRec = req.cookies.refreshToken;
 
-  if (!refreshToken) {
+  if (!refreshTokenRec) {
     return ResponseProvider.error(
       res,
       "Refresh token no enviado",
       401
     );
   }
-  const resp = await AuthService.refresh(refreshToken);
+  const resp = await AuthService.refresh(refreshTokenRec);
   if (resp.error) {
     return ResponseProvider.error(
       res,
@@ -65,10 +60,17 @@ export const refreshToken = async (req, res) => {
     );
   }
 
-  const { accessToken } = resp.data;
+  const { accessToken, refreshToken } = resp.data;
 
   // ✅ Actualizar cookie con el nuevo accessToken
   res.cookie("accessToken", accessToken, {
+    httpOnly: false,
+    secure: false,
+    sameSite: "lax",
+  });
+
+  // ✅ Actualizar cookie con el nuevo refreshToken
+  res.cookie("refreshToken", refreshToken, {
     httpOnly: false,
     secure: false,
     sameSite: "lax",
