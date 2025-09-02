@@ -6,6 +6,33 @@ class RolService {
 
   static async getRoles() {
     try {
+      const CRUDInstance = new CRUD();
+      const roles = await CRUDInstance.getAll("roles", "los roles");
+      // Validamos si no hay roles
+      if (roles.length === 0) {
+        return {
+          error: true,
+          code: 404,
+          message: "Roles no encontrados",
+        };
+      }
+      return {
+        error: false,
+        code: 200,
+        message: "Roles obtenidos correctamente",
+        data: roles,
+      };
+    } catch (error) {
+      return {
+        error: true,
+        code: 500,
+        message: "Error al obtener los roles",
+      };
+    }
+  }
+
+  static async getRolesUnicos() {
+    try {
       const rolInstance = new Rol();
       const roles = await rolInstance.getRolesPermitidos();
       // Validamos si no hay roles
@@ -112,7 +139,7 @@ class RolService {
       const CRUDInstance = new CRUD();
 
       // Consultamos el rol por id
-      const rolExistente = await CRUDInstance.getByID("roles", id, "el rol");      
+      const rolExistente = await CRUDInstance.getByID("roles", id, "el rol");
       // Validamos si no existe el rol
       if (rolExistente.length === 0) {
         return {
@@ -126,7 +153,7 @@ class RolService {
 
       // Se buscar un rol por el nombre ingresado
       const rolNameExiste = await rolInstance.getByName(nombre_rol.trim());
-      
+
       // Validamos si existe el rol con ese nombre
       if (rolNameExiste.length != 0 && nombre_rol.trim().toLowerCase() != rolExistente[0].nombre_rol.toLowerCase()) {
         return {

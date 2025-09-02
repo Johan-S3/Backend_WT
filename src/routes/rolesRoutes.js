@@ -14,9 +14,15 @@ const router = express.Router();
 
 /**
  * @route GET /roles
- * @description Obtiene el listado completo de roles.
+ * @description Obtiene el listado completo de roles para el superAdmin.
  */
 router.get('/', RolController.getAllRoles);
+
+/**
+ * @route GET /roles/unicos
+ * @description Obtiene el listado completo de roles para el superAdmin.
+ */
+router.get('/unicos', RolController.getAllRolesUnicos);
 
 /**
  * @route GET /roles/:id

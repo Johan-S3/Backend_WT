@@ -31,6 +31,62 @@ class UsuarioController {
     }
   };
 
+  // Obtener todos los usuarios gerentes
+  static getAllGerentes = async (req, res) => {
+    try {
+      // Llamamos al servicio para obtener los usuarios
+      const response = await UsuarioService.getGerentes();
+      // Validamos si no hay usuarios
+      if (response.error) {
+        // Llamamos el provider para centralizar los mensajes de respuesta
+        return ResponseProvider.error(
+          res,
+          response.message,
+          response.code
+        );
+      } else {
+        // Llamamos el provider para centralizar los mensajes de respuesta
+        return ResponseProvider.success(
+          res,
+          response.data,
+          response.message,
+          response.code
+        );
+      }
+    } catch (error) {
+      // Llamamos el provider para centralizar los mensajes de respuesta
+      ResponseProvider.error(res, "Error al interno en el servidor", 500);
+    }
+  };
+
+  // Obtener todos los usuarios gerentes
+  static getAllLavadores = async (req, res) => {
+    try {
+      // Llamamos al servicio para obtener los usuarios
+      const response = await UsuarioService.getLavadores();
+      // Validamos si no hay usuarios
+      if (response.error) {
+        // Llamamos el provider para centralizar los mensajes de respuesta
+        return ResponseProvider.error(
+          res,
+          response.message,
+          response.code
+        );
+      } else {
+        // Llamamos el provider para centralizar los mensajes de respuesta
+        return ResponseProvider.success(
+          res,
+          response.data,
+          response.message,
+          response.code
+        );
+      }
+    } catch (error) {
+      // Llamamos el provider para centralizar los mensajes de respuesta
+      ResponseProvider.error(res, "Error al interno en el servidor", 500);
+    }
+  };
+
   // Obtener un usuario por su ID
   static getUsuarioById = async (req, res) => {
     const { id } = req.params;
@@ -168,7 +224,7 @@ class UsuarioController {
       }
     } catch (error) {
       // Llamamos el provider para centralizar los mensajes de respuesta
-      ResponseProvider.error(res, "Error interno en el servidor" , 500);
+      ResponseProvider.error(res, "Error interno en el servidor", 500);
     }
   };
 

@@ -34,6 +34,62 @@ class UsuarioService {
     }
   }
 
+  static async getGerentes() {
+    try {
+      const usuarioInstance = new Usuario();
+      const usuarios = await usuarioInstance.getUsuariosGerentes();
+      // Validamos si no hay usuarios
+      if (usuarios.length === 0) {
+        return {
+          error: true,
+          code: 404,
+          message: "No hay usuarios registrados",
+        };
+      }
+      // Retornamos los usuarios obtenidas
+      return {
+        error: false,
+        code: 200,
+        message: "Usuarios obtenidas correctamente",
+        data: usuarios,
+      };
+    } catch (error) {
+      return {
+        error: true,
+        code: 500,
+        message: "Error al obtener los usuarios",
+      };
+    }
+  }
+
+  static async getLavadores() {
+    try {
+      const usuarioInstance = new Usuario();
+      const usuarios = await usuarioInstance.getUsuariosLavadores();
+      // Validamos si no hay usuarios
+      if (usuarios.length === 0) {
+        return {
+          error: true,
+          code: 404,
+          message: "No hay usuarios registrados",
+        };
+      }
+      // Retornamos los usuarios obtenidas
+      return {
+        error: false,
+        code: 200,
+        message: "Usuarios obtenidas correctamente",
+        data: usuarios,
+      };
+    } catch (error) {
+      return {
+        error: true,
+        code: 500,
+        message: "Error al obtener los usuarios",
+      };
+    }
+  }
+
   static async getUsuarioById(id) {
     try {
       const CRUDInstance = new CRUD();
@@ -96,7 +152,7 @@ class UsuarioService {
       // Se busca un rol por el id dle rol ingresado
       const rolExiste = await CRUDInstance.getByID("roles", id_rol, "el rol");
       console.log(rolExiste);
-      
+
       // Validamos si existe el rol con ese ID
       if (rolExiste.length === 0) {
         return {
@@ -150,7 +206,7 @@ class UsuarioService {
       // Consultamos el usuario por id
       const usuarioExistente = await CRUDInstance.getByID("usuarios", id, "el usuario");
       console.log(usuarioExistente);
-      
+
       // Validamos si no existe el usuario
       if (usuarioExistente.length === 0) {
         return {
@@ -238,13 +294,13 @@ class UsuarioService {
         };
       }
 
-      const { contrasena_actual, contrasena_nueva} = campos;
+      const { contrasena_actual, contrasena_nueva } = campos;
 
       if (!await bcrypt.compare(contrasena_actual, usuarioExistente[0].contrasena)) {
-        return { 
-          error: true, 
-          code: 401, 
-          message: "La contraseña actual es incorrecta" 
+        return {
+          error: true,
+          code: 401,
+          message: "La contraseña actual es incorrecta"
         };
       }
 
@@ -253,7 +309,7 @@ class UsuarioService {
       // 10 = número de "salt rounds", mientras más grande, más seguro pero más lento
 
       // Se intenta actualizar la contrasena del usuario
-      const usuario = await CRUDInstance.update("usuarios", id, { contrasena: contrasenaHash}, "la contraseña del usuario");
+      const usuario = await CRUDInstance.update("usuarios", id, { contrasena: contrasenaHash }, "la contraseña del usuario");
       // Validamos si no se pudo actualizar la contraseña
       if (usuario === null) {
         return {

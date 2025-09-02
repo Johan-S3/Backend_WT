@@ -105,8 +105,13 @@ insert into permisos (nombre_permiso, descripcion_permiso) values
 ('detalle_factura.update', 'Editar un detalle de factura'),
 ('detalle_factura.delete', 'Eliminar un detalle de factura');
 
+-- Insertar permisos para conductores
+insert into permisos (nombre_permiso, descripcion_permiso) values
+('conductores.index', 'Listar conductores'),
+('conductores.create', 'Crear conductores'),
+('conductores.update', 'Editar conductores'),
+('conductores.delete', 'Eliminar conductores');
+
 
 select * from usuarios;
 
-insert into usuarios(cedula, nombre, telefono, correo, contrasena, id_rol) values
-(1102357038, "Johan Polo", 3227775843, "johan.s310806@gmail.com", "Contrasena1234", 1);

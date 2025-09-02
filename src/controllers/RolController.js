@@ -3,11 +3,11 @@ import RolService from "../services/RolService.js";
 
 class RolController {
 
-  // Obtener todos los roles
-  static getAllRoles = async (req, res) => {    
+  // Obtener los roles 
+  static getAllRoles = async (req, res) => {
     try {
       // Llamamos al servicio para obtener los roles
-      const response = await RolService.getRoles();   
+      const response = await RolService.getRoles();
       // Validamos si no hay ROLES
       if (response.error) {
         // Llamamos el provider para centralizar los mensajes de respuesta
@@ -24,7 +24,34 @@ class RolController {
           response.message,
           response.code
         );
-       }
+      }
+    } catch (error) {
+      // Llamamos el provider para centralizar los mensajes de respuesta
+      ResponseProvider.error(res, "Error al interno en el servidor", 500);
+    }
+  };
+  // Obtener los roles unicos
+  static getAllRolesUnicos = async (req, res) => {
+    try {
+      // Llamamos al servicio para obtener los roles
+      const response = await RolService.getRolesUnicos();
+      // Validamos si no hay ROLES
+      if (response.error) {
+        // Llamamos el provider para centralizar los mensajes de respuesta
+        return ResponseProvider.error(
+          res,
+          response.message,
+          response.code
+        );
+      } else {
+        // Llamamos el provider para centralizar los mensajes de respuesta        
+        return ResponseProvider.success(
+          res,
+          response.data,
+          response.message,
+          response.code
+        );
+      }
     } catch (error) {
       // Llamamos el provider para centralizar los mensajes de respuesta
       ResponseProvider.error(res, "Error al interno en el servidor", 500);
@@ -44,7 +71,7 @@ class RolController {
           response.message,
           response.code
         );
-      } else {        
+      } else {
         // Llamamos el provider para centralizar los mensajes de respuesta
         return ResponseProvider.success(
           res,
@@ -90,7 +117,7 @@ class RolController {
   static updateRol = async (req, res) => {
     const { id } = req.params;
     // Los campos a actualizar se pasan en el cuerpo de la solicitud
-    const campos = req.body; 
+    const campos = req.body;
     try {
       // Crear una instancia de la clase Rol
       const rol = await RolService.updateRol(id, campos);

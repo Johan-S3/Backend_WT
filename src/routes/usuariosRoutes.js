@@ -20,6 +20,18 @@ const router = express.Router();
 router.get('/', UsuarioController.getAllUsuarios);
 
 /**
+ * @route GET /usuarios/gerentes
+ * @description Obtiene el listado completo de usuarios gerentes. 
+ */
+router.get('/gerentes', UsuarioController.getAllGerentes);
+
+/**
+ * @route GET /usuarios/lavadores
+ * @description Obtiene el listado completo de usuarios gerentes. 
+ */
+router.get('/lavadores', UsuarioController.getAllLavadores);
+
+/**
  * @route GET /usuarios/:id
  * @description Obtiene el usuario por el id ingresado.
  * @param {number} id - Identificador del usuario a consultar.

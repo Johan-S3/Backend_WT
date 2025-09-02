@@ -16,15 +16,15 @@ export function validarLogin(req, res, next) {
     });
   }
 
-  // Mínimo 8 con al menos 1 letra y 1 número (ajusta si quieres)
-  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,20}$/;
-  // Se valida si no hay contraseña o no cumple con la expresion regular.
-  if (!contrasena || !passwordRegex.test(contrasena)) {
-    errors.push({
-      campo: "Contrasena",
-      message: "Contraseña inválida (Al menos una letra y numero. Min 8 caracteres)"
-    });
-  }
+  // // Mínimo 8 con al menos 1 letra y 1 número (ajusta si quieres)
+  // const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,20}$/;
+  // // Se valida si no hay contraseña o no cumple con la expresion regular.
+  // if (!contrasena || !passwordRegex.test(contrasena)) {
+  //   errors.push({
+  //     campo: "Contrasena",
+  //     message: "Contraseña inválida (Al menos una letra y numero. Min 8 caracteres)"
+  //   });
+  // }
 
   // Si el arreglo errores tiene longitud mayor a 0. Es decir, hay errores...
   if (errors.length) {
