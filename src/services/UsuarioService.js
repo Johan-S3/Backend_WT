@@ -8,8 +8,8 @@ class UsuarioService {
 
   static async getUsuarios() {
     try {
-      const CRUDInstance = new CRUD();
-      const usuarios = await CRUDInstance.getAll("usuarios", "los usuarios");
+      const usuarioInstance = new Usuario();
+      const usuarios = await usuarioInstance.getUsuarios();
       // Validamos si no hay usuarios
       if (usuarios.length === 0) {
         return {

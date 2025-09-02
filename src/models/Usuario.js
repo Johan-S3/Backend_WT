@@ -2,6 +2,25 @@ import connection from "../utils/db.js";
 
 class Usuario {
   // Método para obtener una usuario por su cedula
+  async getUsuarios() {
+    try {
+      const [rows] = await connection.query(
+        `SELECT U.id, U.cedula, U.nombre, U.telefono, U.correo, R.nombre_rol 
+        FROM usuarios u 
+        INNER JOIN roles R on R.id = U.id_rol
+        WHERE U.id != 1`);
+      if (rows.length === 0) {
+        // Retorna un array vacío si no se encuentra el usuario
+        return [];
+      }
+      // Retorna el usuario encontrado
+      return rows;
+    } catch (error) {
+      throw new Error("Error al obtener el usuario");
+    }
+  }
+  
+  // Método para obtener una usuario por su cedula
   async getByCedula(cedula) {
     try {
       const [rows] = await connection.query(

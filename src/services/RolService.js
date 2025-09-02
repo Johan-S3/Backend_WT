@@ -6,8 +6,8 @@ class RolService {
 
   static async getRoles() {
     try {
-      const CRUDInstance = new CRUD();
-      const roles = await CRUDInstance.getAll("roles", "los roles");
+      const rolInstance = new Rol();
+      const roles = await rolInstance.getRolesPermitidos();
       // Validamos si no hay roles
       if (roles.length === 0) {
         return {
