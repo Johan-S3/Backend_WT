@@ -1,19 +1,47 @@
 import CRUD from "../models/CRUD.js";
 import ItemTipoLavado from "../models/ItemTipoLavado.js";
 import Lavado from "../models/Lavado.js";
+import TipoLavado from "../models/TipoLavado.js";
 
 class TipoLavadoService {
 
-  static async getTiposLavados() {
+  static async getAllTiposLavados() {
     try {
-      const CRUDInstance = new CRUD();
-      const tiposLavados = await CRUDInstance.getAll("tipos_lavados", "los tipos de lavados");
+      const tipoLavadoInstance = new TipoLavado();
+      const tiposLavados = await tipoLavadoInstance.getTiposLavados();
       // Validamos si no hay tipos de lavados
       if (tiposLavados.length === 0) {
         return {
           error: true,
           code: 404,
           message: "No hay tipos de lavados registrados",
+        };
+      }
+      // Retornamos los tipos de lavados obtenidos
+      return {
+        error: false,
+        code: 200,
+        message: "Tipos de lavados obtenidos correctamente",
+        data: tiposLavados,
+      };
+    } catch (error) {
+      return {
+        error: true,
+        code: 500,
+        message: "Error al obtener los tipos de lavados",
+      };
+    }
+  }
+  static async getTiposLavadosLibres() {
+    try {
+      const tipoLavadoInstance = new TipoLavado();
+      const tiposLavados = await tipoLavadoInstance.getTiposLavadosLibres();
+      // Validamos si no hay tipos de lavados
+      if (tiposLavados.length === 0) {
+        return {
+          error: true,
+          code: 404,
+          message: "No hay tipos de lavados libres registrados",
         };
       }
       // Retornamos los tipos de lavados obtenidos

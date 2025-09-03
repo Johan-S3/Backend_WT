@@ -4,7 +4,7 @@ class Rol {
   // Método para obtener una rol por su nombre
   async getRolesPermitidos() {
     try {
-      const [rows] = await connection.query("SELECT * FROM roles WHERE id IN (2,3)");
+      const [rows] = await connection.query("SELECT * FROM roles WHERE id != 1");
       if (rows.length === 0) {
         // Retorna un array vacío si no se encuentran roles
         return [];

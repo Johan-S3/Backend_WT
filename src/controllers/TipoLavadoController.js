@@ -3,10 +3,38 @@ import TipoLavadoService from "../services/TipoLavadoService.js";
 
 class TipoLavadoController {
   // Obtener todos los tipos de lavados
+  static getAllTiposLavadosLibres = async (req, res) => {
+    try {
+      // Llamamos al servicio para obtener los registros
+      const response = await TipoLavadoService.getTiposLavadosLibres();
+      // Validamos si hay errores en la respuesta de la peticion para mostrar
+      if (response.error) {
+        // Llamamos el provider para centralizar los mensajes de respuesta
+        return ResponseProvider.error(
+          res,
+          response.message,
+          response.code
+        );
+      } else {
+        // Llamamos el provider para centralizar los mensajes de respuesta
+        return ResponseProvider.success(
+          res,
+          response.data,
+          response.message,
+          response.code
+        );
+      }
+    } catch (error) {
+      // Llamamos el provider para centralizar los mensajes de respuesta
+      ResponseProvider.error(res, "Error al interno en el servidor", 500);
+    }
+  };
+
+  // Obtener todos los tipos de lavados
   static getAllTiposLavados = async (req, res) => {
     try {
       // Llamamos al servicio para obtener los registros
-      const response = await TipoLavadoService.getTiposLavados();
+      const response = await TipoLavadoService.getAllTiposLavados();
       // Validamos si hay errores en la respuesta de la peticion para mostrar
       if (response.error) {
         // Llamamos el provider para centralizar los mensajes de respuesta

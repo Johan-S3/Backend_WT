@@ -1,11 +1,12 @@
 import CRUD from "../models/CRUD.js";
+import ItemTipoLavado from "../models/ItemTipoLavado.js";
 
 class ItemTipoLavadoService {
 
   static async getItemsTiposLavados() {
     try {
-      const CRUDInstance = new CRUD();
-      const itemsTiposLavados = await CRUDInstance.getAll("items_tipos_lavados", "los registros de la relación entre los items y tipos de lavados");
+      const itemTipoLavadoInstance = new ItemTipoLavado();
+      const itemsTiposLavados = await itemTipoLavadoInstance.getItemsTiposLavados();
       // Validamos si no hay items de lavados
       if (itemsTiposLavados.length === 0) {
         return {
@@ -182,10 +183,10 @@ class ItemTipoLavadoService {
 
   static async deleteItemTipoLavado(id) {
     try {
-      const CRUDInstance = new CRUD();
+      const itemTipoLavadoInstance = new ItemTipoLavado();
 
       // Se busca una relacion por el ID ingresado
-      const itemTipoLavadoExiste = await CRUDInstance.getByID("items_tipos_lavados", id, "la relación entre el item y el tipo de lavado");
+      const itemTipoLavadoExiste = await itemTipoLavadoInstance.getByIdTipoLavado(id);
       // Validamos si existe el item de lavado con ese ID
       if (itemTipoLavadoExiste.length == 0) {
         return {
@@ -196,7 +197,7 @@ class ItemTipoLavadoService {
       }
 
       // Procedemos a eliminar el item de lavado
-      const resultado = await CRUDInstance.delete("items_tipos_lavados", id, "la relación entre el item y el tipo de lavado");
+      const resultado = await itemTipoLavadoInstance.deleteByIdTipoLavado(id);
       // Validamos si no se pudo eliminar la relación
       if (!resultado) {
         return {

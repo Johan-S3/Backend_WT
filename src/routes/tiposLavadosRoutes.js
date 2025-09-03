@@ -19,6 +19,12 @@ const router = express.Router();
 router.get('/', TipoLavadoController.getAllTiposLavados);
 
 /**
+ * @route GET /tiposLavados/free
+ * @description Obtiene el listado completo de las relaciones entre los tipo de lavados y los usuarios.
+ */
+router.get('/free', TipoLavadoController.getAllTiposLavadosLibres);
+
+/**
  * @route GET /tiposLavados/:id
  * @description Obtiene el tipo de lavado por el id ingresado.
  * @param {number} id - Identificador del tipo de lavado a consultar.

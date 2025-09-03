@@ -1,13 +1,14 @@
 import CRUD from "../models/CRUD.js";
 import DetalleFactura from "../models/DetalleFactura.js";
+import ItemLavado from "../models/ItemLavado.js";
 import ItemTipoLavado from "../models/ItemTipoLavado.js";
 
 class ItemLavadoService {
 
   static async getItemsLavados() {
     try {
-      const CRUDInstance = new CRUD();
-      const itemsLavados = await CRUDInstance.getAll("items_lavados", "los items de lavados");
+      const itemLavadoInstance = new ItemLavado();
+      const itemsLavados = await itemLavadoInstance.getItemsLavados();
       // Validamos si no hay items de lavados
       if (itemsLavados.length === 0) {
         return {
@@ -55,6 +56,33 @@ class ItemLavadoService {
         error: true,
         code: 500,
         message: "Error al obtener el item de lavado",
+      };
+    }
+  }
+
+  static async getItemLavadoByIdTipoVeh(id) {
+    try {
+      const itemLavadoInstance = new ItemLavado();
+      const itemsLavado = await itemLavadoInstance.getByIdTipoVehiculo(id);
+      // Validamos si no hay tipos de lavados con ese ID
+      if (itemsLavado.length === 0) {
+        return {
+          error: true,
+          code: 404,
+          message: "Items de lavados no encontrado",
+        };
+      }
+      return {
+        error: false,
+        code: 200,
+        message: "Items de lavados obtenido correctamente",
+        data: itemsLavado,
+      };
+    } catch (error) {
+      return {
+        error: true,
+        code: 500,
+        message: "Error al obtener los items de lavados",
       };
     }
   }

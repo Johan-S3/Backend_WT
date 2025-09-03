@@ -26,6 +26,13 @@ router.get('/', ItemLavadoController.getAllItemsLavados);
 router.get('/:id', ItemLavadoController.getItemLavadoById);
 
 /**
+ * @route GET /itemsLavados/tipoVeh/:id
+ * @description Obtiene el item de lavado por el id ingresado.
+ * @param {number} id - Identificador del item de lavado a consultar.
+ */
+router.get('/tipoVeh/:id', ItemLavadoController.getItemLavadoByIdTipoVeh);
+
+/**
  * @route POST /itemsLavados
  * @description Crea un nuevo item de lavado en el sistema.
  * @middleware validarItemLavado - Valida los campos requeridos antes de ejecutar la acción.

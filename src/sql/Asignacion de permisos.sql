@@ -35,6 +35,8 @@ where nombre_permiso = 'usuarios.index'
    or nombre_permiso like 'servicios_vehiculos.%'
    or nombre_permiso like 'vehiculos.%'
    or nombre_permiso like 'items_lavados.%'
+   or nombre_permiso like 'tipos_lavados.%'
+   or nombre_permiso in ('items_tipos_lavados.index','items_tipos_lavados.create','items_tipos_lavados.delete')
    or nombre_permiso = 'facturas.index'
    or nombre_permiso = 'detalle_factura.index';
 
@@ -54,14 +56,15 @@ where nombre_permiso = 'usuarios.index'
 insert into permisos_roles (id_rol, id_permiso)
 select 3, id
 from permisos
-where nombre_permiso = 'usuarios.index'
+where nombre_permiso = 'lavadores.index'
    or nombre_permiso = 'tipos_vehiculos.index'
    or nombre_permiso = 'servicios_vehiculos.index'
    or nombre_permiso in ('vehiculos.index','vehiculos.create','vehiculos.update')
    or nombre_permiso in ('vehiculos_usuarios.index','vehiculos_usuarios.create')
-   or nombre_permiso like 'tipos_lavados.%'
    or nombre_permiso like 'conductores.%'
-   or nombre_permiso like 'items_tipos_lavados.%'
+   or nombre_permiso = 'tipos_lavados.index'
+   or nombre_permiso = 'items_tipos_lavados.index'
+   or nombre_permiso = 'items_lavados.index'
    or nombre_permiso like 'lavados.%'
    or nombre_permiso = 'facturas.index'
    or nombre_permiso = 'detalle_factura.index';

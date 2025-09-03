@@ -113,5 +113,13 @@ insert into permisos (nombre_permiso, descripcion_permiso) values
 ('conductores.delete', 'Eliminar conductores');
 
 
+-- Insertar permisos para conductores
+insert into permisos (nombre_permiso, descripcion_permiso) values
+('lavadores.index', 'Listar lavadores'),
+('lavadores.create', 'Crear lavadores'),
+('lavadores.update', 'Editar lavadores'),
+('lavadores.delete', 'Eliminar lavadores');
+
+
 select * from usuarios;
 

@@ -58,6 +58,34 @@ class ItemLavadoController {
     }
   };
 
+  // Obtener los tipos de lavados por el ID del tipo de vehiculo
+  static getItemLavadoByIdTipoVeh = async (req, res) => {
+    const { id } = req.params;
+    try {
+      // Llamamos al servicio para obtener el tipoo de lavado por su ID
+      const response = await ItemLavadoService.getItemLavadoByIdTipoVeh(id);
+      if (response.error) {
+        // Llamamos el provider para centralizar los mensajes de respuesta
+        return ResponseProvider.error(
+          res,
+          response.message,
+          response.code
+        );
+      } else {
+        // Llamamos el provider para centralizar los mensajes de respuesta
+        return ResponseProvider.success(
+          res,
+          response.data,
+          response.message,
+          response.code
+        );
+      }
+    } catch (error) {
+      // Llamamos el provider para centralizar los mensajes de respuesta
+      ResponseProvider.error(res, "Error interno en el servidor", 500);
+    }
+  };
+
   // Crear un item de lavado
   static createItemLavado = async (req, res) => {
     //Obtiene el cuerpo de la solicitud HTTP, los campos de la tabla
