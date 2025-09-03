@@ -52,13 +52,8 @@ class AuthService {
       // Validar contraseña según rol
       let contrasenaOk = false;
 
-      if (user.id_rol == 1) {
-        // Rol 1: contraseña en texto plano
-        contrasenaOk = contrasena === user.contrasena;
-      } else {
-        // Roles con contraseña encriptada
-        contrasenaOk = await bcrypt.compare(contrasena, user.contrasena);
-      }
+      // Roles con contraseña encriptada
+      contrasenaOk = await bcrypt.compare(contrasena, user.contrasena);
 
       if (!contrasenaOk) {
         return {

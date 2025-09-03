@@ -26,6 +26,6 @@ export const camposLogin = [
 ];
 
 export const camposContrasena = [
-  { name: "contrasena_actual", alias: "Contraseña actual", required: true, minLength: 8, maxLength: 20 },
+  // { name: "contrasena_actual", alias: "Contraseña actual", required: true, minLength: 8, maxLength: 20 },
   { name: "contrasena_nueva", alias: "Contraseña nueva", required: true, minLength: 8, maxLength: 20 }
 ];

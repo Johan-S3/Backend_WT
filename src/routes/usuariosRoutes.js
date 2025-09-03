@@ -62,6 +62,13 @@ router.put('/:id', validarUsuario, UsuarioController.updateUsuario);
 router.patch('/contrasena/:id', validarContrasena, UsuarioController.updatePasswordUsuario);
 
 /**
+ * @route PATCH /usuarios/activo:id
+ * @description Actualiza el estado de un usuario existente por su ID.
+ * @param {number} id - Identificador del usuario a actualizar.
+ */
+router.patch('/activo/:id', UsuarioController.updateActivoUsuario);
+
+/**
  * @route DELETE /usuarios/:id
  * @description Elimina un usuario por su ID.
  * @param {number} id - Identificador del usuario a eliminar.

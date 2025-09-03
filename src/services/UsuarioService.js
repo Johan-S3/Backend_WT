@@ -278,6 +278,52 @@ class UsuarioService {
     }
   }
 
+  static async updateActivoUsuario(id) {
+    try {
+      // Se instancia la clase crud para poder acceder a sus metodos.
+      const CRUDInstance = new CRUD();
+      // Se instancia la clase usuario para poder acceder a sus metodos.
+      const usuarioInstance = new Usuario();
+
+      // Consultamos el usuario por id
+      const usuarioExistente = await CRUDInstance.getByID("usuarios", id, "el usuario");
+      console.log(usuarioExistente);
+
+      // Validamos si no existe el usuario
+      if (usuarioExistente.length === 0) {
+        return {
+          error: true,
+          code: 404,
+          message: "usuario no encontrado",
+        };
+      }
+
+      // Se intenta actualizar el estado del usuario
+      const usuario = await usuarioInstance.putActivoUsuario(id);
+      // Validamos si no se pudo actualizar el usuario
+      if (usuario === null) {
+        return {
+          error: true,
+          code: 400,
+          message: "Error al inactivar el usuario",
+        };
+      }
+      // Retornamos el usuario actualizada
+      return {
+        error: false,
+        code: 200,
+        message: "Usuario inactivado correctamente",
+        data: usuario,
+      };
+    } catch (error) {
+      return {
+        error: true,
+        code: 500,
+        message: "Error interno al inactivar el usuario" + error,
+      };
+    }
+  }
+
   static async updatePasswordUsuario(id, campos) {
     try {
       // Se instancia la clase crud para poder acceder a sus metodos.
@@ -294,7 +340,7 @@ class UsuarioService {
         };
       }
 
-      const { contrasena_actual, contrasena_nueva } = campos;
+      const { contrasena_actual, contrasena_nueva } = campos; 
 
       if (!await bcrypt.compare(contrasena_actual, usuarioExistente[0].contrasena)) {
         return {

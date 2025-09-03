@@ -171,6 +171,35 @@ class UsuarioController {
     }
   };
 
+
+  // Actualizar el estado de un usuario
+  static updateActivoUsuario = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+      // Crear una instancia de la clase usuario
+      const usuario = await UsuarioService.updateActivoUsuario(id);
+      // Validamos si no se pudo actualizar el estado del usuario
+      if (usuario.error) {
+        ResponseProvider.error(
+          res,
+          usuario.message,
+          usuario.code
+        );
+      }
+      // Retornamos la respuesta cuando se actualiza correctamente
+      ResponseProvider.success(
+        res,
+        null,
+        usuario.message,
+        usuario.code
+      );
+    } catch (error) {
+      // Llamamos el provider para centralizar los mensajes de respuesta
+      ResponseProvider.error(res, "Error interno en el servidor" + error, 500);
+    }
+  };
+
   // Actualizar la contraseña de un usuario
   static updatePasswordUsuario = async (req, res) => {
     const { id } = req.params;

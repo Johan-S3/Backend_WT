@@ -68,4 +68,4 @@ where nombre_permiso = 'usuarios.index'
    
    
    insert into usuarios(cedula, nombre, telefono, correo, contrasena, id_rol) values
-(1102357038, "Johan Polo", 3227775843, "johan.s310806@gmail.com", "Contrasena1234", 1);
+(1102357038, "Johan Polo", 3227775843, "johan.s310806@gmail.com", "$2a$10$gIEnPJS2JC4Bk8epHuEw3OICcwov98JE5yKGpShXDHqCv2mQzi4Vq", 1);

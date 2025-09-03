@@ -5,7 +5,7 @@ class Usuario {
   async getUsuarios() {
     try {
       const [rows] = await connection.query(
-        `SELECT U.id, U.cedula, U.nombre, U.telefono, U.correo, R.nombre_rol 
+        `SELECT U.id, U.cedula, U.nombre, U.telefono, U.correo, U.activo, R.nombre_rol 
         FROM usuarios u 
         INNER JOIN roles R on R.id = U.id_rol
         WHERE U.id != 1`);
@@ -24,7 +24,7 @@ class Usuario {
   async getUsuariosGerentes() {
     try {
       const [rows] = await connection.query(
-        `SELECT U.id, U.cedula, U.nombre, U.telefono, U.correo, R.nombre_rol 
+        `SELECT U.id, U.cedula, U.nombre, U.telefono, U.correo, U.activo, R.nombre_rol 
         FROM usuarios u 
         INNER JOIN roles R on R.id = U.id_rol
         WHERE U.id_rol = 3`);
@@ -42,7 +42,7 @@ class Usuario {
   async getUsuariosLavadores() {
     try {
       const [rows] = await connection.query(
-        `SELECT U.id, U.cedula, U.nombre, U.telefono, U.correo, R.nombre_rol 
+        `SELECT U.id, U.cedula, U.nombre, U.telefono, U.correo, U.activo, R.nombre_rol 
         FROM usuarios u 
         INNER JOIN roles R on R.id = U.id_rol
         WHERE U.id_rol = 4`);
@@ -61,7 +61,7 @@ class Usuario {
   async getByCedula(cedula) {
     try {
       const [rows] = await connection.query(
-        `SELECT U.id, U.cedula, U.nombre, U.telefono, U.correo, U.id_rol, R.nombre_rol
+        `SELECT U.id, U.cedula, U.nombre, U.telefono, U.correo, U.id_rol, U.activo, R.nombre_rol
         FROM usuarios u 
         INNER JOIN roles R on R.id = U.id_rol
         WHERE cedula = ?`, [cedula]);
@@ -107,6 +107,20 @@ class Usuario {
       }
       // Retorna un arreglo con los nombres de los permisos
       return rows.map(row => row.nombre_permiso); //Uso map para crear un arreglo transformado
+    } catch (error) {
+      throw new Error("Error al obtener los permisos del usuario");
+    }
+  }
+
+  // Método para inactivar un usuario
+  async putActivoUsuario(idUsuario) {
+    try {
+      const [result] = await connection.query(
+        `UPDATE usuarios SET activo = 0 WHERE id = ?;`, [idUsuario]);
+
+        if(result.affectedRows == 0) return false;
+
+        return true;
     } catch (error) {
       throw new Error("Error al obtener los permisos del usuario");
     }
