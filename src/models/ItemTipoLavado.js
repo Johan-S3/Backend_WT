@@ -22,6 +22,25 @@ class ItemTipoLavado {
     }
   }
 
+  // Método para obtener los items - de un tipo de lavado especifico
+  async getItemsByIdTipoLavado(id) {
+    try {
+      const [rows] = await connection.query(
+        `SELECT IL.id, IL.nombre, IL.descripcion, IL.valor
+        FROM items_tipos_lavados ITL
+        INNER JOIN items_lavados IL ON ITL.id_item_lavado = IL.id
+        WHERE ITL.id_tipo_lavado = ?`, [id]);
+      if (rows.length === 0) {
+        // Retorna un array vacío si no se encuentran registros
+        return [];
+      }
+      // Retorna el registro encontrado
+      return rows;
+    } catch (error) {
+      throw new Error("Error al obtener los items del tipo de lavado");
+    }
+  }
+
   // Método para obtener los registros de la relacion entre los items y los tipos de lavados por el Id del tipo de lavado
   async getByIdTipoLavado(idTipoLavado) {
     try {
@@ -56,7 +75,7 @@ class ItemTipoLavado {
   async deleteByIdTipoLavado(id) {
     try {
       const [result] = await connection.query(
-        `DELETE FROM items_tipos_lavados WHERE id_tipo_lavado = ?`,[id]
+        `DELETE FROM items_tipos_lavados WHERE id_tipo_lavado = ?`, [id]
       );
 
       // Si no se eliminó ninguna fila (es decir, no se encontró un registro con ese ID), devuelve false

@@ -58,6 +58,33 @@ class ItemTipoLavadoService {
     }
   }
 
+  static async getItemByIdTipoLavado(id) {
+    try {
+      const itemTipoLavadoInstance = new ItemTipoLavado();
+      const itemsTipoLavado = await itemTipoLavadoInstance.getItemsByIdTipoLavado(id);
+      // Validamos si no hay relacion entre el tipo y item de lavado con ese ID
+      if (itemsTipoLavado.length === 0) {
+        return {
+          error: true,
+          code: 404,
+          message: "Relación entre tipos y items de lavados no encontrado",
+        };
+      }
+      return {
+        error: false,
+        code: 200,
+        message: "Relación entre tipos y items de lavados obtenida correctamente",
+        data: itemsTipoLavado,
+      };
+    } catch (error) {
+      return {
+        error: true,
+        code: 500,
+        message: "Error al obtener la relación entre los items y tipos de lavados",
+      };
+    }
+  }
+
   static async createItemTipoLavado(campos) {
     try {
       // Se instancia la clase vehiculo para poder acceder a sus metodos.

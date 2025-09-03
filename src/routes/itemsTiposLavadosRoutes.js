@@ -26,6 +26,13 @@ router.get('/', ItemTipoLavadoController.getAllItemsTiposLavados);
 router.get('/:id', ItemTipoLavadoController.getItemTipoLavadoById);
 
 /**
+ * @route GET /itemsTiposLavados/tipoLav/:id
+ * @description Obtiene la relación por el id ingresado.
+ * @param {number} id - Identificador de del tipo de lavado para consultar sus items relacionados.
+ */
+router.get('/tipoLav/:id', ItemTipoLavadoController.getItemsByIdTipoLavado);
+
+/**
  * @route POST /itemsTiposLavados
  * @description Crea una nueva relación en el sistema.
  * @middleware validarItemTipoLavado - Valida los campos requeridos antes de ejecutar la acción.
