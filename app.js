@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import rolesRoutes from "./src/routes/rolesRoutes.js";
 import permisosRoutes from "./src/routes/permisosRoutes.js";
 import permisosRolesRoutes from "./src/routes/permisosRolesRoutes.js";
+import estadosUsuariosRoutes from "./src/routes/estadosUsuariosRoutes.js";
 import usuariosRoutes from "./src/routes/usuariosRoutes.js";
 import tiposVehiculosRoutes from "./src/routes/tiposVehiculosRoutes.js";
 import serviciosVehiculosRoutes from "./src/routes/serviciosVehiculosRoutes.js";
@@ -20,6 +21,7 @@ import lavadosRoutes from "./src/routes/lavadosRoutes.js";
 import facturasRoutes from "./src/routes/facturasRoutes.js";
 import detalleFacturaRoutes from "./src/routes/detalleFacturaRoutes.js";
 import authRoutes from "./src/routes/authRoutes.js";
+
 
 import { verifyToken } from "./src/middlewares/auth/verifyToken.js";
 
@@ -61,6 +63,7 @@ app.use(verifyToken);
 app.use("/roles", rolesRoutes); // Gestión de roles
 app.use("/permisos", permisosRoutes); // Gestión de permisos
 app.use("/permisosRoles", permisosRolesRoutes); // Gestión de permisos_roles
+app.use("/estadosUsuarios", estadosUsuariosRoutes); // Gestión de estados de usuarios
 app.use("/usuarios", usuariosRoutes); // Gestión de usuarios
 app.use("/tiposVehiculos", tiposVehiculosRoutes); // Gestión de tipos de vehiculos
 app.use("/serviciosVehiculos", serviciosVehiculosRoutes); // Gestión de servicios de vehiculos

@@ -41,7 +41,7 @@ class AuthService {
       }
 
       //   Se valida si el usuario no está activo para ingresar
-      if (user.activo === 0 || user.activo === false) {
+      if (user.id_estado == 2) {
         return {
           error: true,
           code: 403,

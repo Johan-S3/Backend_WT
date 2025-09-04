@@ -5,9 +5,10 @@ class Usuario {
   async getUsuarios() {
     try {
       const [rows] = await connection.query(
-        `SELECT U.id, U.cedula, U.nombre, U.telefono, U.correo, U.activo, R.nombre_rol 
+        `SELECT U.id, U.cedula, U.nombre, U.telefono, U.correo, EU.nombre_estado, R.nombre_rol 
         FROM usuarios u 
         INNER JOIN roles R on R.id = U.id_rol
+        INNER JOIN estados_usuarios EU on EU.id = U.id_estado
         WHERE U.id != 1`);
       if (rows.length === 0) {
         // Retorna un array vacío si no se encuentra el usuario
@@ -24,10 +25,11 @@ class Usuario {
   async getUsuariosGerentes() {
     try {
       const [rows] = await connection.query(
-        `SELECT U.id, U.cedula, U.nombre, U.telefono, U.correo, U.activo, R.nombre_rol 
+        `SELECT U.id, U.cedula, U.nombre, U.telefono, U.correo, EU.nombre_estado, R.nombre_rol 
         FROM usuarios u 
         INNER JOIN roles R on R.id = U.id_rol
-        WHERE U.id_rol = 3`);
+        INNER JOIN estados_usuarios EU on EU.id = U.id_estado
+        WHERE U.id = 3`);
       if (rows.length === 0) {
         // Retorna un array vacío si no se encuentra el usuario
         return [];
@@ -42,10 +44,11 @@ class Usuario {
   async getUsuariosLavadores() {
     try {
       const [rows] = await connection.query(
-        `SELECT U.id, U.cedula, U.nombre, U.telefono, U.correo, U.activo, R.nombre_rol 
+        `SELECT U.id, U.cedula, U.nombre, U.telefono, U.correo, EU.nombre_estado, R.nombre_rol 
         FROM usuarios u 
         INNER JOIN roles R on R.id = U.id_rol
-        WHERE U.id_rol = 4`);
+        INNER JOIN estados_usuarios EU on EU.id = U.id_estado
+        WHERE R.id = 4`);
       if (rows.length === 0) {
         // Retorna un array vacío si no se encuentra el usuario
         return [];
@@ -61,7 +64,7 @@ class Usuario {
   async getByCedula(cedula) {
     try {
       const [rows] = await connection.query(
-        `SELECT U.id, U.cedula, U.nombre, U.telefono, U.correo, U.id_rol, U.activo, R.nombre_rol
+        `SELECT U.id, U.cedula, U.nombre, U.telefono, U.correo, U.id_rol, U.id_estado, R.nombre_rol
         FROM usuarios u 
         INNER JOIN roles R on R.id = U.id_rol
         WHERE cedula = ?`, [cedula]);
@@ -113,16 +116,16 @@ class Usuario {
   }
 
   // Método para inactivar un usuario
-  async putActivoUsuario(idUsuario) {
+  async putEstadoUsuario(idUsuario) {
     try {
       const [result] = await connection.query(
-        `UPDATE usuarios SET activo = 0 WHERE id = ?;`, [idUsuario]);
+        `UPDATE usuarios SET id_estado = 2 WHERE id = ?;`, [idUsuario]);
 
         if(result.affectedRows == 0) return false;
 
         return true;
     } catch (error) {
-      throw new Error("Error al obtener los permisos del usuario");
+      throw new Error("Error al cambiar el estado del usuario");
     }
   }
 

@@ -278,7 +278,7 @@ class UsuarioService {
     }
   }
 
-  static async updateActivoUsuario(id) {
+  static async updateEstadoUsuario(id) {
     try {
       // Se instancia la clase crud para poder acceder a sus metodos.
       const CRUDInstance = new CRUD();
@@ -299,7 +299,7 @@ class UsuarioService {
       }
 
       // Se intenta actualizar el estado del usuario
-      const usuario = await usuarioInstance.putActivoUsuario(id);
+      const usuario = await usuarioInstance.putEstadoUsuario(id);
       // Validamos si no se pudo actualizar el usuario
       if (usuario === null) {
         return {

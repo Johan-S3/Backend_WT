@@ -16,6 +16,10 @@ id_permiso int not null,
 foreign key (id_rol) references roles(id),
 foreign key (id_permiso) references permisos(id));
 
+create table estados_usuarios(
+id int auto_increment primary key,
+nombre_estado varchar(10));
+
 create table usuarios(
 id int primary key auto_increment,
 cedula bigint not null unique,
@@ -24,8 +28,9 @@ telefono varchar(10) not null,
 correo varchar(50) not null unique,
 contrasena varchar(250) not null,
 id_rol int not null,
-activo boolean default true,
-foreign key (id_rol) references roles(id));
+id_estado int not null default 1,
+foreign key (id_rol) references roles(id),
+foreign key (id_estado) references estados_usuarios(id));
 
 create table tipos_vehiculos(
 id int auto_increment primary key,
@@ -46,13 +51,6 @@ id_tipo_vehiculo int not null,
 id_servicio_vehiculo int not null,
 foreign key(id_tipo_vehiculo) references tipos_vehiculos(id),
 foreign key(id_servicio_vehiculo) references servicios_vehiculos(id));
-
-create table vehiculos_usuarios(
-id int auto_increment primary key,
-id_vehiculo int not null,
-id_usuario int not null,
-foreign key(id_vehiculo) references vehiculos(id),
-foreign key(id_usuario) references usuarios(id));
 
 create table tipos_lavados(
 id int auto_increment primary key,
@@ -83,7 +81,7 @@ nombre_estado varchar(50) not null);
 create table lavados(
 id int auto_increment primary key,
 id_vehiculo int not null,
-id_tipo_lavado int not null,
+id_tipo_lavado int null,
 id_usuario int not null,
 id_estado int not null,
 foreign key(id_vehiculo) references vehiculos(id),
@@ -101,9 +99,8 @@ create table detalle_factura(
 id int auto_increment primary key,
 id_factura int not null,
 id_item_lavado int not null,
-nombre_item_snapshot varchar(25),
-cacntidad int not null,
-precio_unitario bigint not null,
+nombre_item varchar(25),
+precio_item bigint not null,
 foreign key(id_factura) references facturas(id),
 foreign key(id_item_lavado) references items_lavados(id));
 

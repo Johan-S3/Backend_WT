@@ -173,12 +173,12 @@ class UsuarioController {
 
 
   // Actualizar el estado de un usuario
-  static updateActivoUsuario = async (req, res) => {
+  static updateEstadoUsuario = async (req, res) => {
     const { id } = req.params;
 
     try {
       // Crear una instancia de la clase usuario
-      const usuario = await UsuarioService.updateActivoUsuario(id);
+      const usuario = await UsuarioService.updateEstadoUsuario(id);
       // Validamos si no se pudo actualizar el estado del usuario
       if (usuario.error) {
         ResponseProvider.error(

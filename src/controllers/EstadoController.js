@@ -1,5 +1,5 @@
 import { ResponseProvider } from "../providers/ResponseProvider.js";
-import EstadoService from "../services/estadoService.js";
+import EstadoService from "../services/EstadoService.js";
 
 class EstadoController {
   // Obtener todos los estados

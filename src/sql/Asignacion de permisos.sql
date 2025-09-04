@@ -68,7 +68,3 @@ where nombre_permiso = 'lavadores.index'
    or nombre_permiso like 'lavados.%'
    or nombre_permiso = 'facturas.index'
    or nombre_permiso = 'detalle_factura.index';
-   
-   
-   insert into usuarios(cedula, nombre, telefono, correo, contrasena, id_rol) values
-(1102357038, "Johan Polo", 3227775843, "johan.s310806@gmail.com", "$2a$10$gIEnPJS2JC4Bk8epHuEw3OICcwov98JE5yKGpShXDHqCv2mQzi4Vq", 1);
