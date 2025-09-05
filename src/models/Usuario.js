@@ -40,12 +40,12 @@ class Usuario {
       throw new Error("Error al obtener el usuario");
     }
   }
-  // Método para obtener una usuario por su cedula
+  // Método para obtener una usuario lavadores
   async getUsuariosLavadores() {
     try {
       const [rows] = await connection.query(
         `SELECT U.id, U.cedula, U.nombre, U.telefono, U.correo, EU.nombre_estado, R.nombre_rol 
-        FROM usuarios u 
+        FROM usuarios U 
         INNER JOIN roles R on R.id = U.id_rol
         INNER JOIN estados_usuarios EU on EU.id = U.id_estado
         WHERE R.id = 4`);
@@ -57,6 +57,23 @@ class Usuario {
       return rows;
     } catch (error) {
       throw new Error("Error al obtener el usuario");
+    }
+  }
+
+  // Método para obtener una usuario lavadores activos
+  async getUsuariosLavadoresActivos() {
+    try {
+      const [rows] = await connection.query(
+        `SELECT * FROM usuarios U
+        WHERE U.id_rol = 4 AND U.id_estado = 1`);
+      if (rows.length === 0) {
+        // Retorna un array vacío si no se encuentra el usuario
+        return [];
+      }
+      // Retorna el usuario encontrado
+      return rows;
+    } catch (error) {
+      throw new Error("Error al obtener los usuarios");
     }
   }
 
@@ -126,6 +143,20 @@ class Usuario {
         return true;
     } catch (error) {
       throw new Error("Error al cambiar el estado del usuario");
+    }
+  }
+
+  // Método para activar un usuario
+  async ActivarUsuario(idUsuario) {
+    try {
+      const [result] = await connection.query(
+        `UPDATE usuarios SET id_estado = 1 WHERE id = ?;`, [idUsuario]);
+
+        if(result.affectedRows == 0) return false;
+
+        return true;
+    } catch (error) {
+      throw new Error("Error al activar el usuario");
     }
   }
 

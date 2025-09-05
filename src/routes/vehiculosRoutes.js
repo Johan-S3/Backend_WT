@@ -26,6 +26,20 @@ router.get('/', VehiculoController.getAllVehiculos);
 router.get('/:id', VehiculoController.getVehiculoById);
 
 /**
+ * @route GET /vehiculos/descuento/:id
+ * @description Obtiene el vehiculo por el id ingresado.
+ * @param {number} id - Identificador del vehiculo a consultar.
+ */
+router.get('/descuento/:id', VehiculoController.getDescuentoById);
+
+/**
+ * @route GET /vehiculos/placa/:placa
+ * @description Obtiene el vehiculo por el id ingresado.
+ * @param {number} id - Identificador del vehiculo a consultar.
+ */
+router.get('/placa/:placa', VehiculoController.getVehiculoByPlaca);
+
+/**
  * @route POST /vehiculos
  * @description Crea un nuevo vehiculo en el sistema.
  * @middleware validarVehiculo - Valida los campos requeridos antes de ejecutar la acción.

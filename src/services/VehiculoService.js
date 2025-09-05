@@ -62,20 +62,74 @@ class VehiculoService {
     }
   }
 
+  static async getDescuentoById(id) {
+    try {
+      const vehiculoInstance = new Vehiculo();
+      const vehiculo = await vehiculoInstance.getDescuentoById(id);
+      // Validamos si no hay vehiculos
+      if (vehiculo.length === 0) {
+        return {
+          error: true,
+          code: 404,
+          message: "Vehiculo no encontrado",
+        };
+      }
+      return {
+        error: false,
+        code: 200,
+        message: "Vehiculo obtenido correctamente",
+        data: vehiculo,
+      };
+    } catch (error) {
+      return {
+        error: true,
+        code: 500,
+        message: "Error al obtener el vehiculoooo",
+      };
+    }
+  }
+
+  static async getVehiculoByPlaca(placa) {
+    try {
+      const vehiculoInstance = new Vehiculo();
+      const vehiculo = await vehiculoInstance.getByPlaca(placa);
+      // Validamos si no hay vehiculos
+      if (vehiculo.length === 0) {
+        return {
+          error: true,
+          code: 404,
+          message: "Vehiculo no encontrado",
+        };
+      }
+      return {
+        error: false,
+        code: 200,
+        message: "Vehiculo obtenido correctamente",
+        data: vehiculo,
+      };
+    } catch (error) {
+      return {
+        error: true,
+        code: 500,
+        message: "Error al obtener el vehiculo",
+      };
+    }
+  }
+
   static async createvehiculo(campos) {
     try {
       // Se instancia la clase vehiculo para poder acceder a sus metodos.
       const CRUDInstance = new CRUD();
       const vehiculoInstance = new Vehiculo();
-      const tipoVehInstance = new TipoVehiculo();
-      const servicioVehInstance = new ServicioVehiculo();
 
       let { placa, id_tipo_vehiculo, id_servicio_vehiculo } = campos;
 
       // Se busca un Vehiculo por la placa ingresada
       const vehiculoPlacaExiste = await vehiculoInstance.getByPlaca(placa.trim());
+      console.log(vehiculoPlacaExiste);
+      
       // Validamos si existe el vehiculo con esa placa
-      if (vehiculoPlacaExiste.length != 0) {
+      if (vehiculoPlacaExiste.length != 0 && placa.trim()) {
         return {
           error: true,
           code: 400,
@@ -84,7 +138,7 @@ class VehiculoService {
       }
 
       // Se busca el tipo de vehiculo ingresado por su Id
-      const tipoVehExiste = await tipoVehInstance.getById(id_tipo_vehiculo);
+      const tipoVehExiste = await CRUDInstance.getByID("tipos_vehiculos", id_tipo_vehiculo, "el tipo de vehiculo");
       // Validamos si existe el tipo de vehiculo con es ID
       if (tipoVehExiste.length == 0) {
         return {
@@ -95,7 +149,7 @@ class VehiculoService {
       }
 
       // Se busca el servicio de vehiculo ingresado por su Id
-      const servicioVehExiste = await servicioVehInstance.getById(id_servicio_vehiculo);
+      const servicioVehExiste = await CRUDInstance.getByID("servicios_vehiculos", id_servicio_vehiculo, "el servicio del vehiculo");
       // Validamos si existe el servicio de vehiculo con es ID
       if (servicioVehExiste.length == 0) {
         return {
@@ -156,17 +210,18 @@ class VehiculoService {
 
       // Se busca un Vehiculo por la placa ingresada
       const vehiculoPlacaExiste = await vehiculoInstance.getByPlaca(placa.trim());
+      
       // Validamos si existe el vehiculo con esa placa
-      if (vehiculoPlacaExiste.length != 0 && vehiculoIdExiste.placa != placa.trim()) {
+      if (vehiculoPlacaExiste && vehiculoPlacaExiste.placa != placa.trim()) {
         return {
           error: true,
           code: 400,
-          message: "La placa ingresada pertenece a otro vehiculo",
+          message: "La placa ingresada pertenece a otro vehiculoooo",
         };
       }
 
       // Se busca el tipo de vehiculo ingresado por su Id
-      const tipoVehExiste = await tipoVehInstance.getById(id_tipo_vehiculo);
+      const tipoVehExiste = await CRUDInstance.getByID("tipos_vehiculos", id_tipo_vehiculo, "el tipo de vehiculo");
       // Validamos si existe el tipo de vehiculo con es ID
       if (tipoVehExiste.length == 0) {
         return {
@@ -177,7 +232,7 @@ class VehiculoService {
       }
 
       // Se busca el servicio de vehiculo ingresado por su Id
-      const servicioVehExiste = await servicioVehInstance.getById(id_servicio_vehiculo);
+      const servicioVehExiste = await CRUDInstance.getByID("servicios_vehiculos", id_servicio_vehiculo, "el servicio del vehiculo");
       // Validamos si existe el servicio de vehiculo con es ID
       if (servicioVehExiste.length == 0) {
         return {

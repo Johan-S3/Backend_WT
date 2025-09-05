@@ -19,11 +19,37 @@ const router = express.Router();
 router.get('/', LavadoController.getAllLavados);
 
 /**
+ * @route GET /lavados/pendientes
+ * @description Obtiene el listado completo de los lavados.
+ */
+router.get('/pendientes', LavadoController.getAllLavadosPendientes);
+
+/**
+ * @route GET /lavados/pendientes
+ * @description Obtiene el listado completo de los lavados.
+ */
+router.get('/enProceso', LavadoController.getAllLavadosEnProceso);
+
+/**
  * @route GET /lavados/:id
  * @description Obtiene el lavado por el id ingresado.
  * @param {number} id - Identificador del lavado a consultar.
  */
 router.get('/:id', LavadoController.getLavadoById);
+
+/**
+ * @route GET /lavados/pendientes/:id
+ * @description Obtiene el lavado pendiente por el id ingresado.
+ * @param {number} id - Identificador del lavado a consultar.
+ */
+router.get('/pendientes/:id', LavadoController.getLavadoPendienteById);
+
+/**
+ * @route GET /lavados/enProceso/:id
+ * @description Obtiene el lavado pendiente por el id ingresado.
+ * @param {number} id - Identificador del lavado a consultar.
+ */
+router.get('/enProceso/:id', LavadoController.getLavadoEnProcesoById);
 
 /**
  * @route POST /lavados

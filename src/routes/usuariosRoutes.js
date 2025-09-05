@@ -20,6 +20,13 @@ const router = express.Router();
 router.get('/', UsuarioController.getAllUsuarios);
 
 /**
+ * @route GET /usuarios/cedula/:cedula
+ * @description Obtiene un usuario por su cedula.
+ * @param {number} cedula - Identificador del usuario a consultar.
+ */
+router.get('/cedula/:cedula', UsuarioController.getUsuarioByCedula);
+
+/**
  * @route GET /usuarios/gerentes
  * @description Obtiene el listado completo de usuarios gerentes. 
  */
@@ -27,9 +34,15 @@ router.get('/gerentes', UsuarioController.getAllGerentes);
 
 /**
  * @route GET /usuarios/lavadores
- * @description Obtiene el listado completo de usuarios gerentes. 
+ * @description Obtiene el listado completo de usuarios lavadores. 
  */
 router.get('/lavadores', UsuarioController.getAllLavadores);
+
+/**
+ * @route GET /usuarios/free
+ * @description Obtiene el listado completo de usuarios lavadores activos. 
+ */
+router.get('/lavadores/free', UsuarioController.getAllLavadoresFree);
 
 /**
  * @route GET /usuarios/:id
@@ -67,6 +80,13 @@ router.patch('/contrasena/:id', validarContrasena, UsuarioController.updatePassw
  * @param {number} id - Identificador del usuario a actualizar.
  */
 router.patch('/activo/:id', UsuarioController.updateEstadoUsuario);
+
+/**
+ * @route PATCH /usuarios/activarUser:id
+ * @description Actualiza el estado de un usuario existente por su ID, lo activa.
+ * @param {number} id - Identificador del usuario a actualizar.
+ */
+router.patch('/activarUser/:id', UsuarioController.updateActivarUsuario);
 
 /**
  * @route DELETE /usuarios/:id

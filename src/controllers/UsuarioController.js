@@ -59,11 +59,39 @@ class UsuarioController {
     }
   };
 
-  // Obtener todos los usuarios gerentes
+  // Obtener todos los usuarios lavadores
   static getAllLavadores = async (req, res) => {
     try {
       // Llamamos al servicio para obtener los usuarios
       const response = await UsuarioService.getLavadores();
+      // Validamos si no hay usuarios
+      if (response.error) {
+        // Llamamos el provider para centralizar los mensajes de respuesta
+        return ResponseProvider.error(
+          res,
+          response.message,
+          response.code
+        );
+      } else {
+        // Llamamos el provider para centralizar los mensajes de respuesta
+        return ResponseProvider.success(
+          res,
+          response.data,
+          response.message,
+          response.code
+        );
+      }
+    } catch (error) {
+      // Llamamos el provider para centralizar los mensajes de respuesta
+      ResponseProvider.error(res, "Error al interno en el servidor", 500);
+    }
+  };
+
+  // Obtener todos los usuarios lavadores activos o disponibles
+  static getAllLavadoresFree = async (req, res) => {
+    try {
+      // Llamamos al servicio para obtener los usuarios
+      const response = await UsuarioService.getLavadoresActivos();
       // Validamos si no hay usuarios
       if (response.error) {
         // Llamamos el provider para centralizar los mensajes de respuesta
@@ -93,6 +121,34 @@ class UsuarioController {
     try {
       // Llamamos al servicio para obtener el usuario por su ID
       const response = await UsuarioService.getUsuarioById(id);
+      if (response.error) {
+        // Llamamos el provider para centralizar los mensajes de respuesta
+        return ResponseProvider.error(
+          res,
+          response.message,
+          response.code
+        );
+      } else {
+        // Llamamos el provider para centralizar los mensajes de respuesta
+        return ResponseProvider.success(
+          res,
+          response.data,
+          response.message,
+          response.code
+        );
+      }
+    } catch (error) {
+      // Llamamos el provider para centralizar los mensajes de respuesta
+      ResponseProvider.error(res, "Error interno en el servidor", 500);
+    }
+  };
+
+  // Obtener un usuario por su cedula
+  static getUsuarioByCedula = async (req, res) => {
+    const { cedula } = req.params;
+    try {
+      // Llamamos al servicio para obtener el usuario por su cedula
+      const response = await UsuarioService.getUsuarioByCedula(cedula);
       if (response.error) {
         // Llamamos el provider para centralizar los mensajes de respuesta
         return ResponseProvider.error(
@@ -179,6 +235,34 @@ class UsuarioController {
     try {
       // Crear una instancia de la clase usuario
       const usuario = await UsuarioService.updateEstadoUsuario(id);
+      // Validamos si no se pudo actualizar el estado del usuario
+      if (usuario.error) {
+        ResponseProvider.error(
+          res,
+          usuario.message,
+          usuario.code
+        );
+      }
+      // Retornamos la respuesta cuando se actualiza correctamente
+      ResponseProvider.success(
+        res,
+        null,
+        usuario.message,
+        usuario.code
+      );
+    } catch (error) {
+      // Llamamos el provider para centralizar los mensajes de respuesta
+      ResponseProvider.error(res, "Error interno en el servidor" + error, 500);
+    }
+  };
+  
+  // Actualizar el estado de un usuario (activarlo)
+  static updateActivarUsuario = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+      // Crear una instancia de la clase usuario
+      const usuario = await UsuarioService.updateActivarUsuario(id);
       // Validamos si no se pudo actualizar el estado del usuario
       if (usuario.error) {
         ResponseProvider.error(

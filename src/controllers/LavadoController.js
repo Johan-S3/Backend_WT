@@ -30,12 +30,124 @@ class LavadoController {
     }
   };
 
+  // Obtener todos los lavados pendientes
+  static getAllLavadosPendientes = async (req, res) => {
+    try {
+      // Llamamos al servicio para obtener los registros
+      const response = await LavadoService.getLavadosPendientes();
+      // Validamos si hay errores en la respuesta de la peticion para mostrar
+      if (response.error) {
+        // Llamamos el provider para centralizar los mensajes de respuesta
+        return ResponseProvider.error(
+          res,
+          response.message,
+          response.code
+        );
+      } else {
+        // Llamamos el provider para centralizar los mensajes de respuesta
+        return ResponseProvider.success(
+          res,
+          response.data,
+          response.message,
+          response.code
+        );
+      }
+    } catch (error) {
+      // Llamamos el provider para centralizar los mensajes de respuesta
+      ResponseProvider.error(res, "Error al interno en el servidor", 500);
+    }
+  };
+
+  // Obtener todos los lavados pendientes
+  static getAllLavadosEnProceso = async (req, res) => {
+    try {
+      // Llamamos al servicio para obtener los registros
+      const response = await LavadoService.getLavadosEnProceso();
+      // Validamos si hay errores en la respuesta de la peticion para mostrar
+      if (response.error) {
+        // Llamamos el provider para centralizar los mensajes de respuesta
+        return ResponseProvider.error(
+          res,
+          response.message,
+          response.code
+        );
+      } else {
+        // Llamamos el provider para centralizar los mensajes de respuesta
+        return ResponseProvider.success(
+          res,
+          response.data,
+          response.message,
+          response.code
+        );
+      }
+    } catch (error) {
+      // Llamamos el provider para centralizar los mensajes de respuesta
+      ResponseProvider.error(res, "Error al interno en el servidor", 500);
+    }
+  };
+
   // Obtener un lavado por su ID
   static getLavadoById = async (req, res) => {
     const { id } = req.params;
     try {
       // Llamamos al servicio para obtener el lavado por su ID
       const response = await LavadoService.getLavadoById(id);
+      if (response.error) {
+        // Llamamos el provider para centralizar los mensajes de respuesta
+        return ResponseProvider.error(
+          res,
+          response.message,
+          response.code
+        );
+      } else {
+        // Llamamos el provider para centralizar los mensajes de respuesta
+        return ResponseProvider.success(
+          res,
+          response.data,
+          response.message,
+          response.code
+        );
+      }
+    } catch (error) {
+      // Llamamos el provider para centralizar los mensajes de respuesta
+      ResponseProvider.error(res, "Error interno en el servidor", 500);
+    }
+  };
+
+  // Obtener un lavado pendiente por su ID
+  static getLavadoPendienteById = async (req, res) => {
+    const { id } = req.params;
+    try {
+      // Llamamos al servicio para obtener el lavado por su ID
+      const response = await LavadoService.getLavadoPendienteById(id);
+      if (response.error) {
+        // Llamamos el provider para centralizar los mensajes de respuesta
+        return ResponseProvider.error(
+          res,
+          response.message,
+          response.code
+        );
+      } else {
+        // Llamamos el provider para centralizar los mensajes de respuesta
+        return ResponseProvider.success(
+          res,
+          response.data,
+          response.message,
+          response.code
+        );
+      }
+    } catch (error) {
+      // Llamamos el provider para centralizar los mensajes de respuesta
+      ResponseProvider.error(res, "Error interno en el servidor", 500);
+    }
+  };
+
+  // Obtener un lavado en proceso por su ID
+  static getLavadoEnProcesoById = async (req, res) => {
+    const { id } = req.params;
+    try {
+      // Llamamos al servicio para obtener el lavado por su ID
+      const response = await LavadoService.getLavadoEnProcesoById(id);
       if (response.error) {
         // Llamamos el provider para centralizar los mensajes de respuesta
         return ResponseProvider.error(

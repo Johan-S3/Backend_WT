@@ -58,12 +58,96 @@ class TipoLavadoController {
     }
   };
 
+  // Obtener todos los tipos de lavados relacionados con items
+  static getAllTiposLavadosWithItems = async (req, res) => {
+    try {
+      // Llamamos al servicio para obtener los registros
+      const response = await TipoLavadoService.getTiposLavadosItems();
+      // Validamos si hay errores en la respuesta de la peticion para mostrar
+      if (response.error) {
+        // Llamamos el provider para centralizar los mensajes de respuesta
+        return ResponseProvider.error(
+          res,
+          response.message,
+          response.code
+        );
+      } else {
+        // Llamamos el provider para centralizar los mensajes de respuesta
+        return ResponseProvider.success(
+          res,
+          response.data,
+          response.message,
+          response.code
+        );
+      }
+    } catch (error) {
+      // Llamamos el provider para centralizar los mensajes de respuesta
+      ResponseProvider.error(res, "Error al interno en el servidor", 500);
+    }
+  };
+
   // Obtener un tipo de lavado por su ID
   static getTipoLavadoById = async (req, res) => {
     const { id } = req.params;
     try {
       // Llamamos al servicio para obtener el tipoo de lavado por su ID
       const response = await TipoLavadoService.getTipoLavadoById(id);
+      if (response.error) {
+        // Llamamos el provider para centralizar los mensajes de respuesta
+        return ResponseProvider.error(
+          res,
+          response.message,
+          response.code
+        );
+      } else {
+        // Llamamos el provider para centralizar los mensajes de respuesta
+        return ResponseProvider.success(
+          res,
+          response.data,
+          response.message,
+          response.code
+        );
+      }
+    } catch (error) {
+      // Llamamos el provider para centralizar los mensajes de respuesta
+      ResponseProvider.error(res, "Error interno en el servidor", 500);
+    }
+  };
+
+  // Obtener el valor del tipo de lavado por el su id
+  static getValorTipoLavadoById = async (req, res) => {
+    const { id } = req.params;
+    try {
+      // Llamamos al servicio para obtener el tipoo de lavado por su ID
+      const response = await TipoLavadoService.getValorTipoLavadoById(id);
+      if (response.error) {
+        // Llamamos el provider para centralizar los mensajes de respuesta
+        return ResponseProvider.error(
+          res,
+          response.message,
+          response.code
+        );
+      } else {
+        // Llamamos el provider para centralizar los mensajes de respuesta
+        return ResponseProvider.success(
+          res,
+          response.data,
+          response.message,
+          response.code
+        );
+      }
+    } catch (error) {
+      // Llamamos el provider para centralizar los mensajes de respuesta
+      ResponseProvider.error(res, "Error interno en el servidor", 500);
+    }
+  };
+
+  // Obtener tipos de lavados por el id del tipo de vehicul
+  static getTiposLavadosByIdTipoVeh = async (req, res) => {
+    const { id } = req.params;
+    try {
+      // Llamamos al servicio para obtener el tipoo de lavado por su ID
+      const response = await TipoLavadoService.getTipoLavadoByIdTipoVeh(id);
       if (response.error) {
         // Llamamos el provider para centralizar los mensajes de respuesta
         return ResponseProvider.error(

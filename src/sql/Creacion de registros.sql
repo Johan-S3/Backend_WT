@@ -11,3 +11,17 @@ insert into estados(nombre_estado) values
 ("Pendiente"),
 ("Lavando"),
 ("Completado");
+
+insert into tipos_vehiculos (nombre_tipo) values
+("Carro"),
+("Moto");
+
+insert into servicios_vehiculos (nombre_servicio, porcentaje_descuento) values
+("Particular", 0);
+
+insert into vehiculos (placa, marca_vehiculo, modelo_vehiculo, id_tipo_vehiculo, id_servicio_vehiculo) values ("HLH02H", "TVS Stryker 125", 2025, 2, 1);
+
+select * from vehiculos;
+select * from usuarios;
+select * from roles;
+select * from lavados;

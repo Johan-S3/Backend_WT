@@ -60,6 +60,34 @@ class TipoLavadoService {
     }
   }
 
+  static async getTiposLavadosItems() {
+    try {
+      const tipoLavadoInstance = new TipoLavado();
+      const tiposLavados = await tipoLavadoInstance.getTiposLavadosWhitItems();
+      // Validamos si no hay tipos de lavados
+      if (tiposLavados.length === 0) {
+        return {
+          error: true,
+          code: 404,
+          message: "No hay tipos de lavados con items relacionados",
+        };
+      }
+      // Retornamos los tipos de lavados obtenidos
+      return {
+        error: false,
+        code: 200,
+        message: "Tipos de lavados obtenidos correctamente",
+        data: tiposLavados,
+      };
+    } catch (error) {
+      return {
+        error: true,
+        code: 500,
+        message: "Error al obtener los tipos de lavados",
+      };
+    }
+  }
+
   static async getTipoLavadoById(id) {
     try {
       const CRUDInstance = new CRUD();
@@ -76,6 +104,60 @@ class TipoLavadoService {
         error: false,
         code: 200,
         message: "Tipo de lavado obtenido correctamente",
+        data: tipoLavado,
+      };
+    } catch (error) {
+      return {
+        error: true,
+        code: 500,
+        message: "Error al obtener el tipo de lavado",
+      };
+    }
+  }
+
+  static async getValorTipoLavadoById(id) {
+    try {
+      const tipoLavadoInstance = new TipoLavado();
+      const tipoLavado = await tipoLavadoInstance.getValorTipoLavadoById(id);
+      // Validamos si no hay tipos de lavados con ese ID
+      if (tipoLavado.length === 0) {
+        return {
+          error: true,
+          code: 404,
+          message: "Tipo de lavado no encontrado",
+        };
+      }
+      return {
+        error: false,
+        code: 200,
+        message: "Tipo de lavado obtenido correctamente",
+        data: tipoLavado[0],
+      };
+    } catch (error) {
+      return {
+        error: true,
+        code: 500,
+        message: "Error al obtener el tipo de lavado",
+      };
+    }
+  }
+
+  static async getTipoLavadoByIdTipoVeh(id) {
+    try {
+      const tipoLavadoInstance = new TipoLavado();
+      const tipoLavado = await tipoLavadoInstance.getByIdTipoVehiculo(id);
+      // Validamos si no hay tipos de lavados con ese ID
+      if (tipoLavado.length === 0) {
+        return {
+          error: true,
+          code: 404,
+          message: "Tipos de lavados no encontrado",
+        };
+      }
+      return {
+        error: false,
+        code: 200,
+        message: "Tipos de lavados obtenido correctamente",
         data: tipoLavado,
       };
     } catch (error) {

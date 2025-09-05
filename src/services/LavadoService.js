@@ -1,5 +1,6 @@
 import CRUD from "../models/CRUD.js";
 import Factura from "../models/Factura.js";
+import Lavado from "../models/Lavado.js";
 
 class LavadoService {
 
@@ -27,6 +28,116 @@ class LavadoService {
         error: true,
         code: 500,
         message: "Error al obtener los lavados",
+      };
+    }
+  }
+
+  static async getLavadosPendientes() {
+    try {
+      const lavadoInstance = new Lavado();
+      const lavados = await lavadoInstance.getLavadosPendientes();
+      // Validamos si no hay lavados
+      if (lavados.length === 0) {
+        return {
+          error: true,
+          code: 404,
+          message: "No hay lavados pendientes registrados",
+        };
+      }
+      // Retornamos los lavados obtenidos
+      return {
+        error: false,
+        code: 200,
+        message: "Lavados obtenidos correctamente",
+        data: lavados,
+      };
+    } catch (error) {
+      return {
+        error: true,
+        code: 500,
+        message: "Error al obtener los lavados",
+      };
+    }
+  }
+
+  static async getLavadosEnProceso() {
+    try {
+      const lavadoInstance = new Lavado();
+      const lavados = await lavadoInstance.getLavadosEnProceso();
+      // Validamos si no hay lavados
+      if (lavados.length === 0) {
+        return {
+          error: true,
+          code: 404,
+          message: "No hay lavados pendientes registrados",
+        };
+      }
+      // Retornamos los lavados obtenidos
+      return {
+        error: false,
+        code: 200,
+        message: "Lavados obtenidos correctamente",
+        data: lavados,
+      };
+    } catch (error) {
+      return {
+        error: true,
+        code: 500,
+        message: "Error al obtener los lavados",
+      };
+    }
+  }
+
+  static async getLavadoPendienteById(id) {
+    try {
+      const lavadoInstance = new Lavado();
+      const lavado = await lavadoInstance.getLavadoPendienteById(id);
+      // Validamos si no hay un lavado con ese ID
+      if (lavado.length === 0) {
+        return {
+          error: true,
+          code: 404,
+          message: "Lavado no encontrado",
+        };
+      }
+      return {
+        error: false,
+        code: 200,
+        message: "Lavado obtenido correctamente",
+        data: lavado[0],
+      };
+    } catch (error) {
+      return {
+        error: true,
+        code: 500,
+        message: "Error al obtener el lavado",
+      };
+    }
+  }
+
+  static async getLavadoEnProcesoById(id) {
+    try {
+      const lavadoInstance = new Lavado();
+      const lavado = await lavadoInstance.getLavadoEnProcesoById(id);
+      // Validamos si no hay un lavado con ese ID
+      if (lavado.length === 0) {
+        return {
+          error: true,
+          code: 404,
+          message: "Lavado no encontrado",
+        };
+      }
+      return {
+        error: false,
+        code: 200,
+        message: "Lavado obtenido correctamente",
+        data: lavado[0],
+      };
+    } catch (error) {
+      return {
+        error: true,
+        code: 500,
+        message: "Error al obtener el lavado",
       };
     }
   }
@@ -64,7 +175,7 @@ class LavadoService {
       const CRUDInstance = new CRUD();
 
       // Destructuro el objeto campos para obtener los datos a consultar
-      let { id_vehiculo, id_tipo_lavado, id_usuario, id_estado } = campos;
+      let { id_vehiculo, id_conductor, id_estado } = campos;
 
       // Se busca un vehiculo por el ID ingresado
       const vehiculoExiste = await CRUDInstance.getByID("vehiculos", id_vehiculo, "el vehiculo");
@@ -77,19 +188,19 @@ class LavadoService {
         };
       }
 
-      // Se busca un tipo de lavado por el ID ingresado
-      const tipoLavadoExiste = await CRUDInstance.getByID("tipos_lavados", id_tipo_lavado, "el tipo de lavado");
-      // Validamos si no existe el tipo de lavado con ese ID
-      if (tipoLavadoExiste.length == 0) {
-        return {
-          error: true,
-          code: 400,
-          message: "El tipo de lavado ingresado no existe",
-        };
-      }
+      // // Se busca un tipo de lavado por el ID ingresado
+      // const tipoLavadoExiste = await CRUDInstance.getByID("tipos_lavados", id_tipo_lavado, "el tipo de lavado");
+      // // Validamos si no existe el tipo de lavado con ese ID
+      // if (tipoLavadoExiste.length == 0) {
+      //   return {
+      //     error: true,
+      //     code: 400,
+      //     message: "El tipo de lavado ingresado no existe",
+      //   };
+      // }
 
       // Se busca un usuario por el ID ingresado
-      const usuarioExiste = await CRUDInstance.getByID("usuarios", id_usuario, "el usuario");
+      const usuarioExiste = await CRUDInstance.getByID("usuarios", id_conductor, "el usuario");
       // Validamos si no existe el usuario con ese ID
       if (usuarioExiste.length == 0) {
         return {
@@ -155,7 +266,7 @@ class LavadoService {
       }
 
       // Destructuro el objeto campos para obtener los datos a consultar
-      let { id_vehiculo, id_tipo_lavado, id_usuario, id_estado } = campos;
+      let { id_vehiculo, id_tipo_lavado, id_conductor, id_lavador, id_estado } = campos;
 
       // Se busca un vehiculo por el ID ingresado
       const vehiculoExiste = await CRUDInstance.getByID("vehiculos", id_vehiculo, "el vehiculo");
@@ -179,14 +290,25 @@ class LavadoService {
         };
       }
 
-      // Se busca un usuario por el ID ingresado
-      const usuarioExiste = await CRUDInstance.getByID("usuarios", id_usuario, "el usuario");
-      // Validamos si no existe el usuario con ese ID
-      if (usuarioExiste.length == 0) {
+      // Se busca un conductor por el ID ingresado
+      const conductorExiste = await CRUDInstance.getByID("usuarios", id_conductor, "el usuario");
+      // Validamos si no existe el conductor con ese ID
+      if (conductorExiste.length == 0) {
         return {
           error: true,
           code: 400,
-          message: "El usuario ingresado no existe",
+          message: "El conductor ingresado no existe",
+        };
+      }
+
+      // Se busca un lavador por el ID ingresado
+      const lavadorExiste = await CRUDInstance.getByID("usuarios", id_lavador, "el usuario");
+      // Validamos si no existe el lavador con ese ID
+      if (lavadorExiste.length == 0) {
+        return {
+          error: true,
+          code: 400,
+          message: "El lavador ingresado no existe",
         };
       }
 

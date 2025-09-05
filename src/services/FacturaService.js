@@ -33,6 +33,34 @@ class FacturaService {
     }
   }
 
+  static async getInfoFacturas() {
+    try {
+      const facturaInstance = new Factura();
+      const facturas = await facturaInstance.getInfoFacturas();
+      // Validamos si no hay facturas
+      if (facturas.length === 0) {
+        return {
+          error: true,
+          code: 404,
+          message: "No hay facturas registradas",
+        };
+      }
+      // Retornamos las facturas obtenidas
+      return {
+        error: false,
+        code: 200,
+        message: "fFacturas obtenidas correctamente",
+        data: facturas,
+      };
+    } catch (error) {
+      return {
+        error: true,
+        code: 500,
+        message: "Error al obtener las facturas",
+      };
+    }
+  }
+
   static async getFacturaById(id) {
     try {
       const CRUDInstance = new CRUD();
@@ -50,6 +78,33 @@ class FacturaService {
         code: 200,
         message: "Factura obtenida correctamente",
         data: factura[0],
+      };
+    } catch (error) {
+      return {
+        error: true,
+        code: 500,
+        message: "Error al obtener la factura",
+      };
+    }
+  }
+
+  static async getFacturaItemsByIdFactura(id) {
+    try {
+      const facturaInstance = new Factura();
+      const factura = await facturaInstance.getFacturaItemsByIdFactura(id);
+      // Validamos si no hay un factura con ese ID
+      if (factura.length === 0) {
+        return {
+          error: true,
+          code: 404,
+          message: "Factura no encontrado",
+        };
+      }
+      return {
+        error: false,
+        code: 200,
+        message: "Factura obtenida correctamente",
+        data: factura,
       };
     } catch (error) {
       return {

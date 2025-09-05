@@ -19,11 +19,24 @@ const router = express.Router();
 router.get('/', FacturaController.getAllFacturas);
 
 /**
+ * @route GET /facturas
+ * @description Obtiene el listado completo de las facturas.
+ */
+router.get('/info/', FacturaController.getAllInfoFacturas);
+
+/**
  * @route GET /facturas/:id
  * @description Obtiene la factura por el id ingresado.
  * @param {number} id - Identificador del factura a consultar.
  */
 router.get('/:id', FacturaController.getFacturaById);
+
+/**
+ * @route GET /facturas/items/:id
+ * @description Obtiene la factura por el id ingresado.
+ * @param {number} id - Identificador del factura a consultar.
+ */
+router.get('/items/:id', FacturaController.getFacturaItemsByIdFactura);
 
 /**
  * @route POST /facturas

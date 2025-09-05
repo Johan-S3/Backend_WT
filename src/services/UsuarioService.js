@@ -90,10 +90,65 @@ class UsuarioService {
     }
   }
 
+  static async getLavadoresActivos() {
+    try {
+      const usuarioInstance = new Usuario();
+      const usuarios = await usuarioInstance.getUsuariosLavadoresActivos();
+      // Validamos si no hay usuarios
+      if (usuarios.length === 0) {
+        return {
+          error: true,
+          code: 404,
+          message: "No hay usuarios activos registrados",
+        };
+      }
+      // Retornamos los usuarios obtenidas
+      return {
+        error: false,
+        code: 200,
+        message: "Usuarios obtenidas correctamente",
+        data: usuarios,
+      };
+    } catch (error) {
+      return {
+        error: true,
+        code: 500,
+        message: "Error al obtener los usuarios",
+      };
+    }
+  }
+
   static async getUsuarioById(id) {
     try {
       const CRUDInstance = new CRUD();
       const usuario = await CRUDInstance.getByID("usuarios", id, "el usuario");
+      // Validamos si no hay usuarios
+      if (usuario.length === 0) {
+        return {
+          error: true,
+          code: 404,
+          message: "Usuario no encontrado",
+        };
+      }
+      return {
+        error: false,
+        code: 200,
+        message: "Usuario obtenido correctamente",
+        data: usuario,
+      };
+    } catch (error) {
+      return {
+        error: true,
+        code: 500,
+        message: "Error al obtener el usuario",
+      };
+    }
+  }
+
+  static async getUsuarioByCedula(cedula) {
+    try {
+      const usuarioInstance = new Usuario();
+      const usuario = await usuarioInstance.getByCedula(cedula);
       // Validamos si no hay usuarios
       if (usuario.length === 0) {
         return {
@@ -320,6 +375,52 @@ class UsuarioService {
         error: true,
         code: 500,
         message: "Error interno al inactivar el usuario" + error,
+      };
+    }
+  }
+
+  static async updateActivarUsuario(id) {
+    try {
+      // Se instancia la clase crud para poder acceder a sus metodos.
+      const CRUDInstance = new CRUD();
+      // Se instancia la clase usuario para poder acceder a sus metodos.
+      const usuarioInstance = new Usuario();
+
+      // Consultamos el usuario por id
+      const usuarioExistente = await CRUDInstance.getByID("usuarios", id, "el usuario");
+      console.log(usuarioExistente);
+
+      // Validamos si no existe el usuario
+      if (usuarioExistente.length === 0) {
+        return {
+          error: true,
+          code: 404,
+          message: "Usuario no encontrado",
+        };
+      }
+
+      // Se intenta actualizar el estado del usuario
+      const usuario = await usuarioInstance.ActivarUsuario(id);
+      // Validamos si no se pudo actualizar el usuario
+      if (usuario === null) {
+        return {
+          error: true,
+          code: 400,
+          message: "Error al activar el usuario",
+        };
+      }
+      // Retornamos el usuario actualizada
+      return {
+        error: false,
+        code: 200,
+        message: "Usuario activado correctamente",
+        data: usuario,
+      };
+    } catch (error) {
+      return {
+        error: true,
+        code: 500,
+        message: "Error interno al activar el usuario" + error,
       };
     }
   }

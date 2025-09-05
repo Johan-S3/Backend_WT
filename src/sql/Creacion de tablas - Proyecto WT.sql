@@ -82,16 +82,19 @@ create table lavados(
 id int auto_increment primary key,
 id_vehiculo int not null,
 id_tipo_lavado int null,
-id_usuario int not null,
+id_conductor int not null,
+id_lavador int null,
 id_estado int not null,
 foreign key(id_vehiculo) references vehiculos(id),
 foreign key(id_tipo_lavado) references tipos_lavados(id),
-foreign key(id_usuario) references usuarios(id),
+foreign key(id_conductor) references usuarios(id),
+foreign key(id_lavador) references usuarios(id),
 foreign key(id_estado) references estados(id));
 
 create table facturas(
 id int primary key auto_increment,
 fecha timestamp DEFAULT CURRENT_TIMESTAMP,
+total bigint not null,
 id_lavado int not null,
 foreign key(id_lavado) references lavados(id));
 
@@ -107,3 +110,4 @@ foreign key(id_item_lavado) references items_lavados(id));
 
 describe vehiculos;
 show tables;
+

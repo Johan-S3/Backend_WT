@@ -14,7 +14,8 @@
  */
 export const campos = [
   { name: "id_vehiculo", alias: "Vehiculo", required: true, minLength: 1, maxLength: 10 },
-  { name: "id_tipo_lavado", alias: "Tipo de lavado", required: true, minLength: 1, maxLength: 10 },
-  { name: "id_usuario", alias: "Usuario", required: true, minLength: 1, maxLength: 10 },
+  { name: "id_tipo_lavado", alias: "Tipo de lavado", required: false, minLength: 1, maxLength: 10 },
+  { name: "id_conductor", alias: "Usuario", required: true, minLength: 1, maxLength: 10 },
+  { name: "id_lavador", alias: "Usuario", required: false, minLength: 1, maxLength: 10 },
   { name: "id_estado", alias: "Estado", required: true, minLength: 1, maxLength: 10 }
 ];

@@ -25,6 +25,26 @@ router.get('/', TipoLavadoController.getAllTiposLavados);
 router.get('/free', TipoLavadoController.getAllTiposLavadosLibres);
 
 /**
+ * @route GET /tiposLavados/items
+ * @description Obtiene el listado completo de los tipops de lavados que tienen relaciones con items.
+ */
+router.get('/items', TipoLavadoController.getAllTiposLavadosWithItems);
+
+/**
+ * @route GET /tiposLavados/tipoVeh/:id
+ * @description Obtiene el tipo de lavado por el id ingresado.
+ * @param {number} id - Identificador del tipo de lavado a consultar.
+ */
+router.get('/tipoVeh/:id', TipoLavadoController.getTiposLavadosByIdTipoVeh);
+
+/**
+ * @route GET /tiposLavados/valor/:id
+ * @description Obtiene el tipo de lavado por el id ingresado.
+ * @param {number} id - Identificador del tipo de lavado a consultar.
+ */
+router.get('/valor/:id', TipoLavadoController.getValorTipoLavadoById);
+
+/**
  * @route GET /tiposLavados/:id
  * @description Obtiene el tipo de lavado por el id ingresado.
  * @param {number} id - Identificador del tipo de lavado a consultar.

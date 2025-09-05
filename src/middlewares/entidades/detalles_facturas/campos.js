@@ -15,7 +15,6 @@
 export const campos = [
   { name: "id_factura", alias: "Factura", required: true, minLength: 1, maxLength: 10 },
   { name: "id_item_lavado", alias: "Item de lavado", required: true, minLength: 1, maxLength: 10 },
-  { name: "nombre_item_snapshot", alias: "Nombre de item", required: true, minLength: 3, maxLength: 25 },
-  { name: "cacntidad", alias: "Cantidad", required: true, minLength: 1, maxLength: 10 },
-  { name: "precio_unitario", alias: "Precio unitario", required: true, minLength: 4, maxLength: 7 }
+  { name: "nombre_item", alias: "Nombre de item", required: true, minLength: 3, maxLength: 25 },
+  { name: "precio_item", alias: "Precio unitario", required: true, minLength: 4, maxLength: 7 }
 ];
